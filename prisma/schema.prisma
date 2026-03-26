@@ -1,0 +1,62 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Check {
+  id               String   @id @default(uuid()) @db.Uuid
+  domain           String
+  urlHash          String   @unique
+  score            Int      @db.SmallInt
+  crawlabilityScore Int     @db.SmallInt
+  contentScore     Int      @db.SmallInt
+  technicalScore   Int      @db.SmallInt
+  qualityScore     Int      @db.SmallInt
+  issues           Json     @default("[]")
+  checkedAt        DateTime @default(now())
+  expiresAt        DateTime @default(dbgenerated("now() + interval '7 days'"))
+  ipHash           String
+  userAgent        String?
+  languageDetected String?
+  referrerSource   String?
+  createdAt        DateTime @default(now())
+
+  leads Lead[]
+
+  @@index([domain])
+  @@index([expiresAt])
+  @@index([ipHash])
+}
+
+model Lead {
+  id          String   @id @default(uuid()) @db.Uuid
+  checkId     String   @db.Uuid
+  check       Check    @relation(fields: [checkId], references: [id], onDelete: Cascade)
+  name        String
+  email       String
+  company     String
+  phone       String?
+  budgetRange String?
+  timeline    String?
+  ctoStatus   String   @default("new")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([checkId, email])
+  @@index([email])
+  @@index([ctoStatus])
+  @@index([createdAt])
+}
+
+model RateLimit {
+  id        String   @id @default(uuid()) @db.Uuid
+  key       String   @unique
+  count     Int      @default(1)
+  expiresAt DateTime
+
+  @@index([expiresAt])
+}

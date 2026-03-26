@@ -1,23 +1,34 @@
-// ============================================================
-// AIScore DB Client — stub for parallel workstream integration
-// The scoring workstream will replace this with the real Prisma client.
-// ============================================================
+import { PrismaClient, Prisma } from '@prisma/client';
+import { logger } from '../logger';
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unnecessary-type-assertion */
+type LoggedPrismaClient = PrismaClient<{
+  log: [
+    { emit: 'event'; level: 'error' },
+    { emit: 'event'; level: 'warn' },
+  ];
+}>;
 
-import { PrismaClient } from '@prisma/client';
+const globalForPrisma = globalThis as unknown as { prisma: LoggedPrismaClient };
 
-interface PrismaGlobal {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  prisma?: any;
+function createPrismaClient(): LoggedPrismaClient {
+  return new PrismaClient({
+    log: [
+      { emit: 'event', level: 'error' },
+      { emit: 'event', level: 'warn' },
+    ],
+  }) as LoggedPrismaClient;
 }
 
-const globalForPrisma = globalThis as unknown as PrismaGlobal;
+export const prisma: LoggedPrismaClient =
+  globalForPrisma.prisma ?? createPrismaClient();
 
-const client = (globalForPrisma.prisma ?? new PrismaClient()) as PrismaClient;
+prisma.$on('error', (e: Prisma.LogEvent) =>
+  logger.error('Prisma error', { message: e.message }),
+);
+prisma.$on('warn', (e: Prisma.LogEvent) =>
+  logger.warn('Prisma warning', { message: e.message }),
+);
 
 if (process.env['NODE_ENV'] !== 'production') {
-  globalForPrisma.prisma = client;
+  globalForPrisma.prisma = prisma;
 }
-
-export const prisma: PrismaClient = client;
