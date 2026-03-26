@@ -1,7 +1,5 @@
 // ============================================================
-// AIScore Hasher Utility
-// Minimal local copy — to be replaced by the scoring workstream's
-// src/utils/hasher.ts during the API integration step.
+// AIScore SHA256 Hasher
 // ============================================================
 
 import { createHash } from 'crypto';
