@@ -1,0 +1,8 @@
+# Secrets
+terraform.tfvars
+
+# Terraform state (use S3 backend in prod)
+*.tfstate
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
