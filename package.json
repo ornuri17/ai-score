@@ -10,7 +10,7 @@
     "lint": "eslint 'src/**/*.ts' 'tests/**/*.ts'",
     "type-check": "tsc --noEmit",
     "test": "jest",
-    "test:scoring": "jest --testPathPattern=scoring"
+    "test:scoring": "jest --testPathPattern=scoring-validation --verbose"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
