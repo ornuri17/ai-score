@@ -41,6 +41,31 @@ async function trackViolation(redis: Redis, ipHash: string): Promise<void> {
   }
 }
 
+export function createFormRateLimiterMiddleware(): RateLimitMiddleware {
+  const redis = new Redis(config.redis.url);
+
+  return async function formRateLimiter(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const ip = req.ip ?? 'unknown';
+    const ipHash = sha256(ip);
+    const ipKey = `ratelimit:form:ip:${ipHash}`;
+
+    try {
+      const ipCount = await redis.incr(ipKey);
+      await redis.expire(ipKey, SECONDS_PER_DAY);
+
+      if (ipCount > config.rateLimit.formsPerIpPerDay) {
+        await trackViolation(redis, ipHash);
+        replyTooManyRequests(res, ipHash, 'form:ip');
+        return;
+      }
+    } catch (err) {
+      logger.warn('Redis error in form IP rate limiter — failing open', { err });
+    }
+
+    next();
+  };
+}
+
 export function createRateLimiterMiddleware(): RateLimitMiddleware {
   const redis = new Redis(config.redis.url);
 

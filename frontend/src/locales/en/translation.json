@@ -1,0 +1,52 @@
+{
+  "header": {
+    "title": "AIScore",
+    "language": "Language"
+  },
+  "home": {
+    "title": "How AI-Friendly is Your Website?",
+    "subtitle": "Get a free AI-friendliness score and identify barriers preventing LLMs from discovering your content.",
+    "placeholder": "Enter your website URL",
+    "button": "Check Your AI Score",
+    "analyzing": "Analyzing...",
+    "errors": {
+      "rateLimit": "Rate limit reached. Try again tomorrow.",
+      "unreachable": "Website unreachable. Check the URL.",
+      "invalid": "Invalid URL. Please try again."
+    }
+  },
+  "results": {
+    "title": "AI-Friendliness Score",
+    "breakdown": "Score Breakdown",
+    "crawlability": "Crawlability",
+    "content": "Content Structure",
+    "technical": "Technical SEO",
+    "quality": "Content Quality",
+    "issues": "Issues Found",
+    "lastAnalyzed": "Last analyzed",
+    "analyzeAgain": "Analyze Again",
+    "share": "Share Results",
+    "loading": "Loading results...",
+    "error": "Error loading results"
+  },
+  "form": {
+    "cta": "Get Your AEO Action Plan",
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "email": "Email",
+    "emailPlaceholder": "you@example.com",
+    "phone": "Phone",
+    "phonePlaceholder": "+1 (555) 123-4567",
+    "submit": "Get My Action Plan",
+    "submitting": "Submitting...",
+    "successTitle": "Thank You!",
+    "successMessage": "We'll follow up with you soon.",
+    "errors": {
+      "nameRequired": "Name is required",
+      "emailInvalid": "Valid email required",
+      "phoneInvalid": "Invalid phone number",
+      "rateLimit": "Rate limit reached. Try again later.",
+      "submitFailed": "Failed to submit. Please try again."
+    }
+  }
+}
