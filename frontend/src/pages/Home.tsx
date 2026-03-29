@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { analyzeWebsite } from '../services/api';
+import NavBar from '../components/NavBar';
 
 export default function Home() {
   const { t } = useTranslation();
@@ -13,17 +14,23 @@ export default function Home() {
 
   const handleAnalyze = async (e: React.FormEvent) => {
     e.preventDefault();
+    const trimmed = url.trim();
+    if (!trimmed) {
+      setError(t('home.errors.invalid'));
+      return;
+    }
     setLoading(true);
     setError('');
-    const normalizedUrl = url.startsWith('http://') || url.startsWith('https://') ? url : `https://${url}`;
+    const normalizedUrl = trimmed.startsWith('http://') || trimmed.startsWith('https://') ? trimmed : `https://${trimmed}`;
     try {
       const result = await analyzeWebsite(normalizedUrl);
       const domain = new URL(normalizedUrl).hostname;
       navigate(`/analysis/${domain}?checkId=${result.check_id}`);
     } catch (err: unknown) {
-      const status = (err as { response?: { status?: number } })?.response?.status;
-      if (status === 429) setError(t('home.errors.rateLimit'));
-      else if (status === 503) setError(t('home.errors.unreachable'));
+      const response = (err as { response?: { status?: number } })?.response;
+      if (!response) setError('Cannot reach the server. Please try again.');
+      else if (response.status === 429) setError(t('home.errors.rateLimit'));
+      else if (response.status === 503) setError(t('home.errors.unreachable'));
       else setError(t('home.errors.invalid'));
     } finally {
       setLoading(false);
@@ -36,21 +43,7 @@ export default function Home() {
 
   return (
     <>
-      {/* TopNavBar */}
-      <nav className="bg-[#0b0e14]/80 backdrop-blur-xl fixed top-0 w-full z-50 shadow-[0_40px_8%_rgba(236,237,246,0.08)]">
-        <div className="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
-          <div className="text-2xl font-black tracking-tighter text-[#81ecff] font-headline">AI-Score</div>
-          <div className="hidden md:flex items-center space-x-8 font-headline tracking-tight font-bold">
-            <a className="text-[#ecedf6]/70 hover:text-[#ecedf6] transition-colors" href="/how-it-works">How It Works</a>
-          </div>
-          <button
-            onClick={scrollToForm}
-            className="bg-gradient-to-r from-[#81ecff] to-[#00d4ec] text-[#003840] px-6 py-2 rounded-md font-bold transition-all duration-300 active:scale-95 hover:shadow-[0_0_20px_rgba(129,236,255,0.4)]"
-          >
-            Analyze
-          </button>
-        </div>
-      </nav>
+      <NavBar />
 
       <main className="relative">
         {/* Hero Section */}
@@ -81,7 +74,6 @@ export default function Home() {
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   disabled={loading}
-                  required
                 />
               </div>
               <button

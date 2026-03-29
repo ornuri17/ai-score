@@ -5,6 +5,7 @@ import ScoreCard from '../components/ScoreCard';
 import DimensionBreakdown from '../components/DimensionBreakdown';
 import LeadForm from '../components/LeadForm';
 import SocialShare from '../components/SocialShare';
+import NavBar from '../components/NavBar';
 import { analyzeWebsite } from '../services/api';
 import type { AnalyzeResponse } from '../services/api';
 
@@ -36,15 +37,7 @@ export default function Results() {
   if (loading) {
     return (
       <div className="flex flex-col min-h-screen">
-        {/* Fixed Nav */}
-        <nav className="fixed top-0 w-full z-50 bg-[#0b0e14]/80 backdrop-blur-xl shadow-[0_40px_8%_rgba(236,237,246,0.08)]">
-          <div className="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
-            <a href="/" className="text-2xl font-black tracking-tighter text-[#81ecff] font-headline">AI-Score</a>
-            <div className="hidden md:flex gap-8 items-center">
-              <a className="font-headline tracking-tight font-bold text-[#ecedf6]/70 hover:text-[#ecedf6] transition-colors" href="/how-it-works">How It Works</a>
-            </div>
-          </div>
-        </nav>
+        <NavBar />
 
         <main className="flex-grow pt-24 pb-12 px-6 bg-mesh relative overflow-hidden min-h-screen">
           {/* Abstract Background */}
@@ -184,21 +177,7 @@ export default function Results() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Fixed Nav */}
-      <nav className="fixed top-0 w-full z-50 bg-[#0b0e14]/80 backdrop-blur-xl shadow-[0_40px_8%_rgba(236,237,246,0.08)]">
-        <div className="max-w-7xl mx-auto flex justify-between items-center px-8 py-4">
-          <a href="/" className="text-2xl font-black tracking-tighter text-[#81ecff] font-headline">AI-Score</a>
-          <div className="hidden md:flex items-center space-x-8">
-            <a href="/how-it-works" className="font-headline tracking-tight font-bold text-[#ecedf6]/70 hover:text-[#ecedf6] transition-colors">How It Works</a>
-          </div>
-          <button
-            onClick={() => navigate('/')}
-            className="bg-gradient-to-r from-primary to-primary-dim text-on-primary-fixed px-6 py-2 rounded-xl font-bold font-headline active:scale-95 duration-200 transition-all"
-          >
-            Analyze Again
-          </button>
-        </div>
-      </nav>
+      <NavBar />
 
       <main className="pt-24 pb-16 px-6 md:px-8 max-w-7xl mx-auto">
         {/* Hero Section with Score */}

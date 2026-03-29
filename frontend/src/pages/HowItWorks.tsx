@@ -159,7 +159,7 @@ export default function HowItWorks() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-[#10131a] py-24">
+      <section id="faq" className="bg-[#10131a] py-24">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-12">
             <p className="font-label text-xs tracking-widest text-[#a68cff] uppercase mb-4">
