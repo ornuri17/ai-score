@@ -1,0 +1,2 @@
+# False positive: labelKey is an i18n translation key name, not a secret
+frontend/src/components/DimensionBreakdown.tsx:generic-api-key:18
