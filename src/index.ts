@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import serverlessExpress from '@vendia/serverless-express';
 import { config } from './config';
 import { logger } from './logger';
 import { createCacheService } from './services/cache';
@@ -31,8 +32,14 @@ app.use('/api/analyze', createAnalyzeRouter(cacheService));
 // Mount the leads route with its own (stricter) form rate limiter
 app.post('/api/leads', formRateLimiterMiddleware, createLeadsRouter());
 
-app.listen(config.port, (): void => {
-  logger.info(`AIScore API running on port ${config.port}`);
-});
+// Local dev server — not started in Lambda
+if (!process.env.AWS_LAMBDA_FUNCTION_NAME) {
+  app.listen(config.port, (): void => {
+    logger.info(`AIScore API running on port ${config.port}`);
+  });
+}
+
+// Lambda handler
+export const handler = serverlessExpress({ app });
 
 export default app;
