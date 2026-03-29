@@ -1,31 +1,19 @@
 import { useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface Props {
   score: number;
 }
 
-function getColor(score: number): string {
-  if (score >= 90) return 'text-emerald-500';
-  if (score >= 70) return 'text-green-500';
-  if (score >= 41) return 'text-amber-500';
-  return 'text-red-500';
-}
-
-function getLabel(score: number): string {
-  if (score >= 90) return 'Excellent';
-  if (score >= 70) return 'Good';
-  if (score >= 41) return 'Needs Work';
-  return 'Poor';
-}
+const CIRCUMFERENCE = 2 * Math.PI * 45; // ≈ 282.7
 
 export default function ScoreCard({ score }: Props) {
-  const { t } = useTranslation();
-  const displayRef = useRef<HTMLDivElement>(null);
+  const displayRef = useRef<HTMLSpanElement>(null);
+  const arcRef = useRef<SVGCircleElement>(null);
 
   // Animate score counting up from 0
   useEffect(() => {
     const el = displayRef.current;
+    const arc = arcRef.current;
     if (!el) return;
     const duration = 800;
     const start = performance.now();
@@ -33,23 +21,63 @@ export default function ScoreCard({ score }: Props) {
     function step(now: number) {
       const progress = Math.min((now - start) / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
-      el!.textContent = String(Math.round(eased * score));
+      const current = eased * score;
+      el!.textContent = String(Math.round(current));
+      if (arc) {
+        arc.style.strokeDashoffset = String(CIRCUMFERENCE * (1 - current / 100));
+      }
       if (progress < 1) requestAnimationFrame(step);
     }
 
     requestAnimationFrame(step);
   }, [score]);
 
-  const colorClass = getColor(score);
-
   return (
-    <div className="text-center py-12 bg-white rounded-lg shadow mb-6">
-      <div className={`text-8xl font-bold tabular-nums ${colorClass}`} ref={displayRef}>
-        0
+    <div className="relative w-64 h-64 md:w-80 md:h-80 flex items-center justify-center">
+      {/* SVG Circular Gauge */}
+      <svg className="absolute w-full h-full -rotate-90" viewBox="0 0 100 100">
+        {/* Background track */}
+        <circle
+          className="text-surface-container-high"
+          cx="50"
+          cy="50"
+          fill="none"
+          r="45"
+          stroke="currentColor"
+          strokeWidth="8"
+        />
+        {/* Score arc */}
+        <circle
+          ref={arcRef}
+          cx="50"
+          cy="50"
+          fill="none"
+          r="45"
+          stroke="url(#scoreGradient)"
+          strokeDasharray={CIRCUMFERENCE}
+          strokeDashoffset={CIRCUMFERENCE}
+          strokeLinecap="round"
+          strokeWidth="8"
+        />
+        <defs>
+          <linearGradient id="scoreGradient" x1="0%" x2="100%" y1="0%" y2="0%">
+            <stop offset="0%" stopColor="#81ecff" />
+            <stop offset="100%" stopColor="#a68cff" />
+          </linearGradient>
+        </defs>
+      </svg>
+      {/* Center content */}
+      <div className="text-center">
+        <span
+          ref={displayRef}
+          className="font-headline text-7xl md:text-8xl font-black block leading-none"
+        >
+          0
+        </span>
+        <span className="font-label text-on-surface-variant tracking-[0.2em] text-sm uppercase">
+          Neural Affinity
+        </span>
       </div>
-      <div className="text-2xl text-slate-700 mt-2">/ 100</div>
-      <div className={`text-lg font-semibold mt-2 ${colorClass}`}>{getLabel(score)}</div>
-      <div className="text-base text-slate-500 mt-1">{t('results.title')}</div>
     </div>
   );
 }

@@ -68,27 +68,30 @@ export default function LeadForm({ checkId }: Props) {
 
   if (submitted) {
     return (
-      <div className="bg-green-50 border border-green-200 text-green-800 rounded-lg p-6 mb-6">
-        <h3 className="font-bold text-lg mb-1">Got it! We'll be in touch.</h3>
-        <p className="text-sm">Check your inbox — your full report is on its way.</p>
+      <div className="bg-[#10131a] rounded-lg p-4">
+        <h3 className="font-bold text-lg mb-1 text-[#81ecff]">Got it! We'll be in touch.</h3>
+        <p className="text-sm text-[#a9abb3]">Check your inbox — your full report is on its way.</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg shadow p-6 mb-6">
-      <h3 className="text-2xl font-bold mb-1">{t('form.cta')}</h3>
-      <p className="text-slate-500 text-sm mb-4">Get a personalised AEO roadmap from our team — free.</p>
+    <div className="bg-[#1c2028] rounded-2xl p-8">
+      <div className="font-label text-xs tracking-widest text-[#a68cff] uppercase mb-2">
+        Get Your Full Report
+      </div>
+      <h3 className="font-display text-2xl font-bold text-[#ecedf6] mb-2">{t('form.cta')}</h3>
+      <p className="text-[#a9abb3] text-sm mb-6">Get a personalised AEO roadmap from our team — free.</p>
 
       <form onSubmit={handleSubmit} className="space-y-4" noValidate>
         {errors.form && (
-          <div role="alert" className="bg-red-50 border border-red-200 text-red-800 p-3 rounded text-sm">
+          <div role="alert" className="text-[#ff6c95] text-sm bg-[#ff6c95]/10 rounded-lg p-3">
             {errors.form}
           </div>
         )}
 
         <div>
-          <label htmlFor="lead-name" className="block text-slate-700 font-semibold mb-1">{t('form.name')}</label>
+          <label htmlFor="lead-name" className="block text-[#ecedf6] font-semibold mb-1">{t('form.name')}</label>
           <input
             id="lead-name"
             type="text"
@@ -96,14 +99,14 @@ export default function LeadForm({ checkId }: Props) {
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             disabled={loading}
             style={{ fontSize: '16px' }}
-            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 disabled:opacity-60"
+            className="bg-[#22262f] text-[#ecedf6] placeholder-[#a9abb3] rounded-lg px-4 py-3 w-full input-glow border-0 disabled:opacity-60 outline-none"
             placeholder={t('form.namePlaceholder')}
           />
-          {errors.name && <p role="alert" className="text-red-600 text-sm mt-1">{errors.name}</p>}
+          {errors.name && <p role="alert" className="text-[#ff6c95] text-sm mt-1">{errors.name}</p>}
         </div>
 
         <div>
-          <label htmlFor="lead-email" className="block text-slate-700 font-semibold mb-1">{t('form.email')}</label>
+          <label htmlFor="lead-email" className="block text-[#ecedf6] font-semibold mb-1">{t('form.email')}</label>
           <input
             id="lead-email"
             type="email"
@@ -111,14 +114,14 @@ export default function LeadForm({ checkId }: Props) {
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             disabled={loading}
             style={{ fontSize: '16px' }}
-            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 disabled:opacity-60"
+            className="bg-[#22262f] text-[#ecedf6] placeholder-[#a9abb3] rounded-lg px-4 py-3 w-full input-glow border-0 disabled:opacity-60 outline-none"
             placeholder={t('form.emailPlaceholder')}
           />
-          {errors.email && <p role="alert" className="text-sm mt-1 text-red-600">{errors.email}</p>}
+          {errors.email && <p role="alert" className="text-[#ff6c95] text-sm mt-1">{errors.email}</p>}
         </div>
 
         <div>
-          <label htmlFor="lead-phone" className="block text-slate-700 font-semibold mb-1">{t('form.phone')}</label>
+          <label htmlFor="lead-phone" className="block text-[#ecedf6] font-semibold mb-1">{t('form.phone')}</label>
           <input
             id="lead-phone"
             type="tel"
@@ -126,10 +129,10 @@ export default function LeadForm({ checkId }: Props) {
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
             disabled={loading}
             style={{ fontSize: '16px' }}
-            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 disabled:opacity-60"
+            className="bg-[#22262f] text-[#ecedf6] placeholder-[#a9abb3] rounded-lg px-4 py-3 w-full input-glow border-0 disabled:opacity-60 outline-none"
             placeholder="e.g. +1 555 123 4567"
           />
-          {errors.phone && <p role="alert" className="text-red-600 text-sm mt-1">{errors.phone}</p>}
+          {errors.phone && <p role="alert" className="text-[#ff6c95] text-sm mt-1">{errors.phone}</p>}
         </div>
 
         <div className="flex items-start gap-3">
@@ -138,22 +141,22 @@ export default function LeadForm({ checkId }: Props) {
             type="checkbox"
             checked={privacyAccepted}
             onChange={(e) => setPrivacyAccepted(e.target.checked)}
-            className="mt-1 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+            className="mt-1 h-4 w-4 rounded border-[#45484f] text-[#81ecff] focus:ring-[#81ecff]"
           />
-          <label htmlFor="lead-privacy" className="text-sm text-slate-600">
+          <label htmlFor="lead-privacy" className="text-sm text-[#a9abb3]">
             I agree to the{' '}
-            <a href="/privacy" target="_blank" className="text-blue-600 underline hover:text-blue-800">
+            <a href="/privacy" target="_blank" className="text-[#81ecff] underline hover:text-[#a68cff] transition-colors">
               Privacy Policy
             </a>
             . We'll use your details to send your AEO action plan.
           </label>
         </div>
-        {errors.privacy && <p role="alert" className="text-red-600 text-sm -mt-2">{errors.privacy}</p>}
+        {errors.privacy && <p role="alert" className="text-[#ff6c95] text-sm -mt-2">{errors.privacy}</p>}
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors min-h-[48px]"
+          className="gradient-primary text-[#005762] font-bold rounded-lg py-3 px-6 w-full disabled:opacity-50 transition-opacity min-h-[48px]"
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">
