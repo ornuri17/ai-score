@@ -9,6 +9,16 @@ function mockFetch(overrides: Partial<FetchResult> & { html: string }): FetchRes
     redirectCount: 0,
     responseTimeMs: 500,
     finalUrl: 'https://example.com',
+    robotsTxt: {
+      exists: false,
+      blocksAllCrawlers: false,
+      blocksAiCrawlers: false,
+      sitemapUrls: [],
+    },
+    sitemap: {
+      exists: false,
+      urlCount: 0,
+    },
     ...overrides,
   };
 }

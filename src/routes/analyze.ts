@@ -6,7 +6,7 @@
 import { Router, Request, Response } from 'express';
 import { isValidUrl, extractDomain, normalizeUrl } from '../utils/validators';
 import { sha256 } from '../utils/hasher';
-import { fetchWebsite } from '../services/crawler';
+import { fetchWebsite, fetchRobotsTxt, fetchSitemap } from '../services/crawler';
 import { scoreWebsite } from '../services/scorer';
 import * as checksRepository from '../db/checks.repository';
 import { logger } from '../logger';
@@ -85,10 +85,20 @@ export function createAnalyzeRouter(cacheService: CacheService): Router {
       }
     }
 
-    // ── 4a. Fetch ──────────────────────────────────────────────────────────────
-    let fetchResult: Awaited<ReturnType<typeof fetchWebsite>>;
+    // ── 4a. Fetch page + robots.txt + sitemap in parallel ─────────────────────
+    let fetchResult: import('../types').FetchResult;
     try {
-      fetchResult = await fetchWebsite(url);
+      const origin = (() => {
+        try { return new URL(url).origin; } catch { return url; }
+      })();
+
+      const [pageResult, robotsTxt, sitemap] = await Promise.all([
+        fetchWebsite(url),
+        fetchRobotsTxt(origin),
+        fetchSitemap(origin),
+      ]);
+
+      fetchResult = { ...pageResult, robotsTxt, sitemap };
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
 

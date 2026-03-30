@@ -126,11 +126,12 @@ function scoreCrawlability(
     issues.push('access_or_speed_issues');
   }
 
-  // Check 6: +5 has sitemap link
-  const hasSitemapLink = $('link[rel="sitemap"]').length > 0;
-  const metaRobotsAll = $('meta[name="robots"]').attr('content') ?? '';
-  const hasSitemapMention = metaRobotsAll.toLowerCase().includes('sitemap');
-  if (hasSitemapLink || hasSitemapMention) {
+  // Check 6: +5 sitemap accessible (robots.txt declares one OR /sitemap.xml exists)
+  const hasSitemap =
+    fetchResult.sitemap.exists ||
+    fetchResult.robotsTxt.sitemapUrls.length > 0 ||
+    $('link[rel="sitemap"]').length > 0;
+  if (hasSitemap) {
     score += 5;
   } else {
     issues.push('crawlability_issues');
@@ -376,6 +377,19 @@ function computePenalties(
   if (fetchResult.redirectCount > 5 || fetchResult.responseTimeMs > 10000) {
     penalty += 15;
     issues.push('access_or_speed_issues');
+  }
+
+  // -20 if AI crawlers are explicitly blocked in robots.txt
+  // (separate from generic noindex — this is specific to LLM crawlers)
+  if (fetchResult.robotsTxt.blocksAiCrawlers) {
+    penalty += 20;
+    issues.push('ai_crawlers_blocked');
+  } else if (fetchResult.robotsTxt.blocksAllCrawlers) {
+    // blocking all user-agents also blocks AI crawlers
+    if (!issues.includes('ai_crawlers_blocked')) {
+      penalty += 20;
+      issues.push('ai_crawlers_blocked');
+    }
   }
 
   return { penalty, issues };

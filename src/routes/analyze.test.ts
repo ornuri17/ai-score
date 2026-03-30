@@ -16,11 +16,13 @@ jest.mock('../services/crawler');
 jest.mock('../services/scorer');
 jest.mock('../db/checks.repository');
 
-import { fetchWebsite } from '../services/crawler';
+import { fetchWebsite, fetchRobotsTxt, fetchSitemap } from '../services/crawler';
 import { scoreWebsite } from '../services/scorer';
 import * as checksRepo from '../db/checks.repository';
 
 const mockFetchWebsite = fetchWebsite as jest.MockedFunction<typeof fetchWebsite>;
+const mockFetchRobotsTxt = fetchRobotsTxt as jest.MockedFunction<typeof fetchRobotsTxt>;
+const mockFetchSitemap = fetchSitemap as jest.MockedFunction<typeof fetchSitemap>;
 const mockScoreWebsite = scoreWebsite as jest.MockedFunction<typeof scoreWebsite>;
 const mockChecksCreate = checksRepo.create as jest.MockedFunction<typeof checksRepo.create>;
 
@@ -29,12 +31,28 @@ const mockChecksCreate = checksRepo.create as jest.MockedFunction<typeof checksR
 const FIXED_DATE = new Date('2026-01-01T00:00:00.000Z');
 const EXPIRES_DATE = new Date('2026-01-08T00:00:00.000Z');
 
-const MOCK_FETCH_RESULT: FetchResult = {
+// What fetchWebsite returns (page fields only — robots/sitemap added by route)
+const MOCK_PAGE_RESULT = {
   html: '<html><body>Hello world</body></html>',
   statusCode: 200,
   redirectCount: 0,
   responseTimeMs: 400,
   finalUrl: 'https://example.com',
+};
+
+// Full assembled FetchResult (page + robots + sitemap)
+const MOCK_FETCH_RESULT: FetchResult = {
+  ...MOCK_PAGE_RESULT,
+  robotsTxt: {
+    exists: false,
+    blocksAllCrawlers: false,
+    blocksAiCrawlers: false,
+    sitemapUrls: [],
+  },
+  sitemap: {
+    exists: false,
+    urlCount: 0,
+  },
 };
 
 const MOCK_SCORING_RESULT: ScoringResult = {
@@ -48,6 +66,7 @@ const MOCK_SCORING_RESULT: ScoringResult = {
   issues: ['structured_data_missing'],
   checkedAt: FIXED_DATE,
   expiresAt: EXPIRES_DATE,
+  summary: '',
 };
 
 const MOCK_CHECK_RECORD: Check = {
@@ -107,12 +126,20 @@ function makeCacheService(overrides?: Partial<CacheService>): CacheService {
 describe('POST /api/analyze', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    // Default mocks for robots.txt and sitemap — return empty/not-found by default
+    mockFetchRobotsTxt.mockResolvedValue({
+      exists: false,
+      blocksAllCrawlers: false,
+      blocksAiCrawlers: false,
+      sitemapUrls: [],
+    });
+    mockFetchSitemap.mockResolvedValue({ exists: false, urlCount: 0 });
   });
 
   // ── Happy path ──────────────────────────────────────────────────────────────
 
   it('returns 200 with correct response shape for a valid URL', async () => {
-    mockFetchWebsite.mockResolvedValueOnce(MOCK_FETCH_RESULT);
+    mockFetchWebsite.mockResolvedValueOnce(MOCK_PAGE_RESULT);
     mockScoreWebsite.mockReturnValueOnce(MOCK_SCORING_RESULT);
     mockChecksCreate.mockResolvedValueOnce(MOCK_CHECK_RECORD);
 
@@ -135,7 +162,10 @@ describe('POST /api/analyze', () => {
     });
 
     expect(mockFetchWebsite).toHaveBeenCalledWith('https://example.com');
-    expect(mockScoreWebsite).toHaveBeenCalledWith(MOCK_FETCH_RESULT, 'https://example.com');
+    expect(mockScoreWebsite).toHaveBeenCalledWith(
+      expect.objectContaining(MOCK_FETCH_RESULT),
+      'https://example.com',
+    );
     expect(mockChecksCreate).toHaveBeenCalledTimes(1);
     expect(cacheService.set).toHaveBeenCalledTimes(1);
   });
@@ -167,7 +197,7 @@ describe('POST /api/analyze', () => {
   // ── force_refresh bypasses cache ────────────────────────────────────────────
 
   it('bypasses cache and re-fetches when force_refresh is true', async () => {
-    mockFetchWebsite.mockResolvedValueOnce(MOCK_FETCH_RESULT);
+    mockFetchWebsite.mockResolvedValueOnce(MOCK_PAGE_RESULT);
     mockScoreWebsite.mockReturnValueOnce(MOCK_SCORING_RESULT);
     mockChecksCreate.mockResolvedValueOnce(MOCK_CHECK_RECORD);
 
@@ -289,7 +319,7 @@ describe('POST /api/analyze', () => {
   // ── DB errors ────────────────────────────────────────────────────────────────
 
   it('returns 500 when the DB throws during persist', async () => {
-    mockFetchWebsite.mockResolvedValueOnce(MOCK_FETCH_RESULT);
+    mockFetchWebsite.mockResolvedValueOnce(MOCK_PAGE_RESULT);
     mockScoreWebsite.mockReturnValueOnce(MOCK_SCORING_RESULT);
     mockChecksCreate.mockRejectedValueOnce(new Error('connection refused'));
 

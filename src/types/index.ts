@@ -23,7 +23,8 @@ export type IssueKey =
   | 'no_https'
   | 'slow_page_load'
   | 'no_internal_links'
-  | 'no_language_tag';
+  | 'no_language_tag'
+  | 'ai_crawlers_blocked';
 
 export interface ScoringResult {
   score: number;           // 0-100, final score after penalties
@@ -36,12 +37,26 @@ export interface ScoringResult {
 
 // --------------- Crawler ---------------
 
+export interface RobotsTxtData {
+  exists: boolean;
+  blocksAllCrawlers: boolean;   // User-agent: * Disallow: /
+  blocksAiCrawlers: boolean;    // GPTBot, ClaudeBot, PerplexityBot explicitly blocked
+  sitemapUrls: string[];        // Sitemap: directives found
+}
+
+export interface SitemapData {
+  exists: boolean;
+  urlCount: number;             // number of <loc> entries found (0 if not parseable)
+}
+
 export interface FetchResult {
   html: string;
   statusCode: number;
   redirectCount: number;
   responseTimeMs: number;
   finalUrl: string;
+  robotsTxt: RobotsTxtData;
+  sitemap: SitemapData;
 }
 
 // --------------- Cache ---------------
