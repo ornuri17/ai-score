@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 export default function NavBar() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const lang = e.target.value;
@@ -17,10 +17,10 @@ export default function NavBar() {
         </a>
         <div className="hidden md:flex items-center space-x-8 font-headline tracking-tight font-bold">
           <a className="text-[#ecedf6]/70 hover:text-[#ecedf6] transition-colors" href="/how-it-works">
-            How It Works
+            {t('nav.howItWorks')}
           </a>
           <a className="text-[#ecedf6]/70 hover:text-[#ecedf6] transition-colors" href="/how-it-works#faq">
-            FAQ
+            {t('nav.faq')}
           </a>
         </div>
         <select

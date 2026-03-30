@@ -28,7 +28,7 @@ export default function Home() {
       navigate(`/analysis/${domain}?checkId=${result.check_id}`);
     } catch (err: unknown) {
       const response = (err as { response?: { status?: number } })?.response;
-      if (!response) setError('Cannot reach the server. Please try again.');
+      if (!response) setError(t('home.serverError'));
       else if (response.status === 429) setError(t('home.errors.rateLimit'));
       else if (response.status === 503) setError(t('home.errors.unreachable'));
       else setError(t('home.errors.invalid'));
@@ -50,13 +50,13 @@ export default function Home() {
         <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 px-6 hero-gradient overflow-hidden">
           <div className="max-w-7xl mx-auto text-center relative z-10">
             <div className="inline-flex items-center px-4 py-1.5 mb-8 rounded-full bg-secondary-container/20 border border-secondary/20">
-              <span className="text-secondary font-label text-xs tracking-widest uppercase">The Cognitive Prism is active</span>
+              <span className="text-secondary font-label text-xs tracking-widest uppercase">{t('home.badge')}</span>
             </div>
             <h1 className="text-5xl md:text-7xl font-headline font-extrabold text-on-background tracking-tighter mb-6">
-              Is Your Website <span className="gradient-text">AI-Ready?</span>
+              {t('home.heroTitle1')} <span className="gradient-text">{t('home.heroTitle2')}</span>
             </h1>
             <p className="text-lg md:text-xl text-on-surface-variant font-body max-w-2xl mx-auto mb-12 leading-relaxed">
-              Optimize your content for Large Language Models. AI-Score analyzes your site's legibility for the crawlers that power ChatGPT, Claude, and Perplexity.
+              {t('home.description')}
             </p>
 
             {/* URL Input Form */}
@@ -69,7 +69,7 @@ export default function Home() {
                 <span className="material-symbols-outlined text-outline">language</span>
                 <input
                   className="w-full py-4 bg-transparent border-none text-on-surface focus:ring-0 placeholder:text-outline/50"
-                  placeholder="https://yourwebsite.com"
+                  placeholder={t('home.placeholder')}
                   type="text"
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
@@ -88,7 +88,7 @@ export default function Home() {
                     <span />
                   </div>
                 ) : (
-                  'Analyze Now'
+                  t('home.analyzeButton')
                 )}
               </button>
             </form>
@@ -113,8 +113,8 @@ export default function Home() {
         <section className="py-24 px-6 bg-surface-container-low">
           <div className="max-w-7xl mx-auto">
             <div className="mb-16">
-              <h2 className="text-3xl md:text-4xl font-headline font-bold mb-4">How it Works</h2>
-              <p className="text-on-surface-variant font-body">Three steps to algorithmic visibility.</p>
+              <h2 className="text-3xl md:text-4xl font-headline font-bold mb-4">{t('home.howItWorksTitle')}</h2>
+              <p className="text-on-surface-variant font-body">{t('home.howItWorksSubtitle')}</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Step 1 */}
@@ -122,27 +122,27 @@ export default function Home() {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform">
                   <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>dataset</span>
                 </div>
-                <h3 className="text-xl font-headline font-bold mb-4">Deep Crawl</h3>
-                <p className="text-on-surface-variant font-body leading-relaxed">Our engine simulates LLM crawler behavior to map your website's semantic structure and data accessibility.</p>
-                <div className="mt-6 font-label text-[10px] tracking-[0.2em] text-primary/50 uppercase">Stage 01: Ingestion</div>
+                <h3 className="text-xl font-headline font-bold mb-4">{t('home.step1Title')}</h3>
+                <p className="text-on-surface-variant font-body leading-relaxed">{t('home.step1Desc')}</p>
+                <div className="mt-6 font-label text-[10px] tracking-[0.2em] text-primary/50 uppercase">{t('home.step1Stage')}</div>
               </div>
               {/* Step 2 */}
               <div className="group bg-surface-container-high p-8 rounded-xl border border-outline-variant/15 hover:bg-surface-container-highest transition-all duration-300 md:translate-y-6">
                 <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-6 text-secondary group-hover:scale-110 transition-transform">
                   <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>psychology</span>
                 </div>
-                <h3 className="text-xl font-headline font-bold mb-4">Semantic Scoring</h3>
-                <p className="text-on-surface-variant font-body leading-relaxed">We evaluate your content based on clarity, context, and structural markers that AI models use to summarize information.</p>
-                <div className="mt-6 font-label text-[10px] tracking-[0.2em] text-secondary/50 uppercase">Stage 02: Synthesis</div>
+                <h3 className="text-xl font-headline font-bold mb-4">{t('home.step2Title')}</h3>
+                <p className="text-on-surface-variant font-body leading-relaxed">{t('home.step2Desc')}</p>
+                <div className="mt-6 font-label text-[10px] tracking-[0.2em] text-secondary/50 uppercase">{t('home.step2Stage')}</div>
               </div>
               {/* Step 3 */}
               <div className="group bg-surface-container-high p-8 rounded-xl border border-outline-variant/15 hover:bg-surface-container-highest transition-all duration-300">
                 <div className="w-12 h-12 bg-tertiary/10 rounded-lg flex items-center justify-center mb-6 text-tertiary group-hover:scale-110 transition-transform">
                   <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>bolt</span>
                 </div>
-                <h3 className="text-xl font-headline font-bold mb-4">Actionable Fixes</h3>
-                <p className="text-on-surface-variant font-body leading-relaxed">Get specific code and content tweaks that instantly improve how your site is cited and described by AI assistants.</p>
-                <div className="mt-6 font-label text-[10px] tracking-[0.2em] text-tertiary/50 uppercase">Stage 03: Output</div>
+                <h3 className="text-xl font-headline font-bold mb-4">{t('home.step3Title')}</h3>
+                <p className="text-on-surface-variant font-body leading-relaxed">{t('home.step3Desc')}</p>
+                <div className="mt-6 font-label text-[10px] tracking-[0.2em] text-tertiary/50 uppercase">{t('home.step3Stage')}</div>
               </div>
             </div>
           </div>
@@ -152,27 +152,27 @@ export default function Home() {
         <section className="py-24 px-6 relative overflow-hidden">
           <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-4xl md:text-5xl font-headline font-extrabold mb-8 tracking-tight">Why <span className="text-primary italic">AI SEO</span> is the new standard</h2>
+              <h2 className="text-4xl md:text-5xl font-headline font-extrabold mb-8 tracking-tight">{t('home.whyTitle1')} <span className="text-primary italic">{t('home.whyHighlight')}</span> {t('home.whyTitle2')}</h2>
               <div className="space-y-12">
                 <div className="flex gap-6">
                   <div className="flex-shrink-0 w-8 h-8 rounded-full border border-primary/30 flex items-center justify-center text-primary font-label">01</div>
                   <div>
-                    <h4 className="text-xl font-bold font-headline mb-2">Better AI Summaries</h4>
-                    <p className="text-on-surface-variant font-body leading-relaxed">When ChatGPT summarizes your business, you want it to be accurate. We ensure your core value props are impossible to miss.</p>
+                    <h4 className="text-xl font-bold font-headline mb-2">{t('home.benefit1Title')}</h4>
+                    <p className="text-on-surface-variant font-body leading-relaxed">{t('home.benefit1Desc')}</p>
                   </div>
                 </div>
                 <div className="flex gap-6">
                   <div className="flex-shrink-0 w-8 h-8 rounded-full border border-secondary/30 flex items-center justify-center text-secondary font-label">02</div>
                   <div>
-                    <h4 className="text-xl font-bold font-headline mb-2">Visibility in AI Search</h4>
-                    <p className="text-on-surface-variant font-body leading-relaxed">Perplexity and SearchGPT rely on structured context. AI-Score gives you the technical edge to appear in their citations.</p>
+                    <h4 className="text-xl font-bold font-headline mb-2">{t('home.benefit2Title')}</h4>
+                    <p className="text-on-surface-variant font-body leading-relaxed">{t('home.benefit2Desc')}</p>
                   </div>
                 </div>
                 <div className="flex gap-6">
                   <div className="flex-shrink-0 w-8 h-8 rounded-full border border-tertiary/30 flex items-center justify-center text-tertiary font-label">03</div>
                   <div>
-                    <h4 className="text-xl font-bold font-headline mb-2">Future-Proof Traffic</h4>
-                    <p className="text-on-surface-variant font-body leading-relaxed">Traditional SEO is dying. Optimize for the "Neural Layer" where the next generation of users is discovering brands.</p>
+                    <h4 className="text-xl font-bold font-headline mb-2">{t('home.benefit3Title')}</h4>
+                    <p className="text-on-surface-variant font-body leading-relaxed">{t('home.benefit3Desc')}</p>
                   </div>
                 </div>
               </div>
@@ -184,7 +184,7 @@ export default function Home() {
                 <div className="p-4 bg-surface-container-highest/80 backdrop-blur-md rounded-lg border-l-4 border-primary shadow-lg">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="material-symbols-outlined text-primary text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
-                    <span className="font-label text-[10px] text-primary uppercase tracking-widest">Live Analysis</span>
+                    <span className="font-label text-[10px] text-primary uppercase tracking-widest">{t('home.mockLabel1')}</span>
                   </div>
                   <div className="h-2 w-3/4 bg-primary/20 rounded mb-2"></div>
                   <div className="h-2 w-1/2 bg-primary/20 rounded"></div>
@@ -192,7 +192,7 @@ export default function Home() {
                 <div className="p-4 bg-surface-container-highest/80 backdrop-blur-md rounded-lg border-l-4 border-secondary shadow-lg ml-8">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="material-symbols-outlined text-secondary text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>insights</span>
-                    <span className="font-label text-[10px] text-secondary uppercase tracking-widest">Semantic Map</span>
+                    <span className="font-label text-[10px] text-secondary uppercase tracking-widest">{t('home.mockLabel2')}</span>
                   </div>
                   <div className="h-2 w-5/6 bg-secondary/20 rounded mb-2"></div>
                   <div className="h-2 w-2/3 bg-secondary/20 rounded"></div>
@@ -200,9 +200,9 @@ export default function Home() {
                 <div className="p-4 bg-surface-container-highest/80 backdrop-blur-md rounded-lg border-l-4 border-tertiary shadow-lg">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="material-symbols-outlined text-tertiary text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>auto_awesome</span>
-                    <span className="font-label text-[10px] text-tertiary uppercase tracking-widest">Optimization Complete</span>
+                    <span className="font-label text-[10px] text-tertiary uppercase tracking-widest">{t('home.mockLabel3')}</span>
                   </div>
-                  <div className="text-2xl font-headline font-black text-on-surface tracking-tighter">Score: 94/100</div>
+                  <div className="text-2xl font-headline font-black text-on-surface tracking-tighter">{t('home.mockScore')}</div>
                 </div>
               </div>
             </div>
@@ -212,19 +212,19 @@ export default function Home() {
         {/* Final CTA */}
         <section className="py-24 px-6 bg-surface-dim border-y border-outline-variant/10">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-headline font-bold mb-8">Ready to enter the <span className="text-secondary">Cognitive Prism?</span></h2>
+            <h2 className="text-4xl md:text-5xl font-headline font-bold mb-8">{t('home.ctaTitle1')} <span className="text-secondary">{t('home.ctaHighlight')}</span></h2>
             <div className="flex flex-col md:flex-row gap-4 justify-center">
               <button
                 onClick={scrollToForm}
                 className="bg-gradient-to-r from-primary to-primary-dim text-on-primary-fixed px-12 py-5 rounded-lg font-headline font-bold text-xl active:scale-95 transition-all shadow-xl shadow-primary/10"
               >
-                Start Free Audit
+                {t('home.ctaStart')}
               </button>
               <a
                 href="/how-it-works"
                 className="bg-surface-container-highest text-on-surface px-12 py-5 rounded-lg font-headline font-bold text-xl active:scale-95 transition-all border border-outline-variant/30 hover:bg-surface-bright inline-flex items-center justify-center"
               >
-                Learn More
+                {t('home.ctaLearnMore')}
               </a>
             </div>
           </div>
@@ -235,11 +235,11 @@ export default function Home() {
       <footer className="bg-[#0b0e14] w-full py-12 border-t border-[#45484f]/15">
         <div className="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-lg font-bold text-[#81ecff] font-headline">AI-Score</div>
-          <div className="font-body text-sm text-[#ecedf6]/60">© 2025 AIScore. Built for the Cognitive Prism.</div>
+          <div className="font-body text-sm text-[#ecedf6]/60">© 2025 AIScore. {t('home.footerTagline')}</div>
           <div className="flex gap-6">
-            <a className="text-[#ecedf6]/50 hover:text-[#a68cff] transition-colors font-body text-sm" href="/privacy">Privacy</a>
-            <a className="text-[#ecedf6]/50 hover:text-[#a68cff] transition-colors font-body text-sm" href="/terms">Terms</a>
-            <a className="text-[#ecedf6]/50 hover:text-[#a68cff] transition-colors font-body text-sm" href="/how-it-works">How It Works</a>
+            <a className="text-[#ecedf6]/50 hover:text-[#a68cff] transition-colors font-body text-sm" href="/privacy">{t('howItWorks.privacy')}</a>
+            <a className="text-[#ecedf6]/50 hover:text-[#a68cff] transition-colors font-body text-sm" href="/terms">{t('howItWorks.terms')}</a>
+            <a className="text-[#ecedf6]/50 hover:text-[#a68cff] transition-colors font-body text-sm" href="/how-it-works">{t('nav.howItWorks')}</a>
           </div>
         </div>
       </footer>

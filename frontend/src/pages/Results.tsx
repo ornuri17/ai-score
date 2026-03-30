@@ -64,7 +64,7 @@ export default function Results() {
                   >
                     psychology
                   </span>
-                  <div className="font-label text-[10px] tracking-[0.2em] uppercase text-on-surface-variant mt-2">Active Node</div>
+                  <div className="font-label text-[10px] tracking-[0.2em] uppercase text-on-surface-variant mt-2">{t('results.activeNode')}</div>
                 </div>
                 {/* Scan Line */}
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent blur-[2px] opacity-50 animate-bounce"></div>
@@ -75,10 +75,10 @@ export default function Results() {
             <div className="w-full max-w-2xl text-center space-y-8">
               <div>
                 <h1 className="font-headline text-3xl md:text-4xl font-extrabold tracking-tight mb-3">
-                  Analyzing {domain}
+                  {t('results.loadingTitle')} {domain}
                 </h1>
                 <p className="font-body text-on-surface-variant max-w-lg mx-auto leading-relaxed">
-                  Decrypting metadata architecture and semantic hierarchies for LLM compatibility.
+                  {t('results.loadingDesc')}
                 </p>
               </div>
 
@@ -88,8 +88,8 @@ export default function Results() {
                 <div className="md:col-span-2 bg-surface-container-low p-6 rounded-xl border border-outline-variant/10 shadow-xl">
                   <div className="flex justify-between items-end mb-4">
                     <div className="space-y-1">
-                      <span className="font-label text-xs text-primary font-bold tracking-widest">SYSTEM STATUS</span>
-                      <div className="text-lg font-headline font-bold">Comprehensive Scan</div>
+                      <span className="font-label text-xs text-primary font-bold tracking-widest">{t('results.systemStatus').toUpperCase()}</span>
+                      <div className="text-lg font-headline font-bold">{t('results.comprehensiveScan')}</div>
                     </div>
                   </div>
                   {/* Animated progress bar */}
@@ -107,7 +107,7 @@ export default function Results() {
                       >
                         check_circle
                       </span>
-                      <span className="font-body text-on-surface">Scanning robots.txt...</span>
+                      <span className="font-body text-on-surface">{t('results.scanRobots')}</span>
                     </div>
                     <div className="flex items-center gap-3 text-sm">
                       <span
@@ -116,7 +116,7 @@ export default function Results() {
                       >
                         check_circle
                       </span>
-                      <span className="font-body text-on-surface">Analyzing JSON-LD structure...</span>
+                      <span className="font-body text-on-surface">{t('results.analyzeJsonLd')}</span>
                     </div>
                     <div className="flex items-center gap-3 text-sm">
                       <span
@@ -125,18 +125,18 @@ export default function Results() {
                       >
                         radio_button_checked
                       </span>
-                      <span className="font-body text-on-surface">Evaluating semantic HTML...</span>
+                      <span className="font-body text-on-surface">{t('results.evaluateHtml')}</span>
                     </div>
                   </div>
                 </div>
                 {/* Metrics Sidebar */}
                 <div className="flex flex-col gap-4">
                   <div className="bg-surface-container p-5 rounded-xl border border-outline-variant/10">
-                    <div className="font-label text-[10px] text-on-surface-variant tracking-widest uppercase mb-1">Compute Load</div>
-                    <div className="text-xl font-headline font-bold text-secondary">Optimal</div>
+                    <div className="font-label text-[10px] text-on-surface-variant tracking-widest uppercase mb-1">{t('results.computeLoad')}</div>
+                    <div className="text-xl font-headline font-bold text-secondary">{t('results.computeLoadValue')}</div>
                   </div>
                   <div className="bg-surface-container p-5 rounded-xl border border-outline-variant/10 flex-grow">
-                    <div className="font-label text-[10px] text-on-surface-variant tracking-widest uppercase mb-1">Current URL</div>
+                    <div className="font-label text-[10px] text-on-surface-variant tracking-widest uppercase mb-1">{t('results.currentUrl')}</div>
                     <div className="text-sm font-label truncate text-on-surface/80">{domain}</div>
                   </div>
                 </div>
@@ -150,7 +150,7 @@ export default function Results() {
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></div>
-                  <span>REALTIME STREAM</span>
+                  <span>{t('results.realtimeStream')}</span>
                 </div>
               </div>
             </div>
@@ -184,10 +184,10 @@ export default function Results() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16 items-center">
           <div className="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left">
             <h1 className="font-headline text-5xl md:text-7xl font-extrabold tracking-tighter mb-4">
-              Analysis <span className="gradient-text">Complete.</span>
+              {t('results.analysisTitle1')} <span className="gradient-text">{t('results.analysisTitle2')}</span>
             </h1>
             <p className="text-on-surface-variant text-lg max-w-md mb-8">
-              Your cognitive prism scan is finished for {domain}. Review your scores and take action.
+              {t('results.analysisCompleteDesc', { domain })}
             </p>
             <div className="flex gap-4">
               <div className="flex items-center gap-2 px-4 py-2 bg-secondary-container/20 rounded-full border border-secondary/20">
@@ -197,11 +197,11 @@ export default function Results() {
                 >
                   bolt
                 </span>
-                <span className="font-label text-xs uppercase tracking-widest text-secondary font-bold">Analysis Complete</span>
+                <span className="font-label text-xs uppercase tracking-widest text-secondary font-bold">{t('results.analysisCompleteLabel')}</span>
               </div>
             </div>
             <div className="mt-4 text-sm text-on-surface-variant font-body">
-              Last analyzed: {new Date(result.checked_at).toLocaleString()}
+              {t('results.lastAnalyzed')}: {new Date(result.checked_at).toLocaleString()}
             </div>
           </div>
           <div className="lg:col-span-7 flex justify-center">
@@ -217,7 +217,7 @@ export default function Results() {
         {/* Issues section */}
         {result.issues.length > 0 && (
           <div className="mb-16 bg-surface-container-low rounded-xl border border-outline-variant/15 p-8">
-            <span className="font-label text-[10px] tracking-widest uppercase text-on-surface-variant">Issues Detected</span>
+            <span className="font-label text-[10px] tracking-widest uppercase text-on-surface-variant">{t('results.issuesDetected').toUpperCase()}</span>
             <h3 className="font-headline text-2xl font-bold mt-2 mb-6">{t('results.issues')}</h3>
             <ul className="space-y-3">
               {result.issues.map((issue) => (
