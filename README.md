@@ -180,6 +180,40 @@ Captures a lead after a user views their score.
 
 ---
 
+### `GET /api/history/:domain`
+
+Returns historical score checks for a domain (up to 30), ordered oldest → newest.
+
+**Example**
+```
+GET /api/history/example.com
+```
+
+**Response**
+```json
+{
+  "domain": "example.com",
+  "history": [
+    {
+      "check_id": "uuid",
+      "score": 62,
+      "dimensions": { "crawlability": 20, "content": 24, "technical": 13, "quality": 5 },
+      "checked_at": "2026-03-01T10:00:00.000Z"
+    },
+    {
+      "check_id": "uuid",
+      "score": 74,
+      "dimensions": { "crawlability": 25, "content": 27, "technical": 15, "quality": 7 },
+      "checked_at": "2026-03-29T12:00:00.000Z"
+    }
+  ]
+}
+```
+
+History is only available for domains that have been scanned more than once. Data is retained for 12 months.
+
+---
+
 ## Scoring Algorithm
 
 Each check is binary — full points or zero.
@@ -263,6 +297,7 @@ Translation files: `frontend/src/locales/{lang}/translation.json`
 | `scorer.ts` | 4-dimension binary scoring engine; extracts site summary |
 | `cache.ts` | Redis-backed result cache with 7-day TTL; falls back to DB on miss |
 | `middleware/rateLimiter.ts` | IP-based (50/day) and domain-based (100/day) rate limiting via Redis |
+| `routes/history.ts` | `GET /api/history/:domain` — returns up to 30 past checks for a domain |
 
 ---
 

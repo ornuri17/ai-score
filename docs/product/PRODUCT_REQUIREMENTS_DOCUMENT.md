@@ -702,6 +702,7 @@ Sitemap: https://aiscore.co/sitemap.xml
 - High-level issue categories
 - Lead capture form
 - All 6 languages shipped: EN, FR, DE, ES, HE (with RTL), RU
+- Historical score tracking — SVG sparkline, 12-month data retention, GET /api/history/:domain
 - Rate limiting (IP-based, 50/day)
 - Deployed to staging environment
 
@@ -721,7 +722,7 @@ Sitemap: https://aiscore.co/sitemap.xml
 - Authenticated users, API access
 - Detailed reports (PDF export)
 - Bulk analysis (upload URL list)
-- Historical tracking (track score over time)
+- ~~Historical tracking~~ — shipped in Phase 1
 - JavaScript rendering (analyze dynamic sites)
 - Custom recommendations (premium content)
 

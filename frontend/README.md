@@ -48,6 +48,7 @@ VITE_API_URL=http://localhost:3000
 | `DimensionBreakdown` | 4-column bento grid — crawlability, content, technical, quality |
 | `LeadForm` | Lead capture form with phone validation and i18n |
 | `SocialShare` | Twitter/LinkedIn share buttons |
+| `ScoreHistory` | SVG sparkline chart of score over time — shown on Results page when ≥ 2 scans exist |
 
 ## Design System — Neural Overlay
 

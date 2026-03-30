@@ -36,6 +36,8 @@ Phase 1 is complete and deployed. Summary of what was built:
 - ✅ Rate limiting (IP: 50/day, domain: 100/day)
 - ✅ PostgreSQL persistence via Prisma
 - ✅ CI/CD (GitHub Actions: lint → type-check → test)
+- ✅ Historical score tracking — GET /api/history/:domain, 12-month retention, urlHash no longer unique
+- ✅ ScoreHistory SVG sparkline on Results page (shown when ≥ 2 scans exist)
 
 ### Frontend
 - ✅ Neural Overlay design system (dark, glassmorphism, Material Symbols)
@@ -58,7 +60,7 @@ Phase 1 is complete and deployed. Summary of what was built:
 ### What remains for Phase 2
 - JavaScript rendering (headless browser for SPAs)
 - Multi-page crawling or sitemap-guided page sampling
-- Historical score tracking
+- ~~Historical score tracking~~ — shipped in Phase 1
 - PDF export
 - Premium tier
 

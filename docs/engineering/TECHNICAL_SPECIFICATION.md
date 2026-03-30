@@ -801,6 +801,54 @@ Language detection: `localStorage.language` → `navigator.language` → `en`
 
 ---
 
+## 12. Historical Score Tracking
+
+### Data Model
+The `Check` table stores every scan permanently (up to 12 months). The `urlHash` column is no longer unique — multiple rows per URL are allowed, each representing a point-in-time score.
+
+**Retention**: Records are deleted after 12 months (`checkedAt < now() - 365 days`). The `expiresAt` field is used only for cache staleness checks, not deletion.
+
+**Migration**: `20260329160000_add_score_history` — drops `Check_urlHash_key` unique index, creates regular `Check_urlHash_idx`.
+
+### API Endpoint
+
+```
+GET /api/history/:domain
+```
+
+Returns up to 30 checks for the domain, ordered `checkedAt ASC`. No rate limiting applied (read-only, cheap DB query).
+
+Response shape:
+```typescript
+interface HistoryResponse {
+  domain: string;
+  history: HistoryPoint[];
+}
+
+interface HistoryPoint {
+  check_id: string;
+  score: number;
+  dimensions: ScoreDimensions;
+  checked_at: string; // ISO 8601
+}
+```
+
+### Frontend Component
+
+`ScoreHistory` is a self-contained SVG sparkline component:
+- Renders `null` silently when history has fewer than 2 points
+- SVG dimensions: 600×120px (responsive via `viewBox`)
+- Grid lines at 25, 50, 75
+- Gradient fill (`#81ecff` at 20% → 0%) below the score line
+- Data point circles on every check
+- Date labels on first and last points
+- Summary row: total scans, best score, first scan date
+- Fetched non-blocking after analysis resolves; errors are swallowed (history is best-effort)
+
+Placed on Results page between `DimensionBreakdown` and the site summary card.
+
+---
+
 **Document Version**: 1.2
 **Last Updated**: 2026-03-29
 **Prepared For**: Staff Engineer → Implementation Planning
