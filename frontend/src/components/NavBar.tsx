@@ -1,7 +1,13 @@
 import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
 
 export default function NavBar() {
   const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    const lang = i18n.language.split('-')[0];
+    document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
+  }, [i18n.language]);
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const lang = e.target.value;
@@ -30,6 +36,10 @@ export default function NavBar() {
         >
           <option value="en">English</option>
           <option value="fr">Français</option>
+          <option value="de">Deutsch</option>
+          <option value="es">Español</option>
+          <option value="he">עברית</option>
+          <option value="ru">Русский</option>
         </select>
       </div>
     </nav>
