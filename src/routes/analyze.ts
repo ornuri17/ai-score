@@ -73,6 +73,7 @@ export function createAnalyzeRouter(cacheService: CacheService): Router {
             checked_at: new Date(cached.cachedAt).toISOString(),
             expires_at: new Date(cached.expiresAt).toISOString(),
             cache_hit: `Previously analyzed ${ageLabel}`,
+            summary: cached.summary,
           };
 
           res.status(200).json(responseBody);
@@ -162,6 +163,7 @@ export function createAnalyzeRouter(cacheService: CacheService): Router {
       cachedAt: scoringResult.checkedAt,
       expiresAt: scoringResult.expiresAt,
       domain,
+      summary: scoringResult.summary,
     };
 
     try {
@@ -180,6 +182,7 @@ export function createAnalyzeRouter(cacheService: CacheService): Router {
       cached: false,
       checked_at: scoringResult.checkedAt.toISOString(),
       expires_at: scoringResult.expiresAt.toISOString(),
+      summary: scoringResult.summary,
     };
 
     res.status(200).json(responseBody);

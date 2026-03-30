@@ -1,6 +1,13 @@
 {
-  "header": { "title": "AIScore", "language": "Idioma" },
-  "nav": { "home": "Inicio", "howItWorks": "Cómo funciona", "faq": "FAQ" },
+  "header": {
+    "title": "AIScore",
+    "language": "Idioma"
+  },
+  "nav": {
+    "home": "Inicio",
+    "howItWorks": "Cómo funciona",
+    "faq": "FAQ"
+  },
   "home": {
     "title": "¿Qué tan amigable con la IA es tu sitio?",
     "subtitle": "Obtén una puntuación gratuita de amigabilidad con IA e identifica las barreras que impiden a los LLMs descubrir tu contenido.",
@@ -79,7 +86,8 @@
     "analysisCompleteDesc": "Tu escaneo del prisma cognitivo para {{domain}} ha finalizado. Revisa tus puntuaciones y toma acción.",
     "analysisCompleteLabel": "Análisis completo",
     "neuralAffinity": "Afinidad Neural",
-    "issuesDetected": "Problemas detectados"
+    "issuesDetected": "Problemas detectados",
+    "aboutSite": "De qué trata este sitio"
   },
   "howItWorks": {
     "badge": "EL PROCESO",

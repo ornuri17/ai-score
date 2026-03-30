@@ -16,6 +16,7 @@ export interface AnalyzeResponse {
   checked_at: string;
   cached_until: string;
   fallback_until: string;
+  summary?: string;
 }
 
 export interface LeadSubmission {

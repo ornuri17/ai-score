@@ -22,6 +22,36 @@ function getBodyText($: cheerio.CheerioAPI): string {
   return $('body').text().replace(/\s+/g, ' ').trim();
 }
 
+// --------------- Helper: extract site summary ---------------
+
+function extractSummary($: cheerio.CheerioAPI, bodyText: string): string {
+  // Priority 1: meta description (most reliable, written for humans)
+  const metaDesc = $('meta[name="description"]').attr('content')?.trim() ?? '';
+  if (metaDesc.length >= 40) return metaDesc;
+
+  // Priority 2: OG description
+  const ogDesc = $('meta[property="og:description"]').attr('content')?.trim() ?? '';
+  if (ogDesc.length >= 40) return ogDesc;
+
+  // Priority 3: first meaningful <p> on the page
+  let firstPara = '';
+  $('p').each((_i, el) => {
+    if (firstPara) return;
+    const text = $(el).text().replace(/\s+/g, ' ').trim();
+    if (text.length >= 80) {
+      firstPara = text.length > 300 ? text.slice(0, 297) + '...' : text;
+    }
+  });
+  if (firstPara) return firstPara;
+
+  // Priority 4: first 250 chars of body text
+  if (bodyText.length >= 40) {
+    return bodyText.length > 250 ? bodyText.slice(0, 247) + '...' : bodyText;
+  }
+
+  return '';
+}
+
 // --------------- Crawlability checks (max 30 pts) ---------------
 
 interface CrawlabilityResult {
@@ -404,6 +434,7 @@ export function scoreWebsite(
     issues,
     checkedAt: new Date(),
     expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    summary: extractSummary($fresh, bodyText),
   };
 
   logger.info('Scoring complete', {

@@ -86,7 +86,8 @@
     "analysisCompleteDesc": "Your cognitive prism scan is finished for {{domain}}. Review your scores and take action.",
     "analysisCompleteLabel": "Analysis Complete",
     "neuralAffinity": "Neural Affinity",
-    "issuesDetected": "Issues Detected"
+    "issuesDetected": "Issues Detected",
+    "aboutSite": "What This Site Is About"
   },
   "form": {
     "cta": "Get Your AEO Action Plan",

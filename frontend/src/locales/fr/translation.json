@@ -86,7 +86,8 @@
     "analysisCompleteDesc": "Votre analyse du prisme cognitif est terminée pour {{domain}}. Consultez vos scores et agissez.",
     "analysisCompleteLabel": "Analyse terminée",
     "neuralAffinity": "Affinité Neurale",
-    "issuesDetected": "Problèmes détectés"
+    "issuesDetected": "Problèmes détectés",
+    "aboutSite": "Ce que fait ce site"
   },
   "form": {
     "cta": "Obtenez votre plan d'action AEO",

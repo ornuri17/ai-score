@@ -214,6 +214,18 @@ export default function Results() {
           <DimensionBreakdown dimensions={result.dimensions} />
         </div>
 
+        {/* Site summary */}
+        {result.summary && (
+          <div className="mb-16 bg-surface-container-low rounded-xl border border-outline-variant/15 p-8">
+            <span className="font-label text-[10px] tracking-widest uppercase text-on-surface-variant">
+              {t('results.aboutSite')}
+            </span>
+            <p className="mt-3 text-on-surface font-body leading-relaxed">
+              {result.summary}
+            </p>
+          </div>
+        )}
+
         {/* Issues section */}
         {result.issues.length > 0 && (
           <div className="mb-16 bg-surface-container-low rounded-xl border border-outline-variant/15 p-8">

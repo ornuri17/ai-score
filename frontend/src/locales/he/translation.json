@@ -1,6 +1,13 @@
 {
-  "header": { "title": "AIScore", "language": "שפה" },
-  "nav": { "home": "בית", "howItWorks": "איך זה עובד", "faq": "שאלות נפוצות" },
+  "header": {
+    "title": "AIScore",
+    "language": "שפה"
+  },
+  "nav": {
+    "home": "בית",
+    "howItWorks": "איך זה עובד",
+    "faq": "שאלות נפוצות"
+  },
   "home": {
     "title": "כמה האתר שלך מוכן ל-AI?",
     "subtitle": "קבל ציון חינם וגלה מה מונע מ-AI למצוא את האתר שלך.",
@@ -79,7 +86,8 @@
     "analysisCompleteDesc": "סיימנו לבדוק את {{domain}}. הנה מה שמצאנו.",
     "analysisCompleteLabel": "הבדיקה הסתיימה",
     "neuralAffinity": "ציון AI",
-    "issuesDetected": "בעיות שמצאנו"
+    "issuesDetected": "בעיות שמצאנו",
+    "aboutSite": "על מה האתר הזה"
   },
   "howItWorks": {
     "badge": "התהליך",

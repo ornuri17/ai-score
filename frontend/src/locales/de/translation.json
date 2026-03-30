@@ -1,6 +1,13 @@
 {
-  "header": { "title": "AIScore", "language": "Sprache" },
-  "nav": { "home": "Startseite", "howItWorks": "So funktioniert's", "faq": "FAQ" },
+  "header": {
+    "title": "AIScore",
+    "language": "Sprache"
+  },
+  "nav": {
+    "home": "Startseite",
+    "howItWorks": "So funktioniert's",
+    "faq": "FAQ"
+  },
   "home": {
     "title": "Wie KI-freundlich ist Ihre Website?",
     "subtitle": "Erhalten Sie eine kostenlose KI-Freundlichkeitsbewertung und identifizieren Sie Hindernisse, die LLMs daran hindern, Ihre Inhalte zu entdecken.",
@@ -79,7 +86,8 @@
     "analysisCompleteDesc": "Ihr Kognitives-Prisma-Scan für {{domain}} ist abgeschlossen. Überprüfen Sie Ihre Scores und handeln Sie.",
     "analysisCompleteLabel": "Analyse abgeschlossen",
     "neuralAffinity": "Neuronale Affinität",
-    "issuesDetected": "Probleme erkannt"
+    "issuesDetected": "Probleme erkannt",
+    "aboutSite": "Worum es auf dieser Seite geht"
   },
   "howItWorks": {
     "badge": "DER PROZESS",

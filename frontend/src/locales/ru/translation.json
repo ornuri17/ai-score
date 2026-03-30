@@ -1,6 +1,13 @@
 {
-  "header": { "title": "AIScore", "language": "Язык" },
-  "nav": { "home": "Главная", "howItWorks": "Как это работает", "faq": "FAQ" },
+  "header": {
+    "title": "AIScore",
+    "language": "Язык"
+  },
+  "nav": {
+    "home": "Главная",
+    "howItWorks": "Как это работает",
+    "faq": "FAQ"
+  },
   "home": {
     "title": "Насколько ваш сайт дружелюбен к ИИ?",
     "subtitle": "Получите бесплатную оценку дружелюбности к ИИ и определите барьеры, мешающие LLM обнаруживать ваш контент.",
@@ -79,7 +86,8 @@
     "analysisCompleteDesc": "Сканирование когнитивной призмы для {{domain}} завершено. Просмотрите оценки и примите меры.",
     "analysisCompleteLabel": "Анализ завершён",
     "neuralAffinity": "Нейронное сродство",
-    "issuesDetected": "Обнаруженные проблемы"
+    "issuesDetected": "Обнаруженные проблемы",
+    "aboutSite": "О чём этот сайт"
   },
   "howItWorks": {
     "badge": "ПРОЦЕСС",

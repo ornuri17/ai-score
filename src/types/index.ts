@@ -31,6 +31,7 @@ export interface ScoringResult {
   issues: IssueKey[];
   checkedAt: Date;
   expiresAt: Date;
+  summary: string;         // Short paragraph describing what the site is about
 }
 
 // --------------- Crawler ---------------
@@ -53,6 +54,7 @@ export interface CachedCheck {
   cachedAt: Date;
   expiresAt: Date;
   domain: string;
+  summary?: string;
 }
 
 // --------------- API ---------------
@@ -70,6 +72,7 @@ export interface AnalyzeResponse {
   cached: boolean;
   checked_at: string;    // ISO 8601
   expires_at: string;    // ISO 8601
+  summary?: string;
 }
 
 export interface ErrorResponse {
