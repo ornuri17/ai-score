@@ -20,6 +20,50 @@
 
 ---
 
+## Current Status (as of 2026-03-29)
+
+Phase 1 is complete and deployed. Summary of what was built:
+
+### Backend
+- ✅ `/api/analyze` — scoring endpoint with 4-dimension algorithm
+- ✅ `/api/leads` — lead capture
+- ✅ Crawler fetches page + `robots.txt` + `sitemap.xml` in parallel
+- ✅ robots.txt parsed for AI bot blocking (GPTBot, ClaudeBot, PerplexityBot)
+- ✅ Real sitemap check (not just HTML link heuristic)
+- ✅ -20 penalty for AI crawler blocking (`ai_crawlers_blocked` issue key)
+- ✅ Website summary extraction from meta/og/body (no AI call)
+- ✅ Redis cache with 7-day TTL
+- ✅ Rate limiting (IP: 50/day, domain: 100/day)
+- ✅ PostgreSQL persistence via Prisma
+- ✅ CI/CD (GitHub Actions: lint → type-check → test)
+
+### Frontend
+- ✅ Neural Overlay design system (dark, glassmorphism, Material Symbols)
+- ✅ Landing page with hero, how-it-works bento grid, CTA
+- ✅ Analysis-in-progress page (neural orb animation, progress grid)
+- ✅ Results page (SVG circular gauge, dimension bento grid, site summary card, issues)
+- ✅ How It Works page with FAQ (anchored at `/how-it-works#faq`)
+- ✅ Privacy + Terms pages
+- ✅ Shared NavBar (consistent across all pages, language selector everywhere)
+- ✅ 6 languages: EN, FR, DE, ES, HE, RU (all in Phase 1)
+- ✅ RTL support for Hebrew
+- ✅ URL input auto-prefixes `https://` if missing
+- ✅ Social sharing (Twitter/LinkedIn)
+- ✅ Lead capture form with phone validation
+
+### Infrastructure
+- ✅ Terraform — AWS VPC, RDS, ElastiCache, Lambda, API Gateway, CloudFront
+- ✅ Deployed to staging
+
+### What remains for Phase 2
+- JavaScript rendering (headless browser for SPAs)
+- Multi-page crawling or sitemap-guided page sampling
+- Historical score tracking
+- PDF export
+- Premium tier
+
+---
+
 ## Week 1: Backend Setup + Scoring Algorithm
 
 ### Objectives
@@ -72,6 +116,9 @@
   - [ ] noindex/robots blocked = -30
   - [ ] auth/unreachable = -25
   - [ ] redirects/timeout = -15
+- ✅ robots.txt fetched per-check; GPTBot/ClaudeBot/PerplexityBot blocking detected (-20 penalty)
+- ✅ sitemap.xml fetched and validated (replaces HTML <link> heuristic)
+- ✅ ai_crawlers_blocked issue key added
 - [ ] Issues array populated (high-level categories, not prescriptive)
 - [ ] Unit tests written for scoring (edge cases: missing headers, slow sites, etc.)
 - [ ] Algorithm documented in code (comment explaining each check)
@@ -494,21 +541,18 @@
 **Time estimate**: 6 hours
 
 #### Day 3-4: Multilingual Support
-**Option A (Recommended for time)**: Defer 4 languages to Phase 2
-- [ ] Keep EN + FR only for Phase 1
-- [ ] GeoIP auto-detection works for EN/FR
-- [ ] Language selector available for manual override
+✅ All 6 languages shipped in Phase 1: EN, FR, DE, ES, HE, RU (with RTL support for Hebrew)
 
-**Option B (If time permits)**: Add all 6 languages
-- [ ] Add German, Spanish, Hebrew, Russian translations
-- [ ] Translation files created:
-  - [ ] `/src/locales/de/translation.json`
-  - [ ] `/src/locales/es/translation.json`
-  - [ ] `/src/locales/he/translation.json`
-  - [ ] `/src/locales/ru/translation.json`
-- [ ] GeoIP detection updated for all languages
-- [ ] Language selector supports all 6
-- [ ] Test on native speaker for quality (optional, Phase 2 if not ready)
+- [x] Translation files created for all 6 locales:
+  - [x] `/src/locales/en/translation.json`
+  - [x] `/src/locales/fr/translation.json`
+  - [x] `/src/locales/de/translation.json`
+  - [x] `/src/locales/es/translation.json`
+  - [x] `/src/locales/he/translation.json`
+  - [x] `/src/locales/ru/translation.json`
+- [x] RTL support for Hebrew (`document.dir = 'rtl'` on language switch)
+- [x] Language selector supports all 6
+- [x] Language detection: `localStorage.language` → `navigator.language` → `en`
 
 **Time estimate**: 4-8 hours (depending on option)
 

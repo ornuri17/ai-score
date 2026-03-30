@@ -11,6 +11,22 @@ You're being handed a **comprehensive PRD + technical spec** for AIScore, a lead
 
 ---
 
+## Phase 1 Completion Summary (2026-03-29)
+
+Phase 1 is complete. Key decisions and deviations from original plan:
+
+| Item | Original Plan | Actual |
+|---|---|---|
+| Languages | EN + FR in Phase 1, 4 more in Phase 2 | All 6 shipped in Phase 1 |
+| Language codes | GR, SP, HE, RU | DE, ES, HE, RU (corrected to ISO 639-1) |
+| robots.txt/sitemap | Phase 2 | Phase 1 — 3 parallel fetches per check |
+| Frontend design | Not specified | Neural Overlay ("The Cognitive Prism") dark theme from Stitch |
+| Website summary | Not in PRD | Added — extracted from meta/og/body text |
+| AI crawler penalty | Not in PRD | -20 for GPTBot/ClaudeBot/PerplexityBot blocking |
+| RTL support | Not specified | Hebrew triggers `document.dir = 'rtl'` |
+
+---
+
 ## Documents to Review
 
 1. **PRODUCT_REQUIREMENTS_DOCUMENT.md** (Primary)
@@ -37,7 +53,7 @@ You're being handed a **comprehensive PRD + technical spec** for AIScore, a lead
 - **Scoring algorithm** (4 dimensions: crawlability 30pts, content 35pts, technical 25pts, quality 10pts)
 - **No monetization from users** (free scoring; money comes from selling leads to agencies)
 - **Lead fields** (name, email, company required; phone/budget optional)
-- **6 languages** (EN, FR, GR, SP, HE, RU with auto-detection by GeoIP)
+- **6 languages** (EN, FR, DE, ES, HE, RU — all shipped in Phase 1; language codes corrected to ISO 639-1; auto-detection via localStorage + navigator.language)
 - **Database schema** (PostgreSQL with checks/leads tables, rate_limits for tracking)
 
 ### What IS Flexible (You Decide)
@@ -237,6 +253,12 @@ Discuss with team: Would you rather ship English/French in 4 weeks, or push to 5
 - ✅ Cache strategy (7-day TTL, soft-cache, background refresh)
 - ✅ Cost targets & deployment strategy
 - ✅ Implementation checklist
+- ✅ Neural Overlay design system implemented (dark theme, glassmorphism, Material Symbols)
+- ✅ All 6 languages implemented (EN, FR, DE, ES, HE with RTL, RU)
+- ✅ robots.txt + sitemap.xml crawling in Phase 1 (not deferred)
+- ✅ AI crawler blocking detection + -20 penalty (GPTBot, ClaudeBot, PerplexityBot)
+- ✅ Website summary extraction from page metadata
+- ✅ Terraform infrastructure (VPC, RDS, Redis, Lambda, API GW, CloudFront)
 
 **What You Own**:
 - Architecture decisions (backend stack, frontend framework, hosting)

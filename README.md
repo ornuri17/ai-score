@@ -1,105 +1,274 @@
-# AIScore API
+# AIScore
 
-Express + TypeScript API that scores website AI-friendliness (0-100).
+AI readiness scoring tool — analyzes any website and returns a 0-100 score measuring how well AI systems (ChatGPT, Claude, Perplexity) can find, read, and understand it.
 
-## Prerequisites
+**Stack**: Node.js + Express + TypeScript (API) · React + Vite + Tailwind v4 (frontend) · PostgreSQL · Redis · AWS Lambda + API Gateway + CloudFront
+
+---
+
+## Project Structure
+
+```
+ai-score/
+├── src/                    # Backend API (Express + TypeScript)
+│   ├── config/             # Typed env-var configuration
+│   ├── db/                 # Prisma repositories (checks, leads, rate limits)
+│   ├── middleware/         # Rate limiter (IP + domain layers)
+│   ├── routes/             # Express route handlers
+│   │   ├── analyze.ts      # POST /api/analyze — main scoring endpoint
+│   │   └── leads.ts        # POST /api/leads — lead capture
+│   ├── services/
+│   │   ├── crawler.ts      # Fetches page + robots.txt + sitemap.xml in parallel
+│   │   ├── scorer.ts       # 4-dimension scoring engine + summary extraction
+│   │   └── cache.ts        # Redis-backed 7-day result cache
+│   ├── types/index.ts      # Shared type contracts — single source of truth
+│   └── index.ts            # App entry point
+├── frontend/               # React + Vite frontend
+│   ├── src/
+│   │   ├── components/     # NavBar, ScoreCard, DimensionBreakdown, LeadForm, SocialShare
+│   │   ├── pages/          # Home, Results, HowItWorks, Privacy, Terms
+│   │   ├── locales/        # i18n translations (en, fr, de, es, he, ru)
+│   │   ├── services/api.ts # Axios API client
+│   │   └── i18n/config.ts  # i18next setup with 6 languages
+│   └── index.html
+├── prisma/                 # Database schema + migrations
+├── infra/                  # Terraform — AWS VPC, RDS, Redis, Lambda, API GW, CloudFront
+├── docs/                   # Product + engineering documentation
+│   ├── product/            # PRD, monetization, enhancements
+│   └── engineering/        # Technical spec, architecture, implementation plan
+└── tests/                  # Integration + scoring validation tests
+```
+
+---
+
+## Backend: Getting Started
+
+### Prerequisites
 
 - Node.js 20+
-- Docker + Docker Compose
-
-## Getting Started
+- Docker + Docker Compose (for local Postgres + Redis)
 
 ```bash
-# 1. Clone the repo
+# 1. Clone
 git clone https://github.com/ornuri17/ai-score.git
 cd ai-score
 
-# 2. Copy environment variables
+# 2. Environment
 cp .env.example .env
 
-# 3. Start Postgres and Redis
+# 3. Start Postgres + Redis
 docker-compose up -d
 
 # 4. Install dependencies
 npm install
 
-# 5. Run database migrations
+# 5. Run migrations
 npx prisma migrate dev
 
-# 6. Start the development server
+# 6. Start dev server
 npm run dev
 ```
 
-The API will be available at `http://localhost:3000`.
-
-Verify with:
+API available at `http://localhost:3000`. Verify:
 ```bash
 curl http://localhost:3000/health
 # {"status":"ok","timestamp":"..."}
 ```
 
-## Running Tests
+### Running Tests
 
 ```bash
-# Run all tests
-npm test
-
-# Run scoring-specific tests only
-npm run test:scoring
-
-# Run with coverage
-npm test -- --coverage
+npm test                   # All tests
+npm run test:scoring       # Scoring-specific tests only
+npm test -- --coverage     # With coverage report
 ```
 
-## Linting and Type Checking
+### Lint + Type Check
 
 ```bash
-# ESLint (bans `any`, warns on `console`, requires explicit return types)
-npm run lint
-
-# TypeScript strict mode check
-npm run type-check
+npm run lint               # ESLint (bans any, warns on console)
+npm run type-check         # TypeScript strict mode
 ```
 
-## Build for Production
+### Build for Production
 
 ```bash
 npm run build
 npm start
 ```
 
-## Services in `src/services/`
+---
 
-Each service is a thin, injectable module with a single responsibility:
+## Frontend: Getting Started
+
+```bash
+cd frontend
+npm install
+npm run dev                # http://localhost:5173
+npm run build              # Production build
+```
+
+### Environment
+
+```bash
+# frontend/.env
+VITE_API_URL=http://localhost:3000   # Backend API base URL
+```
+
+---
+
+## API Reference
+
+### `POST /api/analyze`
+
+Analyzes a website and returns its AI-readiness score.
+
+**Request**
+```json
+{ "url": "https://example.com", "force_refresh": false }
+```
+
+**Response**
+```json
+{
+  "check_id": "uuid",
+  "score": 74,
+  "dimensions": {
+    "crawlability": 25,
+    "content": 27,
+    "technical": 15,
+    "quality": 7
+  },
+  "issues": ["structured_data_missing", "crawlability_issues"],
+  "summary": "Example Domain is a placeholder domain maintained by IANA for illustrative examples in documents.",
+  "cached": false,
+  "checked_at": "2026-03-29T12:00:00.000Z",
+  "expires_at": "2026-04-05T12:00:00.000Z"
+}
+```
+
+**Issue keys**
+
+| Key | Meaning |
+|---|---|
+| `blocked_from_crawlers` | `noindex` meta tag present |
+| `ai_crawlers_blocked` | GPTBot, ClaudeBot, or PerplexityBot blocked in `robots.txt` |
+| `not_publicly_accessible` | Auth required or non-200 response |
+| `crawlability_issues` | No sitemap found (neither `/sitemap.xml` nor `robots.txt` Sitemap directive) |
+| `structured_data_missing` | No JSON-LD schema markup |
+| `metadata_optimization` | Missing/invalid meta description, title, or Open Graph tags |
+| `mobile_unfriendly` | No viewport meta tag |
+| `no_https` | Site not using HTTPS |
+| `slow_page_load` | Response time > 3s |
+| `no_internal_links` | Fewer than 3 internal links found |
+| `no_language_tag` | Missing `<html lang>` attribute |
+| `access_or_speed_issues` | Too many redirects or response time > 10s |
+
+### `POST /api/leads`
+
+Captures a lead after a user views their score.
+
+**Request**
+```json
+{
+  "check_id": "uuid",
+  "name": "Jane Smith",
+  "email": "jane@example.com",
+  "phone": "+1 555 123 4567"
+}
+```
+
+---
+
+## Scoring Algorithm
+
+Each check is binary — full points or zero.
+
+### Crawlability (30 pts)
+| Check | Points |
+|---|---|
+| No `noindex` meta (check 1) | +5 |
+| No `noindex` meta (check 2) | +5 |
+| No `nofollow` meta | +5 |
+| Not auth-gated | +5 |
+| Response time < 10s and ≤ 5 redirects | +5 |
+| Sitemap accessible (`/sitemap.xml` exists, or declared in `robots.txt`, or `<link rel="sitemap">`) | +5 |
+
+### Content Structure (35 pts)
+Semantic HTML (+4), meta description 50-160 chars (+4), title 30-60 chars (+4), Open Graph tags (+4), JSON-LD schema (+5), publication date (+4), viewport meta (+4), `<html lang>` (+2)
+
+### Technical SEO (25 pts)
+Canonical tag (+5), HTTPS (+5), clean URL (+5), response < 3s (+5), body text > 200 chars without JS (+5)
+
+### Content Quality (10 pts)
+Body text > 300 chars (+5), > 2 internal links (+5)
+
+### Penalties
+| Condition | Penalty |
+|---|---|
+| `noindex` or auth-required | -30 |
+| Non-200 status | -25 |
+| Too many redirects or timeout | -15 |
+| AI crawlers blocked in `robots.txt` | -20 |
+
+---
+
+## What the Crawler Fetches
+
+Per check, three parallel HTTP requests are made:
+
+1. **Page** — `GET {url}` — full HTML for scoring
+2. **robots.txt** — `GET {origin}/robots.txt` — checks for AI bot blocking (GPTBot, ClaudeBot, PerplexityBot) and `Sitemap:` directives
+3. **sitemap.xml** — `GET {origin}/sitemap.xml` — checks existence, counts `<loc>` entries (capped at 500 KB)
+
+robots.txt and sitemap fetches are fire-and-forget with a 5s timeout — failures are non-fatal.
+
+---
+
+## Website Summary
+
+The scorer extracts a plain-language description of what the site is about, returned in the `summary` field. Priority order:
+
+1. `<meta name="description">`
+2. `<meta property="og:description">`
+3. First `<p>` element with ≥ 80 characters
+4. First 250 characters of visible body text
+
+No AI call. No extra cost. All from the existing page fetch.
+
+---
+
+## Multilingual Support
+
+The frontend supports 6 languages with auto-detection from `localStorage` (user preference) → `navigator.language` → English fallback.
+
+| Code | Language | RTL |
+|---|---|---|
+| `en` | English | No |
+| `fr` | Français | No |
+| `de` | Deutsch | No |
+| `es` | Español | No |
+| `he` | עברית | Yes (auto-applied) |
+| `ru` | Русский | No |
+
+Translation files: `frontend/src/locales/{lang}/translation.json`
+
+---
+
+## Services
 
 | Service | Responsibility |
 |---|---|
-| `crawler.ts` | Fetches a URL via axios, follows redirects, captures response time |
-| `scorer.ts` | Runs the four scoring dimensions (crawlability, content, technical, quality) and returns a `ScoringResult` |
-| `cache.ts` | Reads/writes `CachedCheck` records from Redis with a 7-day TTL |
-| `rateLimit.ts` | Enforces per-IP and per-domain daily limits via Redis counters; includes circuit breaker logic |
-| `db.ts` | Thin wrapper around the Prisma client; exports a singleton `prisma` instance |
+| `crawler.ts` | Fetches page, `robots.txt`, and `sitemap.xml` in parallel; parses robots.txt for AI bot rules |
+| `scorer.ts` | 4-dimension binary scoring engine; extracts site summary |
+| `cache.ts` | Redis-backed result cache with 7-day TTL; falls back to DB on miss |
+| `middleware/rateLimiter.ts` | IP-based (50/day) and domain-based (100/day) rate limiting via Redis |
 
-## Project Structure
-
-```
-src/
-  config/         Typed configuration from env vars (imported from shared contract)
-  types/          Shared type contracts — do not redefine elsewhere
-  services/       Business-logic services (implemented by other workstreams)
-  routes/         Express route handlers (implemented by API workstream)
-  logger.ts       Logging standard — import this instead of using console directly
-  index.ts        App entry point
-tests/            Jest test suites (*.test.ts)
-.github/
-  workflows/
-    ci.yml        GitHub Actions: lint → type-check → test on every push/PR
-docker-compose.yml  Local Postgres 16 + Redis 7
-```
+---
 
 ## Environment Variables
 
-See `.env.example` for a full reference. Key variables:
+See `.env.example` for full reference.
 
 | Variable | Default | Description |
 |---|---|---|
@@ -111,15 +280,29 @@ See `.env.example` for a full reference. Key variables:
 | `RATE_LIMIT_CHECKS_IP` | `50` | Max checks per IP per day |
 | `CIRCUIT_BREAKER_FAILURES` | `3` | Failures before circuit opens |
 
+---
+
+## Cost Estimate
+
+At 1,000 checks/day (~30,000/month): **~$82/month** (~$0.0027/check).
+
+Biggest cost driver: NAT Gateway (~$35/mo). See `docs/ops/COST_ANALYSIS.md` for full breakdown.
+
+---
+
 ## Logging
 
-All code must use `src/logger.ts` — do not call `console.log` directly. Debug logs are suppressed in `NODE_ENV=production`.
+All code uses `src/logger.ts` — never `console.log` directly.
 
 ```typescript
 import { logger } from './logger';
-
 logger.info('Server started', { port: 3000 });
-logger.warn('Rate limit approaching', { ip: '1.2.3.4', remaining: 2 });
-logger.error('DB connection failed', error);
-logger.debug('Cache hit', { domain: 'example.com' });
+logger.warn('Rate limit hit', { ip: '1.2.3.4' });
+logger.error('DB error', error);
 ```
+
+---
+
+## Infrastructure
+
+Terraform config in `infra/` provisions: VPC, RDS PostgreSQL (db.t3.micro), ElastiCache Redis (cache.t3.micro), Lambda, API Gateway, CloudFront. See `infra/README.md`.

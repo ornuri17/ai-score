@@ -8,9 +8,16 @@ This document complements the PRD with technical specifics for the staff enginee
 
 ```pseudocode
 function analyzeWebsite(url: string): AnalysisResult {
-  // Fetch & parse
-  const html = fetch(url, timeout: 10s)
+  // Fetch page + robots.txt + sitemap in parallel (3 concurrent HTTP requests)
+  const origin = new URL(url).origin
+  const [html, robotsTxt, sitemap] = await Promise.all([
+    fetch(url, timeout: 10s),
+    fetch(origin + '/robots.txt', timeout: 5s),
+    fetch(origin + '/sitemap.xml', timeout: 5s, maxSize: 500KB)
+  ])
+
   const dom = parse(html)
+  const bodyText = extractText(dom)   // strips <script>, <style>, <noscript>
 
   // Initialize scores
   let crawlability = 0      // max 30
@@ -19,77 +26,79 @@ function analyzeWebsite(url: string): AnalysisResult {
   let quality = 0           // max 10
   const issues = []
 
-  // === CRAWLABILITY (30 points) ===
-  if (robotsTxtAllowsCrawlers(url)) crawlability += 5
-  if (!hasMetaNoindex(dom)) crawlability += 5
-  if (!hasMetaNofollow(dom)) crawlability += 5
-  if (!requiresAuth(html)) crawlability += 5
-  if (responseTime < 10s && !tooManyRedirects(url)) crawlability += 5
-  if (hasSitemap(url)) crawlability += 5
-
-  if (crawlability < 30) issues.push("crawlability_issues")
+  // === CRAWLABILITY (30 points — 6 binary checks × 5 pts) ===
+  if (!hasMetaNoindex(dom)) crawlability += 5             // Check 1
+  if (!hasMetaNoindex(dom)) crawlability += 5             // Check 2
+  if (!hasMetaNofollow(dom)) crawlability += 5            // Check 3
+  if (!requiresAuth(html)) crawlability += 5              // Check 4
+  if (responseTime < 10s && redirectCount <= 5) crawlability += 5  // Check 5
+  // Check 6: real sitemap check (not just HTML link)
+  if (sitemap.status == 200 || robotsTxt.hasSitemapDirective() || dom.has('link[rel=sitemap]'))
+    crawlability += 5
+  else issues.push("crawlability_issues")
 
   // === CONTENT STRUCTURE (35 points) ===
   if (hasSemanticHTML(dom)) content += 4
-  if (hasMetaDescription(dom) && length(200, 160)) content += 4
-  if (hasTitle(dom) && length(30, 60)) content += 4
+  if (hasMetaDescription(dom) && length in [50,160]) content += 4
+  if (hasTitle(dom) && length in [30,60]) content += 4
   if (hasOpenGraphTags(dom)) content += 4
-  if (hasJSONLDSchema(dom)) {
-    content += 5
-  } else {
-    issues.push("structured_data_missing")
-  }
-  if (hasPublicationDate(dom) || hasLastModified(dom)) content += 4
-  if (isMobileFriendly(dom)) content += 4
+  if (hasJSONLDSchema(dom)) { content += 5 } else { issues.push("structured_data_missing") }
+  if (hasPublicationDate(dom)) content += 4
+  if (hasMobileViewport(dom)) content += 4
   if (hasLanguageTag(dom)) content += 2
 
   // === TECHNICAL SEO (25 points) ===
-  if (hasCanonicalTag(dom) || !hasDuplicateContent(url)) technical += 5
-  if (enforceHTTPS(url)) technical += 5
-  if (hasCleanURLs(url)) technical += 5
-  if (pageLoadTime < 3s) technical += 5
-  if (contentAccessibleWithoutJS(dom)) technical += 5
+  if (hasCanonicalTag(dom)) technical += 5
+  if (url.startsWith("https")) technical += 5
+  if (queryParamCount(url) < 3) technical += 5
+  if (responseTime < 3s) technical += 5
+  if (bodyText.length > 200) technical += 5
 
   // === CONTENT QUALITY (10 points) ===
-  if (mainContentLength > 300) quality += 5
-  if (hasInternalLinks(dom) && count > 2) quality += 5
+  if (bodyText.length > 300) quality += 5
+  if (internalLinkCount(dom) > 2) quality += 5
 
-  // === CRITICAL PENALTIES ===
+  // === PENALTIES ===
   let baseScore = crawlability + content + technical + quality
 
-  if (hasMetaNoindex(dom) || !robotsTxtAllowsCrawlers(url)) {
+  if (hasMetaNoindex(dom) || requiresAuth(html)) {
     baseScore = max(0, baseScore - 30)
     issues.push("blocked_from_crawlers")
-  } else if (requiresAuth(html) || responseStatus != 200) {
+  } else if (responseStatus != 200) {
     baseScore = max(0, baseScore - 25)
     issues.push("not_publicly_accessible")
-  } else if (tooManyRedirects(url) || responseTime > 10s) {
+  }
+
+  if (redirectCount > 5 || responseTime > 10s) {
     baseScore = max(0, baseScore - 15)
     issues.push("access_or_speed_issues")
   }
 
-  const finalScore = min(100, baseScore)
+  // NEW: AI crawler-specific penalty
+  if (robotsTxt.blocksGPTBot() || robotsTxt.blocksClaudeBot() || robotsTxt.blocksPerplexityBot()) {
+    baseScore = max(0, baseScore - 20)
+    issues.push("ai_crawlers_blocked")
+  } else if (robotsTxt.blocksAllUserAgents()) {
+    baseScore = max(0, baseScore - 20)
+    issues.push("ai_crawlers_blocked")
+  }
+
+  // === SUMMARY EXTRACTION ===
+  // Extract a plain-language description of the site (no AI call)
+  const summary =
+    metaDescription(dom) ||        // priority 1: meta description
+    ogDescription(dom) ||          // priority 2: og:description
+    firstMeaningfulParagraph(dom) || // priority 3: first <p> >= 80 chars
+    bodyText.slice(0, 250)          // fallback: first 250 chars of body text
 
   return {
-    score: finalScore,
+    score: min(100, baseScore),
     dimensions: { crawlability, content, technical, quality },
     issues: dedup(issues),
+    summary,
     checked_at: now(),
     expires_at: now() + 7.days
   }
-}
-
-function isMobileFriendly(dom): boolean {
-  // Check for viewport meta tag and responsive indicators
-  const hasViewport = dom.querySelector('meta[name="viewport"]') != null
-  const hasResponsiveFontSize = !hasFontSizeAbove(dom, 16)
-  return hasViewport && hasResponsiveFontSize
-}
-
-function contentAccessibleWithoutJS(dom): boolean {
-  // Check if <body> has substantial text without JS execution
-  // This is a heuristic: if <noscript> content OR body.textContent > threshold
-  return dom.body.textContent.length > 200
 }
 ```
 
@@ -98,6 +107,42 @@ function contentAccessibleWithoutJS(dom): boolean {
 - Penalties apply first, then caps apply
 - Issues array is a list of high-level category strings (not prescriptive how-to's)
 - Engineer should implement robust error handling for parsing failures
+
+### Issue Keys Reference
+
+| Issue Key | Condition | Effect |
+|---|---|---|
+| `crawlability_issues` | Sitemap not found via any method | No score penalty (points not awarded) |
+| `structured_data_missing` | No JSON-LD schema detected | No score penalty (points not awarded) |
+| `blocked_from_crawlers` | `noindex` meta tag or auth required | -30 penalty |
+| `not_publicly_accessible` | HTTP response status ≠ 200 | -25 penalty |
+| `access_or_speed_issues` | >5 redirects or response time >10s | -15 penalty |
+| `ai_crawlers_blocked` | GPTBot, ClaudeBot, or PerplexityBot explicitly blocked in robots.txt (or User-agent: * blocks all) | -20 penalty |
+
+---
+
+## 2. Crawler Architecture
+
+Each `/api/analyze` request makes **3 parallel HTTP fetches** (no sequential waiting):
+
+| Request | URL | Timeout | Purpose |
+|---|---|---|---|
+| Page | `{url}` | 10s | Full HTML for scoring |
+| robots.txt | `{origin}/robots.txt` | 5s | AI bot blocking rules + Sitemap directives |
+| sitemap.xml | `{origin}/sitemap.xml` | 5s | Existence check + URL count (capped 500KB) |
+
+**robots.txt parsing** identifies:
+- `blocksAllCrawlers`: `User-agent: *` with `Disallow: /`
+- `blocksAiCrawlers`: Any of `GPTBot`, `ClaudeBot`, `PerplexityBot`, `anthropic-ai`, `cohere-ai` with `Disallow: /`
+- `sitemapUrls`: All `Sitemap:` directive values
+
+**sitemap.xml parsing**: counts `<loc>` elements to get declared URL count. Failure is non-fatal — treated as `{ exists: false, urlCount: 0 }`.
+
+**Summary extraction** (no AI, no extra fetch):
+1. `<meta name="description">` content if ≥ 40 chars
+2. `<meta property="og:description">` if ≥ 40 chars
+3. First `<p>` element with ≥ 80 chars of text (truncated to 300)
+4. First 250 chars of visible body text
 
 ---
 
@@ -469,6 +514,27 @@ function monitorRateLimitAbuse() {
 
 ## 6. API Response Examples
 
+### AnalyzeResponse Type
+
+```typescript
+interface AnalyzeResponse {
+  score: number                          // 0–100
+  dimensions: {
+    crawlability: number                 // 0–30
+    content: number                      // 0–35
+    technical: number                    // 0–25
+    quality: number                      // 0–10
+  }
+  issues: string[]                       // e.g. ["structured_data_missing", "ai_crawlers_blocked"]
+  summary?: string                       // Plain-language description of what the site is about
+  cached: boolean
+  checked_at: string                     // ISO 8601
+  expires_at: string                     // ISO 8601
+  check_id?: string                      // UUID (omitted on cache hits)
+  cache_hit?: string                     // Human-readable freshness note (on cache hits)
+}
+```
+
 ### Success: Fresh Check
 ```json
 POST /api/analyze
@@ -487,6 +553,7 @@ POST /api/analyze
     "quality": 5
   },
   "issues": ["metadata_optimization", "structured_data_missing"],
+  "summary": "example.com is a platform for developers to read, write, and collaborate on technical articles.",
   "cached": false,
   "checked_at": "2026-03-26T10:00:00Z",
   "expires_at": "2026-04-02T10:00:00Z",
@@ -714,6 +781,26 @@ Last Analyzed: March 26, 2026 at 10:30 AM (4 days ago)
 
 ---
 
-**Document Version**: 1.1
-**Last Updated**: 2026-03-26
+## 11. Multilingual Support
+
+The frontend uses **react-i18next** with 6 locale files:
+
+| Code | Language | Notes |
+|---|---|---|
+| `en` | English | Default |
+| `fr` | Français | |
+| `de` | Deutsch | |
+| `es` | Español | |
+| `he` | עברית | RTL — sets `document.dir = 'rtl'` on language switch |
+| `ru` | Русский | |
+
+All 6 languages were shipped in Phase 1 (PRD originally planned 4 for Phase 2).
+
+Translation files: `frontend/src/locales/{lang}/translation.json`
+Language detection: `localStorage.language` → `navigator.language` → `en`
+
+---
+
+**Document Version**: 1.2
+**Last Updated**: 2026-03-29
 **Prepared For**: Staff Engineer → Implementation Planning

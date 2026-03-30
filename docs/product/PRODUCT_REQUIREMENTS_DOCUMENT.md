@@ -96,6 +96,15 @@ The 0-100 score is derived from:
 - [5 pts] Server responds with HTTP 200 within 10 seconds (no timeouts, <5 redirects)
 - [5 pts] XML sitemap.xml present and valid (enables crawl discovery)
 
+**Phase 1 implementation note**: The crawler makes 3 parallel requests per check:
+- Main page HTML (for all scoring dimensions)
+- `/robots.txt` — parsed for AI bot blocking (GPTBot, ClaudeBot, PerplexityBot) and Sitemap directives
+- `/sitemap.xml` — checked for existence and URL count
+
+**AI Crawler Blocking Penalty**: If `robots.txt` explicitly blocks GPTBot, ClaudeBot, PerplexityBot, or all user-agents, a -20 penalty is applied and `ai_crawlers_blocked` is added to the issues list. This is a critical signal — a site that blocks AI crawlers cannot appear in LLM-generated answers regardless of other scores.
+
+**Website Summary**: Each result includes a `summary` field — a plain-language description of what the site is about, extracted from meta description, og:description, or body text. No AI call required.
+
 **B. Content Structure & Semantics (35 points)**
 - [4 pts] Proper HTML structure (semantic tags: `<header>`, `<main>`, `<article>`, `<section>`)
 - [4 pts] Presence of `<meta name="description">` (non-empty, 50-160 chars)
@@ -234,12 +243,12 @@ cto_status (VARCHAR) -- "new", "contacted", "qualified", "converted", for CRM tr
 - **User Override**: Language selector in UI (top-right, always accessible)
 
 #### 3.2 Supported Languages
-1. **English (EN)** – Default
-2. **French (FR)**
-3. **German (GR)**
-4. **Spanish (SP)**
-5. **Hebrew (HE)**
-6. **Russian (RU)**
+1. **English (EN)** – Default ✅ Phase 1
+2. **French (FR)** ✅ Phase 1
+3. **German (DE)** ✅ Phase 1
+4. **Spanish (ES)** ✅ Phase 1
+5. **Hebrew (HE)** — RTL layout auto-applied ✅ Phase 1
+6. **Russian (RU)** ✅ Phase 1
 
 #### 3.3 Content to Translate
 - Page headlines & CTAs
@@ -692,16 +701,16 @@ Sitemap: https://aiscore.co/sitemap.xml
 - Simple 0-100 scoring (5 key dimensions)
 - High-level issue categories
 - Lead capture form
-- English + one additional language (FR)
+- All 6 languages shipped: EN, FR, DE, ES, HE (with RTL), RU
 - Rate limiting (IP-based, 50/day)
 - Deployed to staging environment
 
 **Success**: 100 checks, 15+ leads
 
 ### Phase 2: Polish & Scale (Week 5-8)
-- Add remaining 4 languages (GR, SP, HE, RU)
+- ~~Add remaining 4 languages (GR, SP, HE, RU)~~ — shipped in Phase 1
 - Refine scoring algorithm based on feedback
-- Improve crawlability checks (robots.txt, sitemap validation)
+- ~~Improve crawlability checks (robots.txt, sitemap validation)~~ — shipped in Phase 1
 - Performance optimization (caching, CDN)
 - Launch to production
 - Marketing push (content, early partnerships)
