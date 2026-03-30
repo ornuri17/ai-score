@@ -1,6 +1,6 @@
 {
   "header": { "title": "AIScore", "language": "Idioma" },
-  "nav": { "howItWorks": "Cómo funciona", "faq": "FAQ" },
+  "nav": { "home": "Inicio", "howItWorks": "Cómo funciona", "faq": "FAQ" },
   "home": {
     "title": "¿Qué tan amigable con la IA es tu sitio?",
     "subtitle": "Obtén una puntuación gratuita de amigabilidad con IA e identifica las barreras que impiden a los LLMs descubrir tu contenido.",

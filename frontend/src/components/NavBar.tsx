@@ -22,6 +22,9 @@ export default function NavBar() {
           AI-Score
         </a>
         <div className="hidden md:flex items-center space-x-8 font-headline tracking-tight font-bold">
+          <a className="text-[#ecedf6]/70 hover:text-[#ecedf6] transition-colors" href="/">
+            {t('nav.home')}
+          </a>
           <a className="text-[#ecedf6]/70 hover:text-[#ecedf6] transition-colors" href="/how-it-works">
             {t('nav.howItWorks')}
           </a>

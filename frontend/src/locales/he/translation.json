@@ -1,6 +1,6 @@
 {
   "header": { "title": "AIScore", "language": "שפה" },
-  "nav": { "howItWorks": "איך זה עובד", "faq": "שאלות נפוצות" },
+  "nav": { "home": "בית", "howItWorks": "איך זה עובד", "faq": "שאלות נפוצות" },
   "home": {
     "title": "כמה האתר שלך מוכן ל-AI?",
     "subtitle": "קבל ציון חינם וגלה מה מונע מ-AI למצוא את האתר שלך.",
