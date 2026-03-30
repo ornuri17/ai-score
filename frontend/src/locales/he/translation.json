@@ -87,7 +87,8 @@
     "analysisCompleteLabel": "הבדיקה הסתיימה",
     "neuralAffinity": "ציון AI",
     "issuesDetected": "בעיות שמצאנו",
-    "aboutSite": "על מה האתר הזה"
+    "aboutSite": "על מה האתר הזה",
+    "scoreHistory": "היסטוריית ציונים"
   },
   "howItWorks": {
     "badge": "התהליך",

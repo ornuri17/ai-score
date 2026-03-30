@@ -7,6 +7,7 @@ import { createCacheService } from './services/cache';
 import { createRateLimiterMiddleware, createFormRateLimiterMiddleware } from './middleware/rateLimiter';
 import { createAnalyzeRouter } from './routes/analyze';
 import { createLeadsRouter } from './routes/leads';
+import { createHistoryRouter } from './routes/history';
 
 const app = express();
 
@@ -28,6 +29,9 @@ app.use('/api', rateLimiterMiddleware);
 
 // Mount the analyze route
 app.use('/api/analyze', createAnalyzeRouter(cacheService));
+
+// Mount the history route
+app.use('/api/history', createHistoryRouter());
 
 // Mount the leads route with its own (stricter) form rate limiter
 app.post('/api/leads', formRateLimiterMiddleware, createLeadsRouter());

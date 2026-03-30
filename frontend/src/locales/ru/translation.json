@@ -87,7 +87,8 @@
     "analysisCompleteLabel": "Анализ завершён",
     "neuralAffinity": "Нейронное сродство",
     "issuesDetected": "Обнаруженные проблемы",
-    "aboutSite": "О чём этот сайт"
+    "aboutSite": "О чём этот сайт",
+    "scoreHistory": "История оценок"
   },
   "howItWorks": {
     "badge": "ПРОЦЕСС",

@@ -87,7 +87,8 @@
     "analysisCompleteLabel": "Análisis completo",
     "neuralAffinity": "Afinidad Neural",
     "issuesDetected": "Problemas detectados",
-    "aboutSite": "De qué trata este sitio"
+    "aboutSite": "De qué trata este sitio",
+    "scoreHistory": "Historial de puntuaciones"
   },
   "howItWorks": {
     "badge": "EL PROCESO",

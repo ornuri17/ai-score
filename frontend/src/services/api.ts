@@ -32,6 +32,23 @@ export interface LeadResponse {
   lead_id: string;
 }
 
+export interface HistoryPoint {
+  check_id: string;
+  score: number;
+  dimensions: {
+    crawlability: number;
+    content: number;
+    technical: number;
+    quality: number;
+  };
+  checked_at: string;
+}
+
+export interface HistoryResponse {
+  domain: string;
+  history: HistoryPoint[];
+}
+
 export async function analyzeWebsite(
   url: string,
   forceRefresh?: boolean
@@ -45,5 +62,10 @@ export async function analyzeWebsite(
 
 export async function submitLead(lead: LeadSubmission): Promise<LeadResponse> {
   const response = await axios.post(`${API_BASE}/api/leads`, lead);
+  return response.data;
+}
+
+export async function getHistory(domain: string): Promise<HistoryResponse> {
+  const response = await axios.get(`${API_BASE}/api/history/${encodeURIComponent(domain)}`);
   return response.data;
 }

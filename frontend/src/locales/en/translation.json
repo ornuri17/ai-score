@@ -87,7 +87,8 @@
     "analysisCompleteLabel": "Analysis Complete",
     "neuralAffinity": "Neural Affinity",
     "issuesDetected": "Issues Detected",
-    "aboutSite": "What This Site Is About"
+    "aboutSite": "What This Site Is About",
+    "scoreHistory": "Score History"
   },
   "form": {
     "cta": "Get Your AEO Action Plan",

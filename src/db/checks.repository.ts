@@ -59,10 +59,20 @@ export async function create(data: CreateCheckInput): Promise<Check> {
   });
 }
 
+export async function findHistory(domain: string, limit = 30): Promise<Check[]> {
+  return prisma.check.findMany({
+    where: { domain },
+    orderBy: { checkedAt: 'asc' },
+    take: limit,
+  });
+}
+
 export async function deleteExpired(): Promise<number> {
+  // Keep checks for 1 year for historical tracking (expiresAt is cache TTL, not retention)
+  const oneYearAgo = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
   const result = await prisma.check.deleteMany({
     where: {
-      expiresAt: { lt: new Date() },
+      checkedAt: { lt: oneYearAgo },
     },
   });
   return result.count;

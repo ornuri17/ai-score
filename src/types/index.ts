@@ -90,6 +90,18 @@ export interface AnalyzeResponse {
   summary?: string;
 }
 
+export interface HistoryPoint {
+  check_id: string;
+  score: number;
+  dimensions: ScoreDimensions;
+  checked_at: string;   // ISO 8601
+}
+
+export interface HistoryResponse {
+  domain: string;
+  history: HistoryPoint[];
+}
+
 export interface ErrorResponse {
   error: string;
   message: string;

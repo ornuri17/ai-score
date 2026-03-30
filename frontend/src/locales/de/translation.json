@@ -87,7 +87,8 @@
     "analysisCompleteLabel": "Analyse abgeschlossen",
     "neuralAffinity": "Neuronale Affinität",
     "issuesDetected": "Probleme erkannt",
-    "aboutSite": "Worum es auf dieser Seite geht"
+    "aboutSite": "Worum es auf dieser Seite geht",
+    "scoreHistory": "Score-Verlauf"
   },
   "howItWorks": {
     "badge": "DER PROZESS",

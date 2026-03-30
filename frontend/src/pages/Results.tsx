@@ -6,8 +6,9 @@ import DimensionBreakdown from '../components/DimensionBreakdown';
 import LeadForm from '../components/LeadForm';
 import SocialShare from '../components/SocialShare';
 import NavBar from '../components/NavBar';
-import { analyzeWebsite } from '../services/api';
-import type { AnalyzeResponse } from '../services/api';
+import ScoreHistory from '../components/ScoreHistory';
+import { analyzeWebsite, getHistory } from '../services/api';
+import type { AnalyzeResponse, HistoryPoint } from '../services/api';
 
 export default function Results() {
   const { t } = useTranslation();
@@ -19,6 +20,7 @@ export default function Results() {
   const [result, setResult] = useState<AnalyzeResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [history, setHistory] = useState<HistoryPoint[]>([]);
 
   useEffect(() => {
     if (!domain) return;
@@ -27,6 +29,7 @@ export default function Results() {
       .then((data) => {
         setResult(data);
         setLoading(false);
+        getHistory(domain).then((h) => setHistory(h.history)).catch(() => {});
       })
       .catch(() => {
         setError(t('results.error'));
@@ -213,6 +216,9 @@ export default function Results() {
         <div className="mb-16">
           <DimensionBreakdown dimensions={result.dimensions} />
         </div>
+
+        {/* Score history (only shown if >= 2 past checks) */}
+        <ScoreHistory history={history} domain={domain || ''} />
 
         {/* Site summary */}
         {result.summary && (

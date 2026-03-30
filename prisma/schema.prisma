@@ -10,7 +10,7 @@ generator client {
 model Check {
   id               String   @id @default(uuid()) @db.Uuid
   domain           String
-  urlHash          String   @unique
+  urlHash          String
   score            Int      @db.SmallInt
   crawlabilityScore Int     @db.SmallInt
   contentScore     Int      @db.SmallInt
@@ -30,6 +30,7 @@ model Check {
   @@index([domain])
   @@index([expiresAt])
   @@index([ipHash])
+  @@index([urlHash])
 }
 
 model Lead {
