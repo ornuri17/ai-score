@@ -55,11 +55,11 @@ export default function DimensionBreakdown({ dimensions }: { dimensions: Dimensi
   const { t } = useTranslation();
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
       {BARS.map(({ key, label, max, icon, textColor, barColor }) => (
         <div
           key={key}
-          className="bg-surface-container-low p-8 rounded-xl border border-outline-variant/15 flex flex-col gap-4"
+          className="bg-surface-container-low p-5 md:p-8 rounded-xl border border-outline-variant/15 flex flex-col gap-4"
         >
           <span className={`material-symbols-outlined ${textColor} text-3xl`}>{icon}</span>
           <div>

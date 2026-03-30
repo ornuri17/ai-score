@@ -182,11 +182,11 @@ export default function Results() {
     <div className="flex flex-col min-h-screen">
       <NavBar />
 
-      <main className="pt-24 pb-16 px-6 md:px-8 max-w-7xl mx-auto">
+      <main className="pt-20 pb-16 px-4 md:px-8 max-w-7xl mx-auto">
         {/* Hero Section with Score */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16 items-center">
           <div className="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left">
-            <h1 className="font-headline text-5xl md:text-7xl font-extrabold tracking-tighter mb-4">
+            <h1 className="font-headline text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold tracking-tighter mb-4">
               {t('results.analysisTitle1')} <span className="gradient-text">{t('results.analysisTitle2')}</span>
             </h1>
             <p className="text-on-surface-variant text-lg max-w-md mb-8">
@@ -222,7 +222,7 @@ export default function Results() {
 
         {/* Site summary */}
         {result.summary && (
-          <div className="mb-16 bg-surface-container-low rounded-xl border border-outline-variant/15 p-8">
+          <div className="mb-16 bg-surface-container-low rounded-xl border border-outline-variant/15 p-5 md:p-8">
             <span className="font-label text-[10px] tracking-widest uppercase text-on-surface-variant">
               {t('results.aboutSite')}
             </span>
@@ -234,7 +234,7 @@ export default function Results() {
 
         {/* Issues section */}
         {result.issues.length > 0 && (
-          <div className="mb-16 bg-surface-container-low rounded-xl border border-outline-variant/15 p-8">
+          <div className="mb-16 bg-surface-container-low rounded-xl border border-outline-variant/15 p-5 md:p-8">
             <span className="font-label text-[10px] tracking-widest uppercase text-on-surface-variant">{t('results.issuesDetected').toUpperCase()}</span>
             <h3 className="font-headline text-2xl font-bold mt-2 mb-6">{t('results.issues')}</h3>
             <ul className="space-y-3">

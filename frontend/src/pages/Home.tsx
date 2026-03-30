@@ -52,10 +52,10 @@ export default function Home() {
             <div className="inline-flex items-center px-4 py-1.5 mb-8 rounded-full bg-secondary-container/20 border border-secondary/20">
               <span className="text-secondary font-label text-xs tracking-widest uppercase">{t('home.badge')}</span>
             </div>
-            <h1 className="text-5xl md:text-7xl font-headline font-extrabold text-on-background tracking-tighter mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-headline font-extrabold text-on-background tracking-tighter mb-6">
               {t('home.heroTitle1')} <span className="gradient-text">{t('home.heroTitle2')}</span>
             </h1>
-            <p className="text-lg md:text-xl text-on-surface-variant font-body max-w-2xl mx-auto mb-12 leading-relaxed">
+            <p className="text-base md:text-xl text-on-surface-variant font-body max-w-2xl mx-auto mb-10 leading-relaxed">
               {t('home.description')}
             </p>
 
@@ -150,7 +150,7 @@ export default function Home() {
 
         {/* Why It Matters */}
         <section className="py-24 px-6 relative overflow-hidden">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
             <div>
               <h2 className="text-4xl md:text-5xl font-headline font-extrabold mb-8 tracking-tight">{t('home.whyTitle1')} <span className="text-primary italic">{t('home.whyHighlight')}</span> {t('home.whyTitle2')}</h2>
               <div className="space-y-12">
@@ -216,13 +216,13 @@ export default function Home() {
             <div className="flex flex-col md:flex-row gap-4 justify-center">
               <button
                 onClick={scrollToForm}
-                className="bg-gradient-to-r from-primary to-primary-dim text-on-primary-fixed px-12 py-5 rounded-lg font-headline font-bold text-xl active:scale-95 transition-all shadow-xl shadow-primary/10"
+                className="bg-gradient-to-r from-primary to-primary-dim text-on-primary-fixed px-8 md:px-12 py-4 md:py-5 rounded-lg font-headline font-bold text-base md:text-xl active:scale-95 transition-all shadow-xl shadow-primary/10 w-full md:w-auto"
               >
                 {t('home.ctaStart')}
               </button>
               <a
                 href="/how-it-works"
-                className="bg-surface-container-highest text-on-surface px-12 py-5 rounded-lg font-headline font-bold text-xl active:scale-95 transition-all border border-outline-variant/30 hover:bg-surface-bright inline-flex items-center justify-center"
+                className="bg-surface-container-highest text-on-surface px-8 md:px-12 py-4 md:py-5 rounded-lg font-headline font-bold text-base md:text-xl active:scale-95 transition-all border border-outline-variant/30 hover:bg-surface-bright inline-flex items-center justify-center w-full md:w-auto"
               >
                 {t('home.ctaLearnMore')}
               </a>
@@ -233,7 +233,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="bg-[#0b0e14] w-full py-12 border-t border-[#45484f]/15">
-        <div className="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-2 md:flex md:flex-row md:justify-between items-center gap-4 md:gap-6">
           <div className="text-lg font-bold text-[#81ecff] font-headline">AI-Score</div>
           <div className="font-body text-sm text-[#ecedf6]/60">© 2025 AIScore. {t('home.footerTagline')}</div>
           <div className="flex gap-6">
