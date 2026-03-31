@@ -86,7 +86,7 @@ resource "aws_route_table_association" "private" {
 
 resource "aws_security_group" "lambda" {
   name        = "${local.name_prefix}-lambda-sg"
-  description = "Lambda function — egress to RDS, Redis, and internet"
+  description = "Lambda function - egress to RDS, Redis, and internet"
   vpc_id      = aws_vpc.main.id
 
   egress {
@@ -102,7 +102,7 @@ resource "aws_security_group" "lambda" {
 
 resource "aws_security_group" "rds" {
   name        = "${local.name_prefix}-rds-sg"
-  description = "RDS — ingress from Lambda only"
+  description = "RDS - ingress from Lambda only"
   vpc_id      = aws_vpc.main.id
 
   ingress {
@@ -118,7 +118,7 @@ resource "aws_security_group" "rds" {
 
 resource "aws_security_group" "redis" {
   name        = "${local.name_prefix}-redis-sg"
-  description = "ElastiCache Redis — ingress from Lambda only"
+  description = "ElastiCache Redis - ingress from Lambda only"
   vpc_id      = aws_vpc.main.id
 
   ingress {
