@@ -105,10 +105,10 @@ resource "aws_cloudwatch_metric_alarm" "rds_connections" {
 
 resource "aws_cloudwatch_metric_alarm" "billing" {
   alarm_name          = "${local.name_prefix}-daily-cost"
-  alarm_description   = "Estimated daily AWS charges >$15"
+  alarm_description   = "Estimated daily AWS charges >$4"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
-  threshold           = 15
+  threshold           = 4
   namespace           = "AWS/Billing"
   metric_name         = "EstimatedCharges"
   dimensions          = { Currency = "USD" }

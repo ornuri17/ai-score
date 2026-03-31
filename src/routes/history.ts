@@ -13,9 +13,9 @@ export function createHistoryRouter(): Router {
   const router = Router();
 
   router.get('/:domain', async (req: Request, res: Response): Promise<void> => {
-    const rawDomain = req.params.domain;
+    const rawDomain = req.params.domain as string;
 
-    if (!rawDomain || rawDomain.trim().length === 0) {
+    if (rawDomain.trim().length === 0) {
       const errBody: ErrorResponse = { error: 'invalid_domain', message: 'Domain is required' };
       res.status(400).json(errBody);
       return;
@@ -28,7 +28,7 @@ export function createHistoryRouter(): Router {
         ? extractDomain(
             rawDomain.startsWith('http') ? rawDomain : `https://${rawDomain}`,
           )
-        : rawDomain.toLowerCase().trim();
+        : rawDomain.toLowerCase();
     } catch {
       const errBody: ErrorResponse = { error: 'invalid_domain', message: 'Invalid domain' };
       res.status(400).json(errBody);

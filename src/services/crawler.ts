@@ -182,7 +182,7 @@ export async function fetchSitemap(baseUrl: string, sitemapUrl?: string): Promis
     if (response.status !== 200) {
       return { exists: false, urlCount: 0 };
     }
-    const text = response.data as string;
+    const text: string = typeof response.data === 'string' ? response.data : String(response.data);
     // Count <loc> entries as a proxy for URL count
     const matches = text.match(/<loc>/gi);
     return { exists: true, urlCount: matches ? matches.length : 0 };

@@ -88,7 +88,7 @@ export function createAnalyzeRouter(cacheService: CacheService): Router {
     // ── 4a. Fetch page + robots.txt + sitemap in parallel ─────────────────────
     let fetchResult: import('../types').FetchResult;
     try {
-      const origin = (() => {
+      const origin = ((): string => {
         try { return new URL(url).origin; } catch { return url; }
       })();
 

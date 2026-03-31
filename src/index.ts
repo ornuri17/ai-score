@@ -40,7 +40,7 @@ app.use('/api/history', createHistoryRouter());
 app.post('/api/leads', formRateLimiterMiddleware, createLeadsRouter());
 
 // Local dev server — not started in Lambda
-if (!process.env.AWS_LAMBDA_FUNCTION_NAME) {
+if (process.env.AWS_LAMBDA_FUNCTION_NAME === undefined) {
   app.listen(config.port, (): void => {
     logger.info(`AIScore API running on port ${config.port}`);
   });
@@ -50,7 +50,7 @@ if (!process.env.AWS_LAMBDA_FUNCTION_NAME) {
 const expressHandler = serverlessExpress({ app });
 
 export const handler = async (event: Record<string, unknown>, context: unknown): Promise<unknown> => {
-  if (event.action === 'migrate') {
+  if (event['action'] === 'migrate') {
     logger.info('Running database migrations via SQL...');
     const client = new Client({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } });
     try {
@@ -106,8 +106,11 @@ export const handler = async (event: Record<string, unknown>, context: unknown):
       await client.end();
     }
   }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (expressHandler as any)(event, context);
+  return expressHandler(
+    event as Parameters<typeof expressHandler>[0],
+    context as Parameters<typeof expressHandler>[1],
+    (() => undefined) as Parameters<typeof expressHandler>[2],
+  );
 };
 
 export default app;
