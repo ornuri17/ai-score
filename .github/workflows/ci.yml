@@ -53,10 +53,13 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
-      - run: npm ci --production
+      - run: npm ci
       - run: npm run build
-      - name: Package Lambda zip
-        run: zip -r lambda.zip dist/ node_modules/ prisma/ package.json
+      - name: Package Lambda zip (prod deps only)
+        run: |
+          npm ci --omit=dev
+          npx prisma generate
+          zip -r lambda.zip dist/ node_modules/ prisma/ package.json
       - name: Upload to S3
         run: aws s3 cp lambda.zip s3://aiscore-lambda-deployments/lambda.zip
         env:
@@ -69,14 +72,23 @@ jobs:
             --function-name aiscore-api-prod \
             --s3-bucket aiscore-lambda-deployments \
             --s3-key lambda.zip
+          aws lambda wait function-updated --function-name aiscore-api-prod
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: us-east-1
-      - name: Run DB migrations
-        run: npx prisma migrate deploy
+      - name: Run DB migrations via Lambda
+        run: |
+          aws lambda invoke \
+            --function-name aiscore-api-prod \
+            --payload '{"action":"migrate"}' \
+            --cli-binary-format raw-in-base64-out \
+            /tmp/migrate_response.json
+          cat /tmp/migrate_response.json
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
 
   deploy-frontend:
     needs: test
