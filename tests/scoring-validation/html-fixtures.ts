@@ -406,6 +406,14 @@ type FixtureCategory =
  *
  * The url parameter is used to set finalUrl on the fixture.
  */
+const DEFAULT_ROBOTS: FetchResult['robotsTxt'] = {
+  exists: true,
+  blocksAllCrawlers: false,
+  blocksAiCrawlers: false,
+  sitemapUrls: [],
+};
+const DEFAULT_SITEMAP: FetchResult['sitemap'] = { exists: true, urlCount: 10 };
+
 export function getFixtureForCategory(
   category: string,
   url: string,
@@ -418,6 +426,8 @@ export function getFixtureForCategory(
         responseTimeMs: 800,
         redirectCount: 0,
         finalUrl: url,
+        robotsTxt: DEFAULT_ROBOTS,
+        sitemap: DEFAULT_SITEMAP,
       };
 
     case 'spa_no_schema':
@@ -427,6 +437,8 @@ export function getFixtureForCategory(
         responseTimeMs: 1200,
         redirectCount: 1,
         finalUrl: url,
+        robotsTxt: DEFAULT_ROBOTS,
+        sitemap: DEFAULT_SITEMAP,
       };
 
     case 'spa_with_schema':
@@ -436,6 +448,8 @@ export function getFixtureForCategory(
         responseTimeMs: 1500,
         redirectCount: 0,
         finalUrl: url,
+        robotsTxt: DEFAULT_ROBOTS,
+        sitemap: DEFAULT_SITEMAP,
       };
 
     case 'ecommerce':
@@ -445,6 +459,8 @@ export function getFixtureForCategory(
         responseTimeMs: 2500,
         redirectCount: 1,
         finalUrl: url,
+        robotsTxt: DEFAULT_ROBOTS,
+        sitemap: DEFAULT_SITEMAP,
       };
 
     case 'media':
@@ -454,6 +470,8 @@ export function getFixtureForCategory(
         responseTimeMs: 1800,
         redirectCount: 0,
         finalUrl: url,
+        robotsTxt: DEFAULT_ROBOTS,
+        sitemap: DEFAULT_SITEMAP,
       };
 
     case 'problematic_minimal':
@@ -463,6 +481,8 @@ export function getFixtureForCategory(
         responseTimeMs: 500,
         redirectCount: 0,
         finalUrl: url,
+        robotsTxt: DEFAULT_ROBOTS,
+        sitemap: DEFAULT_SITEMAP,
       };
 
     case 'problematic_http':
@@ -472,6 +492,8 @@ export function getFixtureForCategory(
         responseTimeMs: 600,
         redirectCount: 0,
         finalUrl: url,
+        robotsTxt: DEFAULT_ROBOTS,
+        sitemap: DEFAULT_SITEMAP,
       };
 
     case 'problematic_auth':
@@ -481,6 +503,8 @@ export function getFixtureForCategory(
         responseTimeMs: 400,
         redirectCount: 0,
         finalUrl: url,
+        robotsTxt: DEFAULT_ROBOTS,
+        sitemap: DEFAULT_SITEMAP,
       };
 
     case 'problematic_404':
@@ -490,6 +514,8 @@ export function getFixtureForCategory(
         responseTimeMs: 350,
         redirectCount: 0,
         finalUrl: url,
+        robotsTxt: DEFAULT_ROBOTS,
+        sitemap: DEFAULT_SITEMAP,
       };
 
     default:
