@@ -39,7 +39,7 @@ function fetchWithRedirects(
       const statusCode = res.statusCode ?? 0;
 
       // Follow redirects
-      if ((statusCode === 301 || statusCode === 302 || statusCode === 303 || statusCode === 307 || statusCode === 308) && res.headers.location) {
+      if ((statusCode === 301 || statusCode === 302 || statusCode === 303 || statusCode === 307 || statusCode === 308) && res.headers.location != null && res.headers.location !== '') {
         if (redirectCount >= maxRedirects) {
           resolve({ body: '', statusCode, finalUrl: rawUrl, redirectCount, responseTimeMs: Date.now() - startTime });
           res.resume();

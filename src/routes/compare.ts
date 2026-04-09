@@ -47,7 +47,7 @@ async function getOrFetchScore(url: string, cacheService: CacheService): Promise
   return result;
 }
 
-function validateUrl(raw: unknown, field: string): string | null {
+function validateUrl(raw: unknown, _field: string): string | null {
   if (typeof raw !== 'string' || raw.trim() === '') return null;
   try {
     const parsed = new URL(raw.trim());
@@ -67,11 +67,11 @@ export function createCompareRouter(cacheService: CacheService): Router {
     const myUrlRaw = validateUrl(body.myUrl, 'myUrl');
     const competitorUrlRaw = validateUrl(body.competitorUrl, 'competitorUrl');
 
-    if (!myUrlRaw) {
+    if (myUrlRaw == null) {
       res.status(400).json({ error: 'myUrl is required and must be a valid http or https URL' });
       return;
     }
-    if (!competitorUrlRaw) {
+    if (competitorUrlRaw == null) {
       res.status(400).json({ error: 'competitorUrl is required and must be a valid http or https URL' });
       return;
     }

@@ -17,12 +17,12 @@ export function createLeadsRouter(): RequestHandler {
 
     const { checkId, name, email, company, phone } = body;
 
-    if (!name || typeof name !== 'string' || name.trim() === '') {
+    if (name == null || typeof name !== 'string' || name.trim() === '') {
       res.status(400).json({ error: 'name is required' });
       return;
     }
 
-    if (!email || typeof email !== 'string' || !isValidEmail(email.trim())) {
+    if (email == null || typeof email !== 'string' || !isValidEmail(email.trim())) {
       res.status(400).json({ error: 'A valid email is required' });
       return;
     }

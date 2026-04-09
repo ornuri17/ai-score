@@ -59,11 +59,11 @@ function isAiCrawlerBlocked(robotsTxt: string, bot: string): boolean {
 function extractSummary(html: string): string {
   // 1. meta description
   const metaDesc = extractMetaContent(html, 'description');
-  if (metaDesc && metaDesc.trim().length > 0) return metaDesc.trim();
+  if (metaDesc != null && metaDesc.trim().length > 0) return metaDesc.trim();
 
   // 2. og:description
   const ogDesc = extractMetaContent(html, 'og:description');
-  if (ogDesc && ogDesc.trim().length > 0) return ogDesc.trim();
+  if (ogDesc != null && ogDesc.trim().length > 0) return ogDesc.trim();
 
   // 3. First <p> with >= 80 chars
   const pMatches = html.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi);
@@ -112,7 +112,7 @@ export function scoreUrl(url: string, crawlResult: CrawlResult): ScoreResult {
   const is200 = statusCode === 200;
 
   // Sitemap detection
-  const sitemapInRobots = robotsTxt ? /sitemap:/i.test(robotsTxt) : false;
+  const sitemapInRobots = robotsTxt != null && robotsTxt !== '' ? /sitemap:/i.test(robotsTxt) : false;
   const sitemapLinkInHtml = /<link[^>]+rel=["']sitemap["']/i.test(html);
   const hasSitemap = sitemapXml !== null || sitemapInRobots || sitemapLinkInHtml;
 

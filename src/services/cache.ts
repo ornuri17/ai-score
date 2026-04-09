@@ -24,17 +24,18 @@ function createMemoryCache(): CacheService {
   const store = new Map<string, MemoryEntry>();
 
   return {
-    async get(key: string): Promise<ScoreResult | null> {
+    get(key: string): Promise<ScoreResult | null> {
       const entry = store.get(key);
-      if (!entry) return null;
+      if (entry == null) return Promise.resolve(null);
       if (Date.now() > entry.expiresAt) {
         store.delete(key);
-        return null;
+        return Promise.resolve(null);
       }
-      return entry.value;
+      return Promise.resolve(entry.value);
     },
-    async set(key: string, value: ScoreResult, ttlSeconds: number): Promise<void> {
+    set(key: string, value: ScoreResult, ttlSeconds: number): Promise<void> {
       store.set(key, { value, expiresAt: Date.now() + ttlSeconds * 1000 });
+      return Promise.resolve();
     },
   };
 }
@@ -59,7 +60,7 @@ async function createRedisCache(redisUrl: string): Promise<CacheService> {
   return {
     async get(key: string): Promise<ScoreResult | null> {
       const raw = await client.get(key).catch(() => null);
-      if (!raw) return null;
+      if (raw == null || raw === '') return null;
       try {
         return JSON.parse(raw) as ScoreResult;
       } catch {
@@ -82,7 +83,7 @@ async function createRedisCache(redisUrl: string): Promise<CacheService> {
 export function createCacheService(): CacheService {
   const redisUrl = process.env['REDIS_URL'];
 
-  if (redisUrl) {
+  if (redisUrl != null && redisUrl !== '') {
     // Attempt Redis; on failure fall back to memory cache transparently
     const memoryFallback = createMemoryCache();
     let resolvedCache: CacheService = memoryFallback;
