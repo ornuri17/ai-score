@@ -79,9 +79,9 @@ function SiteColumn({ result, label, isWinner, isTie }: SiteColumnProps) {
       <div>
         <h3 className="text-xs font-label uppercase tracking-wide text-[#a9abb3] mb-3">Breakdown</h3>
         <div className="space-y-3">
-          {(Object.keys(result.dimensions) as Array<keyof typeof result.dimensions>).map((key) => (
+          {(Object.keys(result.dimensions) as Array<keyof ScoreResult['dimensions']>).map((key) => (
             <DimensionBar
-              key={key}
+              key={String(key)}
               label={DIMENSION_LABELS[key]}
               score={result.dimensions[key]}
               maxScore={DIMENSION_MAX[key]}
@@ -156,8 +156,8 @@ export default function CompareResults() {
   const bannerBg = isTie ? 'bg-[#a68cff]/10 border-[#a68cff]/20' : myWins ? 'bg-[#81ecff]/10 border-[#81ecff]/20' : 'bg-[#ff6e84]/10 border-[#ff6e84]/20';
   const bannerTitleColor = isTie ? 'text-[#a68cff]' : myWins ? 'text-[#81ecff]' : 'text-[#ff6e84]';
 
-  const myUniqueIssues = myResult.issues.filter((i) => !compResult.issues.includes(i));
-  const compUniqueIssues = compResult.issues.filter((i) => !myResult.issues.includes(i));
+  const myUniqueIssues = myResult.issues.filter((i: string) => !compResult.issues.includes(i));
+  const compUniqueIssues = compResult.issues.filter((i: string) => !myResult.issues.includes(i));
 
   return (
     <main className="min-h-screen py-28 px-4 sm:px-6">

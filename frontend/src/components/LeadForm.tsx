@@ -5,6 +5,8 @@ import { validatePhone } from '../services/phoneValidator';
 
 interface Props {
   checkId: string;
+  myUrl?: string;
+  competitorUrl?: string;
 }
 
 export default function LeadForm({ checkId }: Props) {

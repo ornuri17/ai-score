@@ -69,3 +69,51 @@ export async function getHistory(domain: string): Promise<HistoryResponse> {
   const response = await axios.get(`${API_BASE}/api/history/${encodeURIComponent(domain)}`);
   return response.data;
 }
+
+export interface ScoreResult {
+  checkId: string;
+  url: string;
+  domain: string;
+  score: number;
+  dimensions: {
+    crawlability: number;
+    content: number;
+    technical: number;
+    quality: number;
+  };
+  issues: string[];
+  summary: string;
+  checkedAt: string;
+}
+
+export interface CompareResult {
+  myUrl: ScoreResult;
+  competitorUrl: ScoreResult;
+  winner: 'my' | 'competitor' | 'tie';
+  delta: number;
+}
+
+export async function compareWebsites(myUrl: string, competitorUrl: string): Promise<CompareResult> {
+  const [myRes, compRes] = await Promise.all([
+    analyzeWebsite(myUrl),
+    analyzeWebsite(competitorUrl),
+  ]);
+
+  const toScoreResult = (r: AnalyzeResponse, url: string): ScoreResult => ({
+    checkId: r.check_id,
+    url,
+    domain: new URL(url).hostname,
+    score: r.score,
+    dimensions: r.dimensions,
+    issues: r.issues,
+    summary: r.summary || '',
+    checkedAt: r.checked_at,
+  });
+
+  const my = toScoreResult(myRes, myUrl);
+  const comp = toScoreResult(compRes, competitorUrl);
+  const delta = my.score - comp.score;
+  const winner: CompareResult['winner'] = delta > 0 ? 'my' : delta < 0 ? 'competitor' : 'tie';
+
+  return { myUrl: my, competitorUrl: comp, winner, delta };
+}
