@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { analyzeWebsite } from '../services/api';
+import { trackCheckSubmitted } from '../services/analytics';
 import NavBar from '../components/NavBar';
 
 export default function Home() {
@@ -22,6 +23,7 @@ export default function Home() {
     setLoading(true);
     setError('');
     const normalizedUrl = trimmed.startsWith('http://') || trimmed.startsWith('https://') ? trimmed : `https://${trimmed}`;
+    trackCheckSubmitted(normalizedUrl);
     try {
       const result = await analyzeWebsite(normalizedUrl);
       const domain = new URL(normalizedUrl).hostname;

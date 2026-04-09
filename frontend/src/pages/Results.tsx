@@ -9,6 +9,7 @@ import NavBar from '../components/NavBar';
 import ScoreHistory from '../components/ScoreHistory';
 import { analyzeWebsite, getHistory } from '../services/api';
 import type { AnalyzeResponse, HistoryPoint } from '../services/api';
+import { trackCheckCompleted } from '../services/analytics';
 
 export default function Results() {
   const { t } = useTranslation();
@@ -29,6 +30,7 @@ export default function Results() {
       .then((data) => {
         setResult(data);
         setLoading(false);
+        trackCheckCompleted(domain, data.score);
         getHistory(domain).then((h) => setHistory(h.history)).catch(() => {});
       })
       .catch(() => {

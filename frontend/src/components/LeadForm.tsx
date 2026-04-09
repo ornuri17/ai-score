@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { submitLead } from '../services/api';
 import { validatePhone } from '../services/phoneValidator';
+import { trackLeadSubmitted } from '../services/analytics';
 
 interface Props {
   checkId: string;
@@ -55,6 +56,7 @@ export default function LeadForm({ checkId }: Props) {
         email: formData.email,
         phone: phoneResult.formatted || formData.phone,
       });
+      trackLeadSubmitted(checkId);
       setSubmitted(true);
     } catch (err: unknown) {
       const status = (err as { response?: { status?: number } })?.response?.status;
