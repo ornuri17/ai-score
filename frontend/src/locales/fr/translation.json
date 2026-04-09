@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "AIScore",
+    "title": "GradeByAI",
     "language": "Langue"
   },
   "nav": {
@@ -22,7 +22,7 @@
     "badge": "Le Prisme Cognitif est actif",
     "heroTitle1": "Votre site web est-il",
     "heroTitle2": "prêt pour l'IA ?",
-    "description": "Optimisez votre contenu pour les grands modèles de langage. AI-Score analyse la lisibilité de votre site pour les crawlers qui alimentent ChatGPT, Claude et Perplexity.",
+    "description": "Optimisez votre contenu pour les grands modèles de langage. GradeByAI analyse la lisibilité de votre site pour les crawlers qui alimentent ChatGPT, Claude et Perplexity.",
     "analyzeButton": "Analyser maintenant",
     "serverError": "Impossible de joindre le serveur. Veuillez réessayer.",
     "howItWorksTitle": "Comment ça marche",
@@ -42,7 +42,7 @@
     "benefit1Title": "De meilleures synthèses IA",
     "benefit1Desc": "Quand ChatGPT résume votre activité, vous voulez que ce soit exact. Nous veillons à ce que vos arguments de valeur clés soient impossibles à ignorer.",
     "benefit2Title": "Visibilité dans la recherche IA",
-    "benefit2Desc": "Perplexity et SearchGPT s'appuient sur un contexte structuré. AI-Score vous donne l'avantage technique pour apparaître dans leurs citations.",
+    "benefit2Desc": "Perplexity et SearchGPT s'appuient sur un contexte structuré. GradeByAI vous donne l'avantage technique pour apparaître dans leurs citations.",
     "benefit3Title": "Trafic pérenne",
     "benefit3Desc": "Le SEO traditionnel est en déclin. Optimisez pour la « Couche Neurale » où la prochaine génération d'utilisateurs découvre les marques.",
     "mockLabel1": "Analyse en direct",
@@ -112,7 +112,7 @@
   },
   "howItWorks": {
     "badge": "LE PROCESSUS",
-    "title": "Comment fonctionne AIScore",
+    "title": "Comment fonctionne GradeByAI",
     "subtitle": "Quatre dimensions. Un score définitif. Une clarté complète sur votre préparation à l'IA.",
     "stepsBadge": "LES ÉTAPES",
     "step1Title": "Nous explorons votre site",

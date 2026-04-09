@@ -11,7 +11,7 @@ export default function Terms() {
         <section className="mb-8">
           <h2 className="text-xl font-semibold text-slate-900 mb-3">The tool is provided "as-is"</h2>
           <p className="text-sm leading-relaxed">
-            AIScore is a free tool. We make no guarantees about the accuracy of scores or the completeness of analysis.
+            GradeByAI is a free tool. We make no guarantees about the accuracy of scores or the completeness of analysis.
             Scores are a best-effort estimate based on publicly accessible content at the time of analysis.
           </p>
         </section>
@@ -28,7 +28,7 @@ export default function Terms() {
         <section className="mb-8">
           <h2 className="text-xl font-semibold text-slate-900 mb-3">No warranty</h2>
           <p className="text-sm leading-relaxed">
-            Scores are provided for informational purposes only. We are not liable for any decisions made based on AIScore results.
+            Scores are provided for informational purposes only. We are not liable for any decisions made based on GradeByAI results.
             Improving your score does not guarantee any specific outcome in AI-generated search results.
           </p>
         </section>
@@ -43,13 +43,13 @@ export default function Terms() {
         <section>
           <h2 className="text-xl font-semibold text-slate-900 mb-3">Contact</h2>
           <p className="text-sm">
-            Questions? Email <a href="mailto:hello@aiscore.io" className="text-blue-600 underline">hello@aiscore.io</a>
+            Questions? Email <a href="mailto:hello@gradebyai.com" className="text-blue-600 underline">hello@gradebyai.com</a>
           </p>
         </section>
       </div>
 
       <footer className="bg-slate-900 text-slate-400 py-6 text-center text-sm">
-        <a href="/" className="hover:text-white underline">← Back to AIScore</a>
+        <a href="/" className="hover:text-white underline">← Back to GradeByAI</a>
       </footer>
     </>
   );

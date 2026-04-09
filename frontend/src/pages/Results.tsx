@@ -264,8 +264,8 @@ export default function Results() {
 
       <footer className="bg-[#0b0e14] w-full py-12 border-t border-[#45484f]/15">
         <div className="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="text-lg font-bold text-[#81ecff] font-headline">AI-Score</div>
-          <div className="font-body text-sm text-[#ecedf6]/60">© 2025 AIScore.</div>
+          <div className="text-lg font-bold text-[#81ecff] font-headline">GradeByAI</div>
+          <div className="font-body text-sm text-[#ecedf6]/60">© 2025 GradeByAI.</div>
           <div className="flex gap-6">
             <a className="text-[#ecedf6]/50 hover:text-[#a68cff] transition-colors font-body text-sm" href="/privacy">Privacy</a>
             <a className="text-[#ecedf6]/50 hover:text-[#a68cff] transition-colors font-body text-sm" href="/terms">Terms</a>

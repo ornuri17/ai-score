@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "AIScore",
+    "title": "GradeByAI",
     "language": "Idioma"
   },
   "nav": {
@@ -17,7 +17,7 @@
     "badge": "El Prisma Cognitivo está activo",
     "heroTitle1": "¿Tu sitio web está",
     "heroTitle2": "listo para la IA?",
-    "description": "Optimiza tu contenido para los grandes modelos de lenguaje. AI-Score analiza la legibilidad de tu sitio para los crawlers que impulsan ChatGPT, Claude y Perplexity.",
+    "description": "Optimiza tu contenido para los grandes modelos de lenguaje. GradeByAI analiza la legibilidad de tu sitio para los crawlers que impulsan ChatGPT, Claude y Perplexity.",
     "analyzeButton": "Analizar ahora",
     "serverError": "No se puede conectar al servidor. Por favor, inténtalo de nuevo.",
     "howItWorksTitle": "Cómo funciona",
@@ -37,7 +37,7 @@
     "benefit1Title": "Mejores resúmenes de IA",
     "benefit1Desc": "Cuando ChatGPT resume tu negocio, quieres que sea preciso. Nos aseguramos de que tus propuestas de valor clave sean imposibles de ignorar.",
     "benefit2Title": "Visibilidad en la búsqueda IA",
-    "benefit2Desc": "Perplexity y SearchGPT dependen del contexto estructurado. AI-Score te da la ventaja técnica para aparecer en sus citas.",
+    "benefit2Desc": "Perplexity y SearchGPT dependen del contexto estructurado. GradeByAI te da la ventaja técnica para aparecer en sus citas.",
     "benefit3Title": "Tráfico a prueba de futuro",
     "benefit3Desc": "El SEO tradicional está muriendo. Optimiza para la \"Capa Neural\" donde la próxima generación de usuarios descubre marcas.",
     "mockLabel1": "Análisis en vivo",
@@ -92,7 +92,7 @@
   },
   "howItWorks": {
     "badge": "EL PROCESO",
-    "title": "Cómo funciona AIScore",
+    "title": "Cómo funciona GradeByAI",
     "subtitle": "Cuatro dimensiones. Una puntuación definitiva. Claridad completa sobre tu preparación para la IA.",
     "step1Title": "Rastreamos tu sitio",
     "step1Desc": "Nuestro crawler visita tu sitio en vivo como lo haría un asistente de IA — siguiendo robots.txt, verificando sitemaps y probando el renderizado JavaScript.",

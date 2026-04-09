@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "AIScore",
+    "title": "GradeByAI",
     "language": "Sprache"
   },
   "nav": {
@@ -17,7 +17,7 @@
     "badge": "Das Kognitive Prisma ist aktiv",
     "heroTitle1": "Ist Ihre Website",
     "heroTitle2": "KI-bereit?",
-    "description": "Optimieren Sie Ihre Inhalte für Large Language Models. AI-Score analysiert die Lesbarkeit Ihrer Website für die Crawler, die ChatGPT, Claude und Perplexity antreiben.",
+    "description": "Optimieren Sie Ihre Inhalte für Large Language Models. GradeByAI analysiert die Lesbarkeit Ihrer Website für die Crawler, die ChatGPT, Claude und Perplexity antreiben.",
     "analyzeButton": "Jetzt analysieren",
     "serverError": "Server nicht erreichbar. Bitte versuchen Sie es erneut.",
     "howItWorksTitle": "So funktioniert's",
@@ -37,7 +37,7 @@
     "benefit1Title": "Bessere KI-Zusammenfassungen",
     "benefit1Desc": "Wenn ChatGPT Ihr Unternehmen zusammenfasst, soll es korrekt sein. Wir stellen sicher, dass Ihre Kernaussagen unmöglich zu übersehen sind.",
     "benefit2Title": "Sichtbarkeit in der KI-Suche",
-    "benefit2Desc": "Perplexity und SearchGPT verlassen sich auf strukturierten Kontext. AI-Score gibt Ihnen den technischen Vorteil, in deren Zitaten zu erscheinen.",
+    "benefit2Desc": "Perplexity und SearchGPT verlassen sich auf strukturierten Kontext. GradeByAI gibt Ihnen den technischen Vorteil, in deren Zitaten zu erscheinen.",
     "benefit3Title": "Zukunftssicherer Traffic",
     "benefit3Desc": "Traditionelles SEO stirbt. Optimieren Sie für die \"Neuronale Schicht\", wo die nächste Generation von Nutzern Marken entdeckt.",
     "mockLabel1": "Live-Analyse",
@@ -92,7 +92,7 @@
   },
   "howItWorks": {
     "badge": "DER PROZESS",
-    "title": "So funktioniert AIScore",
+    "title": "So funktioniert GradeByAI",
     "subtitle": "Vier Dimensionen. Ein definitiver Score. Vollständige Klarheit über Ihre KI-Bereitschaft.",
     "step1Title": "Wir crawlen Ihre Website",
     "step1Desc": "Unser Crawler besucht Ihre Live-Website wie ein KI-Assistent — folgt robots.txt, prüft Sitemaps und testet JavaScript-Rendering.",

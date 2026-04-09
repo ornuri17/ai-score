@@ -1,7 +1,7 @@
 {
-  "name": "aiscore-api",
+  "name": "gradebyai-api",
   "version": "0.1.0",
-  "description": "AIScore — Express + TypeScript API that scores website AI-friendliness",
+  "description": "GradeByAI — Express + TypeScript API that scores website AI-friendliness",
   "main": "dist/index.js",
   "scripts": {
     "dev": "nodemon --watch src --ext ts --exec ts-node src/index.ts",

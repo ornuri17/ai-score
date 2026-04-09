@@ -23,9 +23,9 @@ variable "sendgrid_api_key" {
 }
 
 variable "domain_name" {
-  description = "Primary domain (e.g. aiscore.io)"
+  description = "Primary domain (e.g. gradebyai.com)"
   type        = string
-  default     = "aiscore.io"
+  default     = "gradebyai.com"
 }
 
 variable "acm_certificate_arn" {

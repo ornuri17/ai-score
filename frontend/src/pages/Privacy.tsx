@@ -41,7 +41,7 @@ export default function Privacy() {
           <h2 className="text-xl font-semibold text-slate-900 mb-3">Your rights</h2>
           <p className="text-sm leading-relaxed">
             You may request access to, correction of, or deletion of your personal data at any time.
-            Email us at <a href="mailto:privacy@aiscore.io" className="text-blue-600 underline">privacy@aiscore.io</a> and we'll respond within 30 days.
+            Email us at <a href="mailto:privacy@gradebyai.com" className="text-blue-600 underline">privacy@gradebyai.com</a> and we'll respond within 30 days.
           </p>
         </section>
 
@@ -55,13 +55,13 @@ export default function Privacy() {
         <section>
           <h2 className="text-xl font-semibold text-slate-900 mb-3">Contact</h2>
           <p className="text-sm">
-            Questions? Email <a href="mailto:privacy@aiscore.io" className="text-blue-600 underline">privacy@aiscore.io</a>
+            Questions? Email <a href="mailto:privacy@gradebyai.com" className="text-blue-600 underline">privacy@gradebyai.com</a>
           </p>
         </section>
       </div>
 
       <footer className="bg-slate-900 text-slate-400 py-6 text-center text-sm">
-        <a href="/" className="hover:text-white underline">← Back to AIScore</a>
+        <a href="/" className="hover:text-white underline">← Back to GradeByAI</a>
       </footer>
     </>
   );

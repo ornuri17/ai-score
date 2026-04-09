@@ -234,8 +234,8 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-[#0b0e14] w-full py-12 border-t border-[#45484f]/15">
         <div className="max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-2 md:flex md:flex-row md:justify-between items-center gap-4 md:gap-6">
-          <div className="text-lg font-bold text-[#81ecff] font-headline">AI-Score</div>
-          <div className="font-body text-sm text-[#ecedf6]/60">© 2025 AIScore. {t('home.footerTagline')}</div>
+          <div className="text-lg font-bold text-[#81ecff] font-headline">GradeByAI</div>
+          <div className="font-body text-sm text-[#ecedf6]/60">© 2025 GradeByAI. {t('home.footerTagline')}</div>
           <div className="flex gap-6">
             <a className="text-[#ecedf6]/50 hover:text-[#a68cff] transition-colors font-body text-sm" href="/privacy">{t('howItWorks.privacy')}</a>
             <a className="text-[#ecedf6]/50 hover:text-[#a68cff] transition-colors font-body text-sm" href="/terms">{t('howItWorks.terms')}</a>

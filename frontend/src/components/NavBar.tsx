@@ -39,7 +39,7 @@ export default function NavBar() {
         <div className="flex justify-between items-center px-6 md:px-8 py-4 max-w-7xl mx-auto">
           {/* Logo */}
           <a href="/" className="text-2xl font-black tracking-tighter text-[#81ecff] font-headline">
-            AI-Score
+            GradeByAI
           </a>
 
           {/* Desktop nav links */}

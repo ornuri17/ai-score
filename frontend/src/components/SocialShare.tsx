@@ -7,7 +7,7 @@ interface Props {
 
 export default function SocialShare({ score, domain }: Props) {
   useTranslation();
-  const shareText = `${domain} scores ${score}/100 on AI-friendliness. Check yours at AIScore!`;
+  const shareText = `${domain} scores ${score}/100 on AI-friendliness. Check yours at GradeByAI!`;
   const shareUrl = window.location.href;
 
   return (

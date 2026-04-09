@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "AIScore",
+    "title": "GradeByAI",
     "language": "Language"
   },
   "nav": {
@@ -22,7 +22,7 @@
     "badge": "The Cognitive Prism is active",
     "heroTitle1": "Is Your Website",
     "heroTitle2": "AI-Ready?",
-    "description": "Optimize your content for Large Language Models. AI-Score analyzes your site's legibility for the crawlers that power ChatGPT, Claude, and Perplexity.",
+    "description": "Optimize your content for Large Language Models. GradeByAI analyzes your site's legibility for the crawlers that power ChatGPT, Claude, and Perplexity.",
     "analyzeButton": "Analyze Now",
     "serverError": "Cannot reach the server. Please try again.",
     "howItWorksTitle": "How it Works",
@@ -42,7 +42,7 @@
     "benefit1Title": "Better AI Summaries",
     "benefit1Desc": "When ChatGPT summarizes your business, you want it to be accurate. We ensure your core value props are impossible to miss.",
     "benefit2Title": "Visibility in AI Search",
-    "benefit2Desc": "Perplexity and SearchGPT rely on structured context. AI-Score gives you the technical edge to appear in their citations.",
+    "benefit2Desc": "Perplexity and SearchGPT rely on structured context. GradeByAI gives you the technical edge to appear in their citations.",
     "benefit3Title": "Future-Proof Traffic",
     "benefit3Desc": "Traditional SEO is dying. Optimize for the \"Neural Layer\" where the next generation of users is discovering brands.",
     "mockLabel1": "Live Analysis",
@@ -112,7 +112,7 @@
   },
   "howItWorks": {
     "badge": "THE PROCESS",
-    "title": "How AIScore Works",
+    "title": "How GradeByAI Works",
     "subtitle": "Four dimensions. One definitive score. Complete clarity on your AI readiness.",
     "stepsBadge": "THE STEPS",
     "step1Title": "We Crawl Your Site",

@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "AIScore",
+    "title": "GradeByAI",
     "language": "שפה"
   },
   "nav": {
@@ -17,7 +17,7 @@
     "badge": "הפריזמה הקוגניטיבית פעילה",
     "heroTitle1": "האתר שלך —",
     "heroTitle2": "מוכן ל-AI?",
-    "description": "AI-Score בודק את האתר שלך ומראה כמה טוב ChatGPT, Claude ו-Perplexity מצליחים למצוא ולהבין אותו.",
+    "description": "GradeByAI בודק את האתר שלך ומראה כמה טוב ChatGPT, Claude ו-Perplexity מצליחים למצוא ולהבין אותו.",
     "analyzeButton": "בדוק עכשיו",
     "serverError": "לא הצלחנו להתחבר לשרת. נסה שוב.",
     "howItWorksTitle": "איך זה עובד",
@@ -37,7 +37,7 @@
     "benefit1Title": "ChatGPT יסביר אותך טוב יותר",
     "benefit1Desc": "כשמישהו שואל על העסק שלך, אתה רוצה שה-AI יתן תשובה מדויקת. אנחנו דואגים שזה יקרה.",
     "benefit2Title": "להופיע בתוצאות AI",
-    "benefit2Desc": "Perplexity ו-SearchGPT מחפשים תוכן מאורגן. AI-Score עוזר לך להיות מי שהם מציגים.",
+    "benefit2Desc": "Perplexity ו-SearchGPT מחפשים תוכן מאורגן. GradeByAI עוזר לך להיות מי שהם מציגים.",
     "benefit3Title": "תנועה לטווח ארוך",
     "benefit3Desc": "SEO רגיל הולך ומאבד רלוונטיות. כדאי להתחיל להיות מוכן לעידן ה-AI עכשיו.",
     "mockLabel1": "ניתוח בזמן אמת",
@@ -92,7 +92,7 @@
   },
   "howItWorks": {
     "badge": "התהליך",
-    "title": "איך AIScore עובד",
+    "title": "איך GradeByAI עובד",
     "subtitle": "ארבעה דברים שאנחנו בודקים. ציון אחד שאומר לך איפה אתה עומד.",
     "step1Title": "סורקים את האתר שלך",
     "step1Desc": "הבוט שלנו מבקר באתר בדיוק כמו ש-AI היה עושה — בודק robots.txt, sitemap וכיצד הדפים נטענים.",

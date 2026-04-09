@@ -136,7 +136,7 @@ export default function HowItWorks() {
       <footer className="bg-[#10131a] py-8">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-[#a9abb3] text-sm">
-            &copy; {new Date().getFullYear()} AIScore. {t('howItWorks.footerRights')}
+            &copy; {new Date().getFullYear()} GradeByAI. {t('howItWorks.footerRights')}
           </p>
           <div className="flex gap-6">
             <a
