@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import type { CompareResult, ScoreResult } from '../services/api';
+import { trackCompareCompleted } from '../services/analytics';
 import DimensionBar from '../components/DimensionBar';
 import IssueList from '../components/IssueList';
 import LeadForm from '../components/LeadForm';
@@ -137,6 +139,11 @@ export default function CompareResults() {
   }
 
   const { myUrl: myResult, competitorUrl: compResult, winner, delta } = compare;
+
+  useEffect(() => {
+    trackCompareCompleted(myResult.domain, compResult.domain, winner, delta);
+  }, [myResult.domain, compResult.domain, winner, delta]);
+
   const isTie = winner === 'tie';
   const myWins = winner === 'my';
   const compWins = winner === 'competitor';
