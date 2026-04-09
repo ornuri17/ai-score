@@ -1,0 +1,21 @@
+# GradeByAI
+> GradeByAI scores your website's AI-friendliness (AEO/GEO readiness) and gives you an actionable plan to be cited and discovered by AI systems like ChatGPT, Claude, and Perplexity.
+
+## What it does
+- Analyzes crawlability (robots.txt, sitemap, JS rendering): 30 points
+- Evaluates content structure (headings, semantic HTML, schema.org): 35 points
+- Audits technical SEO (meta tags, canonical URLs, structured data): 25 points
+- Measures content quality (readability, depth, topical coverage): 10 points
+
+## Use cases
+- SEO professionals checking AI discoverability
+- Businesses wanting to appear in AI-generated answers
+- Developers auditing sites for LLM crawlability
+
+## Pricing
+Free to use. Premium AEO consultation available.
+
+## Links
+- Homepage: https://gradebyai.com
+- How it works: https://gradebyai.com/#how-it-works
+- Contact: privacy@gradebyai.com
