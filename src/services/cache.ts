@@ -1,147 +1,115 @@
 // ============================================================
 // AIScore Cache Service
-// Redis-first cache with DB fallback and circuit breaker.
+// Uses ioredis when available, falls back to in-memory Map.
 // ============================================================
 
-import Redis from 'ioredis';
-import { CachedCheck } from '../types';
-import { config } from '../config';
+import { ScoreResult } from '../types';
 import { logger } from '../logger';
 
-// Minimal interface for the DB dependency — avoids hard coupling to Prisma
-// until the scoring workstream's src/db/client.ts is available.
-export interface DbClient {
-  checks: {
-    findFirst: (args: {
-      where: {
-        domain: string;
-        expiresAt: { gt: Date };
-      };
-      orderBy: { cachedAt: 'desc' };
-    }) => Promise<CachedCheck | null>;
-  };
-}
-
 export interface CacheService {
-  get(domain: string): Promise<CachedCheck | null>;
-  set(domain: string, value: CachedCheck): Promise<void>;
-  isHealthy(): boolean;
+  get(key: string): Promise<ScoreResult | null>;
+  set(key: string, value: ScoreResult, ttlSeconds: number): Promise<void>;
 }
 
-interface CircuitBreakerState {
-  failures: number;
-  openedAt: number | null; // timestamp when circuit was opened
+// ---------------------------------------------------------------------------
+// In-memory fallback
+// ---------------------------------------------------------------------------
+
+interface MemoryEntry {
+  value: ScoreResult;
+  expiresAt: number;
 }
 
-function redisKeyFor(domain: string): string {
-  return `checks:${domain}`;
-}
+function createMemoryCache(): CacheService {
+  const store = new Map<string, MemoryEntry>();
 
-function isExpired(check: CachedCheck): boolean {
-  return new Date(check.expiresAt).getTime() <= Date.now();
-}
-
-export function createCacheService(db?: DbClient): CacheService {
-  const redis = new Redis(config.redis.url);
-
-  const cb: CircuitBreakerState = {
-    failures: 0,
-    openedAt: null,
-  };
-
-  function isCircuitOpen(): boolean {
-    if (cb.openedAt === null) return false;
-    const elapsed = Date.now() - cb.openedAt;
-    if (elapsed >= config.rateLimit.circuitBreakerResetMs) {
-      // Auto-reset after the reset window
-      cb.failures = 0;
-      cb.openedAt = null;
-      logger.warn('Cache circuit breaker: closed (reset after timeout)');
-      return false;
-    }
-    return true;
-  }
-
-  function recordFailure(): void {
-    cb.failures += 1;
-    if (cb.failures >= config.rateLimit.circuitBreakerFailures && cb.openedAt === null) {
-      cb.openedAt = Date.now();
-      logger.warn('Cache circuit breaker: opened after consecutive Redis failures', {
-        failures: cb.failures,
-      });
-    }
-  }
-
-  function recordSuccess(): void {
-    if (cb.failures > 0) {
-      cb.failures = 0;
-      cb.openedAt = null;
-      logger.warn('Cache circuit breaker: closed after successful Redis call');
-    }
-  }
-
-  async function getFromDb(domain: string): Promise<CachedCheck | null> {
-    if (db === undefined) return null;
-    try {
-      return await db.checks.findFirst({
-        where: { domain, expiresAt: { gt: new Date() } },
-        orderBy: { cachedAt: 'desc' },
-      });
-    } catch (err) {
-      logger.error('Cache DB fallback error', err);
-      return null;
-    }
-  }
-
-  async function get(domain: string): Promise<CachedCheck | null> {
-    // If circuit is open, skip Redis entirely
-    if (!isCircuitOpen()) {
-      try {
-        const raw = await redis.get(redisKeyFor(domain));
-        if (raw !== null) {
-          const parsed = JSON.parse(raw) as CachedCheck;
-          if (isExpired(parsed)) {
-            return null;
-          }
-          recordSuccess();
-          return parsed;
-        }
-        // Redis returned null (cache miss) — still counts as a success
-        recordSuccess();
-        // Fall through to DB
-      } catch (err) {
-        logger.warn('Redis get error, falling back to DB', err);
-        recordFailure();
-        // Fall through to DB
+  return {
+    async get(key: string): Promise<ScoreResult | null> {
+      const entry = store.get(key);
+      if (!entry) return null;
+      if (Date.now() > entry.expiresAt) {
+        store.delete(key);
+        return null;
       }
-    }
+      return entry.value;
+    },
+    async set(key: string, value: ScoreResult, ttlSeconds: number): Promise<void> {
+      store.set(key, { value, expiresAt: Date.now() + ttlSeconds * 1000 });
+    },
+  };
+}
 
-    return getFromDb(domain);
+// ---------------------------------------------------------------------------
+// Redis-backed cache
+// ---------------------------------------------------------------------------
+
+async function createRedisCache(redisUrl: string): Promise<CacheService> {
+  // Dynamic import so that missing ioredis won't crash the module at load time
+  const { default: Redis } = await import('ioredis');
+  const client = new Redis(redisUrl, { lazyConnect: true, enableOfflineQueue: false });
+
+  await client.connect().catch((err: unknown) => {
+    const message = err instanceof Error ? err.message : String(err);
+    logger.warn('Redis connection failed, will use memory cache', { error: message });
+    throw err;
+  });
+
+  logger.info('Redis cache connected', { url: redisUrl });
+
+  return {
+    async get(key: string): Promise<ScoreResult | null> {
+      const raw = await client.get(key).catch(() => null);
+      if (!raw) return null;
+      try {
+        return JSON.parse(raw) as ScoreResult;
+      } catch {
+        return null;
+      }
+    },
+    async set(key: string, value: ScoreResult, ttlSeconds: number): Promise<void> {
+      await client.set(key, JSON.stringify(value), 'EX', ttlSeconds).catch((err: unknown) => {
+        const message = err instanceof Error ? err.message : String(err);
+        logger.warn('Redis set failed', { key, error: message });
+      });
+    },
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Factory
+// ---------------------------------------------------------------------------
+
+export function createCacheService(): CacheService {
+  const redisUrl = process.env['REDIS_URL'];
+
+  if (redisUrl) {
+    // Attempt Redis; on failure fall back to memory cache transparently
+    const memoryFallback = createMemoryCache();
+    let resolvedCache: CacheService = memoryFallback;
+    let ready = false;
+
+    const initPromise = createRedisCache(redisUrl)
+      .then((rc) => {
+        resolvedCache = rc;
+        ready = true;
+      })
+      .catch(() => {
+        logger.warn('Falling back to in-memory cache');
+        ready = true;
+      });
+
+    return {
+      async get(key: string): Promise<ScoreResult | null> {
+        if (!ready) await initPromise;
+        return resolvedCache.get(key);
+      },
+      async set(key: string, value: ScoreResult, ttlSeconds: number): Promise<void> {
+        if (!ready) await initPromise;
+        return resolvedCache.set(key, value, ttlSeconds);
+      },
+    };
   }
 
-  async function set(domain: string, value: CachedCheck): Promise<void> {
-    if (isCircuitOpen()) {
-      logger.warn('Cache circuit open — skipping Redis set', { domain });
-      return;
-    }
-    try {
-      await redis.set(
-        redisKeyFor(domain),
-        JSON.stringify(value),
-        'EX',
-        config.cache.ttlSeconds,
-      );
-      recordSuccess();
-    } catch (err) {
-      logger.warn('Redis set error — result is already persisted in DB', { domain, err });
-      recordFailure();
-      // Do not throw — the value is in DB
-    }
-  }
-
-  function isHealthy(): boolean {
-    return !isCircuitOpen();
-  }
-
-  return { get, set, isHealthy };
+  logger.info('No REDIS_URL set — using in-memory cache');
+  return createMemoryCache();
 }

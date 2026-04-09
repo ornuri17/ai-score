@@ -46,6 +46,8 @@ resource "aws_iam_user_policy" "deployer" {
           "lambda:UpdateFunctionCode",
           "lambda:UpdateFunctionConfiguration",
           "lambda:GetFunction",
+          "lambda:GetFunctionConfiguration",
+          "lambda:InvokeFunction",
           "lambda:PublishVersion",
         ]
         Resource = aws_lambda_function.api.arn

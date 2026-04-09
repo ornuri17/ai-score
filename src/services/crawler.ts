@@ -1,192 +1,163 @@
 // ============================================================
 // AIScore Crawler Service
-// Uses axios + cheerio (no headless browser — Phase 1 decision).
+// Fetches a URL and collects HTML, robots.txt, and sitemap.xml.
 // ============================================================
 
-import axios, { AxiosError } from 'axios';
-import type { FetchResult, RobotsTxtData, SitemapData } from '../types';
-import { config } from '../config';
+import https from 'https';
+import http from 'http';
+import { URL } from 'url';
+import { CrawlResult } from '../types';
 import { logger } from '../logger';
 
-const USER_AGENT = 'AIScore-Crawler/1.0 (https://aiscore.co/bot)';
+const MAX_REDIRECTS = 5;
+const SIDECAR_TIMEOUT_MS = 5000;
+const MAX_SITEMAP_BYTES = 500 * 1024; // 500 KB
 
-// Internal type to access axios internals for redirect counting
-interface AxiosRequestWithRedirects {
-  res?: {
-    responseUrl?: string;
-  };
-  _redirectable?: {
-    _redirectCount?: number;
-  };
+function fetchWithRedirects(
+  rawUrl: string,
+  timeoutMs: number,
+  maxRedirects: number,
+  redirectCount = 0
+): Promise<{ body: string; statusCode: number; finalUrl: string; redirectCount: number; responseTimeMs: number }> {
+  return new Promise((resolve, reject) => {
+    const startTime = Date.now();
+    let parsedUrl: URL;
+    try {
+      parsedUrl = new URL(rawUrl);
+    } catch {
+      reject(new Error(`Invalid URL: ${rawUrl}`));
+      return;
+    }
+
+    const lib = parsedUrl.protocol === 'https:' ? https : http;
+    const timer = setTimeout(() => {
+      req.destroy(new Error('Request timed out'));
+    }, timeoutMs);
+
+    const req = lib.get(rawUrl, { headers: { 'User-Agent': 'AIScoreBot/1.0' } }, (res) => {
+      clearTimeout(timer);
+      const statusCode = res.statusCode ?? 0;
+
+      // Follow redirects
+      if ((statusCode === 301 || statusCode === 302 || statusCode === 303 || statusCode === 307 || statusCode === 308) && res.headers.location) {
+        if (redirectCount >= maxRedirects) {
+          resolve({ body: '', statusCode, finalUrl: rawUrl, redirectCount, responseTimeMs: Date.now() - startTime });
+          res.resume();
+          return;
+        }
+        const nextUrl = new URL(res.headers.location, rawUrl).toString();
+        res.resume();
+        fetchWithRedirects(nextUrl, timeoutMs, maxRedirects, redirectCount + 1)
+          .then(resolve)
+          .catch(reject);
+        return;
+      }
+
+      const chunks: Buffer[] = [];
+      res.on('data', (chunk: Buffer) => chunks.push(chunk));
+      res.on('end', () => {
+        resolve({
+          body: Buffer.concat(chunks).toString('utf8'),
+          statusCode,
+          finalUrl: rawUrl,
+          redirectCount,
+          responseTimeMs: Date.now() - startTime,
+        });
+      });
+      res.on('error', reject);
+    });
+
+    req.on('error', (err) => {
+      clearTimeout(timer);
+      reject(err);
+    });
+  });
 }
 
-function countRedirects(request: AxiosRequestWithRedirects): number {
-  const redirectable = request._redirectable;
-  if (redirectable?._redirectCount !== undefined) {
-    return redirectable._redirectCount;
-  }
-  return 0;
+async function fetchSidecar(url: string, maxBytes?: number): Promise<string | null> {
+  return new Promise((resolve) => {
+    let parsedUrl: URL;
+    try {
+      parsedUrl = new URL(url);
+    } catch {
+      resolve(null);
+      return;
+    }
+
+    const lib = parsedUrl.protocol === 'https:' ? https : http;
+    const timer = setTimeout(() => {
+      req.destroy();
+      resolve(null);
+    }, SIDECAR_TIMEOUT_MS);
+
+    const req = lib.get(url, { headers: { 'User-Agent': 'AIScoreBot/1.0' } }, (res) => {
+      if ((res.statusCode ?? 0) < 200 || (res.statusCode ?? 0) >= 300) {
+        clearTimeout(timer);
+        res.resume();
+        resolve(null);
+        return;
+      }
+      const chunks: Buffer[] = [];
+      let totalBytes = 0;
+
+      res.on('data', (chunk: Buffer) => {
+        totalBytes += chunk.length;
+        if (maxBytes !== undefined && totalBytes > maxBytes) {
+          req.destroy();
+          clearTimeout(timer);
+          resolve(Buffer.concat(chunks).toString('utf8'));
+          return;
+        }
+        chunks.push(chunk);
+      });
+
+      res.on('end', () => {
+        clearTimeout(timer);
+        resolve(Buffer.concat(chunks).toString('utf8'));
+      });
+
+      res.on('error', () => {
+        clearTimeout(timer);
+        resolve(null);
+      });
+    });
+
+    req.on('error', () => {
+      clearTimeout(timer);
+      resolve(null);
+    });
+  });
 }
 
-function extractFinalUrl(request: AxiosRequestWithRedirects, fallbackUrl: string): string {
-  return request.res?.responseUrl ?? fallbackUrl;
-}
-
-/**
- * Fetch a URL and return structured data for scoring.
- * - Respects timeoutMs and maxRedirects from config.crawler
- * - On timeout: throws Error('TIMEOUT')
- * - On too many redirects: throws Error('TOO_MANY_REDIRECTS')
- * - On non-200 status: returns the result (scorer handles it)
- * - On network error: rethrows with descriptive message
- */
-export async function fetchWebsite(url: string): Promise<Omit<FetchResult, 'robotsTxt' | 'sitemap'>> {
-  const startTime = Date.now();
-
-  logger.info('Fetching URL', { url });
-
+export async function crawlUrl(url: string, timeoutMs: number): Promise<CrawlResult> {
+  let origin: string;
   try {
-    const response = await axios.get<string>(url, {
-      timeout: config.crawler.timeoutMs,
-      maxRedirects: config.crawler.maxRedirects,
-      headers: {
-        'User-Agent': USER_AGENT,
-      },
-      responseType: 'text',
-      validateStatus: (): boolean => true, // Don't throw on non-2xx
-    });
-
-    const responseTimeMs = Date.now() - startTime;
-    const req = response.request as AxiosRequestWithRedirects;
-    const redirectCount = countRedirects(req);
-    const finalUrl = extractFinalUrl(req, url);
-
-    logger.info('Fetch complete', {
-      url,
-      statusCode: response.status,
-      responseTimeMs,
-      redirectCount,
-    });
-
-    return {
-      html: response.data,
-      statusCode: response.status,
-      redirectCount,
-      responseTimeMs,
-      finalUrl,
-    };
-  } catch (err) {
-    const responseTimeMs = Date.now() - startTime;
-
-    if (axios.isAxiosError(err)) {
-      const axiosErr = err as AxiosError;
-
-      if (axiosErr.code === 'ECONNABORTED' || axiosErr.message.includes('timeout')) {
-        logger.warn('Crawler timeout', { url, responseTimeMs });
-        throw new Error('TIMEOUT');
-      }
-
-      if (
-        axiosErr.message.includes('maxRedirects') ||
-        axiosErr.message.toLowerCase().includes('redirect')
-      ) {
-        logger.warn('Too many redirects', { url });
-        throw new Error('TOO_MANY_REDIRECTS');
-      }
-
-      const networkMsg = axiosErr.message;
-      logger.error('Crawler network error', { url, error: networkMsg });
-      throw new Error(`Network error fetching ${url}: ${networkMsg}`);
-    }
-
-    const unknownMsg = err instanceof Error ? err.message : String(err);
-    logger.error('Crawler unexpected error', { url, error: unknownMsg });
-    throw new Error(`Unexpected error fetching ${url}: ${unknownMsg}`);
-  }
-}
-
-function parseRobotsTxt(text: string): { blocksAllCrawlers: boolean; blocksAiCrawlers: boolean; sitemapUrls: string[] } {
-  const AI_BOTS = ['gptbot', 'claudebot', 'perplexitybot', 'anthropic-ai', 'cohere-ai'];
-  const sitemapUrls: string[] = [];
-  const groups: { agents: string[]; disallows: string[] }[] = [];
-  let currentGroup: { agents: string[]; disallows: string[] } | null = null;
-
-  for (const rawLine of text.split('\n')) {
-    const line = rawLine.trim();
-    const lower = line.toLowerCase();
-
-    if (line === '' || line.startsWith('#')) {
-      currentGroup = null;
-      continue;
-    }
-    if (lower.startsWith('sitemap:')) {
-      const url = line.slice('sitemap:'.length).trim();
-      if (url) sitemapUrls.push(url);
-      continue;
-    }
-    if (lower.startsWith('user-agent:')) {
-      if (!currentGroup) {
-        currentGroup = { agents: [], disallows: [] };
-        groups.push(currentGroup);
-      }
-      currentGroup.agents.push(lower.slice('user-agent:'.length).trim());
-      continue;
-    }
-    if (lower.startsWith('disallow:') && currentGroup) {
-      currentGroup.disallows.push(line.slice('disallow:'.length).trim());
-    }
-  }
-
-  let blocksAllCrawlers = false;
-  let blocksAiCrawlers = false;
-
-  for (const group of groups) {
-    const blocksRoot = group.disallows.some(d => d === '/');
-    if (!blocksRoot) continue;
-    if (group.agents.includes('*')) blocksAllCrawlers = true;
-    if (group.agents.some(a => AI_BOTS.includes(a))) blocksAiCrawlers = true;
-  }
-
-  return { blocksAllCrawlers, blocksAiCrawlers, sitemapUrls };
-}
-
-export async function fetchRobotsTxt(baseUrl: string): Promise<RobotsTxtData> {
-  const robotsUrl = `${baseUrl.replace(/\/$/, '')}/robots.txt`;
-  try {
-    const response = await axios.get<string>(robotsUrl, {
-      timeout: 5000,
-      headers: { 'User-Agent': USER_AGENT },
-      responseType: 'text',
-      validateStatus: () => true,
-    });
-    if (response.status !== 200) {
-      return { exists: false, blocksAllCrawlers: false, blocksAiCrawlers: false, sitemapUrls: [] };
-    }
-    const parsed = parseRobotsTxt(response.data);
-    return { exists: true, ...parsed };
+    origin = new URL(url).origin;
   } catch {
-    return { exists: false, blocksAllCrawlers: false, blocksAiCrawlers: false, sitemapUrls: [] };
+    throw new Error(`Invalid URL: ${url}`);
   }
-}
 
-export async function fetchSitemap(baseUrl: string, sitemapUrl?: string): Promise<SitemapData> {
-  const url = sitemapUrl ?? `${baseUrl.replace(/\/$/, '')}/sitemap.xml`;
-  try {
-    const response = await axios.get<string>(url, {
-      timeout: 5000,
-      headers: { 'User-Agent': USER_AGENT },
-      responseType: 'text',
-      validateStatus: () => true,
-      maxContentLength: 500_000, // cap at 500KB — enough to count URLs
-    });
-    if (response.status !== 200) {
-      return { exists: false, urlCount: 0 };
-    }
-    const text: string = typeof response.data === 'string' ? response.data : String(response.data);
-    // Count <loc> entries as a proxy for URL count
-    const matches = text.match(/<loc>/gi);
-    return { exists: true, urlCount: matches ? matches.length : 0 };
-  } catch {
-    return { exists: false, urlCount: 0 };
-  }
+  logger.debug('Crawling URL', { url, timeoutMs });
+
+  const [pageResult, robotsTxt, sitemapXml] = await Promise.all([
+    fetchWithRedirects(url, timeoutMs, MAX_REDIRECTS).catch((err: unknown) => {
+      const message = err instanceof Error ? err.message : String(err);
+      logger.warn('Page fetch failed', { url, error: message });
+      return { body: '', statusCode: 0, finalUrl: url, redirectCount: 0, responseTimeMs: timeoutMs };
+    }),
+    fetchSidecar(`${origin}/robots.txt`),
+    fetchSidecar(`${origin}/sitemap.xml`, MAX_SITEMAP_BYTES),
+  ]);
+
+  logger.debug('Crawl complete', { url, statusCode: pageResult.statusCode, responseTimeMs: pageResult.responseTimeMs });
+
+  return {
+    html: pageResult.body,
+    robotsTxt,
+    sitemapXml,
+    responseTimeMs: pageResult.responseTimeMs,
+    statusCode: pageResult.statusCode,
+    finalUrl: pageResult.finalUrl,
+    redirectCount: pageResult.redirectCount,
+  };
 }

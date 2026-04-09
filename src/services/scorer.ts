@@ -1,462 +1,270 @@
 // ============================================================
-// AIScore Scoring Engine
-// Binary scoring: each check is full points or zero.
+// AIScore Scorer Service
+// Computes an AI-readiness score from a CrawlResult.
 // ============================================================
 
-import * as cheerio from 'cheerio';
-import { ScoringResult, FetchResult, IssueKey } from '../types';
+import crypto from 'crypto';
+import { URL } from 'url';
+import { CrawlResult, ScoreResult } from '../types';
 import { logger } from '../logger';
 
-// --------------- Scoring constants ---------------
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
 
-const CRAWLABILITY_MAX = 30;
-const CONTENT_MAX = 35;
-const TECHNICAL_MAX = 25;
-const QUALITY_MAX = 10;
-
-// --------------- Helper: get body text ---------------
-
-function getBodyText($: cheerio.CheerioAPI): string {
-  // Remove scripts and styles before extracting text
-  $('script, style, noscript').remove();
-  return $('body').text().replace(/\s+/g, ' ').trim();
+function extractAttr(html: string, pattern: RegExp): string | null {
+  const match = html.match(pattern);
+  return match ? (match[1] ?? null) : null;
 }
 
-// --------------- Helper: extract site summary ---------------
-
-function extractSummary($: cheerio.CheerioAPI, bodyText: string): string {
-  // Priority 1: meta description (most reliable, written for humans)
-  const metaDesc = $('meta[name="description"]').attr('content')?.trim() ?? '';
-  if (metaDesc.length >= 40) return metaDesc;
-
-  // Priority 2: OG description
-  const ogDesc = $('meta[property="og:description"]').attr('content')?.trim() ?? '';
-  if (ogDesc.length >= 40) return ogDesc;
-
-  // Priority 3: first meaningful <p> on the page
-  let firstPara = '';
-  $('p').each((_i, el) => {
-    if (firstPara) return;
-    const text = $(el).text().replace(/\s+/g, ' ').trim();
-    if (text.length >= 80) {
-      firstPara = text.length > 300 ? text.slice(0, 297) + '...' : text;
-    }
-  });
-  if (firstPara) return firstPara;
-
-  // Priority 4: first 250 chars of body text
-  if (bodyText.length >= 40) {
-    return bodyText.length > 250 ? bodyText.slice(0, 247) + '...' : bodyText;
-  }
-
-  return '';
+function stripTags(html: string): string {
+  // Remove script/style blocks first, then strip remaining tags
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
-// --------------- Crawlability checks (max 30 pts) ---------------
-
-interface CrawlabilityResult {
-  score: number;
-  issues: IssueKey[];
+function extractMetaContent(html: string, name: string): string | null {
+  // Matches both name= and property= variants
+  const pattern = new RegExp(
+    `<meta[^>]+(?:name|property)=["']${name}["'][^>]+content=["']([^"']+)["']`,
+    'i'
+  );
+  const alt = new RegExp(
+    `<meta[^>]+content=["']([^"']+)["'][^>]+(?:name|property)=["']${name}["']`,
+    'i'
+  );
+  return extractAttr(html, pattern) ?? extractAttr(html, alt);
 }
 
-function scoreCrawlability(
-  fetchResult: FetchResult,
-  $: cheerio.CheerioAPI,
-): CrawlabilityResult {
-  let score = 0;
-  const issues: IssueKey[] = [];
-
-  // +5: no X-Robots-Tag noindex (heuristic via meta robots)
-  const metaRobotsContent = $('meta[name="robots"]').attr('content') ?? '';
-  const hasNoindex = metaRobotsContent.toLowerCase().includes('noindex');
-  const hasNofollow = metaRobotsContent.toLowerCase().includes('nofollow');
-
-  if (!hasNoindex) {
-    score += 5;
-  } else {
-    issues.push('blocked_from_crawlers');
-  }
-
-  // +5: no noindex meta
-  if (!hasNoindex) {
-    score += 5;
-  }
-  // (already captured above — same condition, counts separately toward 30 max)
-  // Re-read spec: two separate checks both worth +5 for noindex and nofollow
-  // Deduct the duplicate: keep first 5 for robots allow, second 5 for no-noindex
-  // Re-implementing correctly: 6 binary checks = 5+5+5+5+5+5 = 30
-
-  // Let's redo cleanly:
-  score = 0;
-
-  // Check 1: +5 robots allows (no noindex meta / no X-Robots-Tag noindex)
-  if (!hasNoindex) {
-    score += 5;
-  } else {
-    if (!issues.includes('blocked_from_crawlers')) {
-      issues.push('blocked_from_crawlers');
+function isAiCrawlerBlocked(robotsTxt: string, bot: string): boolean {
+  const lines = robotsTxt.split('\n');
+  let inBlock = false;
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (/^user-agent:/i.test(line)) {
+      const agent = line.replace(/^user-agent:\s*/i, '').trim();
+      inBlock = agent === '*' || agent.toLowerCase() === bot.toLowerCase();
+    } else if (inBlock && /^disallow:\s*\//i.test(line)) {
+      const path = line.replace(/^disallow:\s*/i, '').trim();
+      if (path === '/') return true;
     }
   }
-
-  // Check 2: +5 no noindex
-  if (!hasNoindex) {
-    score += 5;
-  }
-
-  // Check 3: +5 no nofollow
-  if (!hasNofollow) {
-    score += 5;
-  }
-
-  // Check 4: +5 no auth required
-  const { statusCode } = fetchResult;
-  const hasLoginForm = $('input[type="password"]').length > 0;
-  const authRequired = statusCode === 401 || statusCode === 403 || hasLoginForm;
-  if (!authRequired) {
-    score += 5;
-  } else {
-    issues.push('not_publicly_accessible');
-  }
-
-  // Check 5: +5 response time < 10000ms AND redirectCount <= 5
-  const { responseTimeMs, redirectCount } = fetchResult;
-  if (responseTimeMs < 10000 && redirectCount <= 5) {
-    score += 5;
-  } else {
-    issues.push('access_or_speed_issues');
-  }
-
-  // Check 6: +5 sitemap accessible (robots.txt declares one OR /sitemap.xml exists)
-  const hasSitemap =
-    fetchResult.sitemap.exists ||
-    fetchResult.robotsTxt.sitemapUrls.length > 0 ||
-    $('link[rel="sitemap"]').length > 0;
-  if (hasSitemap) {
-    score += 5;
-  } else {
-    issues.push('crawlability_issues');
-  }
-
-  return { score, issues };
+  return false;
 }
 
-// --------------- Content structure checks (max 35 pts) ---------------
+function extractSummary(html: string): string {
+  // 1. meta description
+  const metaDesc = extractMetaContent(html, 'description');
+  if (metaDesc && metaDesc.trim().length > 0) return metaDesc.trim();
 
-interface ContentResult {
-  score: number;
-  issues: IssueKey[];
+  // 2. og:description
+  const ogDesc = extractMetaContent(html, 'og:description');
+  if (ogDesc && ogDesc.trim().length > 0) return ogDesc.trim();
+
+  // 3. First <p> with >= 80 chars
+  const pMatches = html.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi);
+  for (const m of pMatches) {
+    const text = stripTags(m[1] ?? '').trim();
+    if (text.length >= 80) return text;
+  }
+
+  // 4. First 250 chars of visible body text
+  const visible = stripTags(html);
+  return visible.slice(0, 250).trim();
 }
 
-function scoreContent(
-  fetchResult: FetchResult,
-  $: cheerio.CheerioAPI,
-): ContentResult {
-  let score = 0;
-  const issues: IssueKey[] = [];
-
-  // +4: semantic HTML
-  const hasSemanticHtml =
-    $('main').length > 0 ||
-    $('article').length > 0 ||
-    $('section').length > 0 ||
-    $('header').length > 0 ||
-    $('nav').length > 0;
-
-  if (hasSemanticHtml) {
-    score += 4;
-  }
-
-  // +4: meta description 50-160 chars
-  const metaDesc = $('meta[name="description"]').attr('content') ?? '';
-  if (metaDesc.length >= 50 && metaDesc.length <= 160) {
-    score += 4;
-  } else {
-    issues.push('metadata_optimization');
-  }
-
-  // +4: title 30-60 chars
-  const titleText = $('title').text().trim();
-  if (titleText.length >= 30 && titleText.length <= 60) {
-    score += 4;
-  } else {
-    if (!issues.includes('metadata_optimization')) {
-      issues.push('metadata_optimization');
+function countInternalLinks(html: string, domain: string): number {
+  const hrefPattern = /href=["']([^"']+)["']/gi;
+  let count = 0;
+  for (const match of html.matchAll(hrefPattern)) {
+    const href = match[1] ?? '';
+    if (href.startsWith('/') || href.includes(domain)) {
+      count++;
     }
   }
-
-  // +4: Open Graph tags
-  const hasOgTitle = $('meta[property="og:title"]').length > 0;
-  const hasOgDesc = $('meta[property="og:description"]').length > 0;
-  if (hasOgTitle && hasOgDesc) {
-    score += 4;
-  } else {
-    if (!issues.includes('metadata_optimization')) {
-      issues.push('metadata_optimization');
-    }
-  }
-
-  // +5: JSON-LD schema
-  const hasJsonLd = $('script[type="application/ld+json"]').length > 0;
-  if (hasJsonLd) {
-    score += 5;
-  } else {
-    issues.push('structured_data_missing');
-  }
-
-  // +4: publication/modified date
-  const hasPublishedTime = $('meta[property="article:published_time"]').length > 0;
-  const hasTimeElement = $('time').length > 0;
-  const hasDateMeta = $('meta[name="date"]').length > 0;
-  if (hasPublishedTime || hasTimeElement || hasDateMeta) {
-    score += 4;
-  }
-
-  // +4: viewport meta (mobile friendly)
-  const hasViewport = $('meta[name="viewport"]').length > 0;
-  if (hasViewport) {
-    score += 4;
-  } else {
-    issues.push('mobile_unfriendly');
-  }
-
-  // +2: html lang attribute
-  const htmlLang = $('html').attr('lang') ?? '';
-  if (htmlLang.length > 0) {
-    score += 2;
-  } else {
-    issues.push('no_language_tag');
-  }
-
-  // Suppress unused variable warning
-  void fetchResult;
-
-  return { score, issues };
+  return count;
 }
 
-// --------------- Technical SEO checks (max 25 pts) ---------------
+// ---------------------------------------------------------------------------
+// Main scorer
+// ---------------------------------------------------------------------------
 
-interface TechnicalResult {
-  score: number;
-  issues: IssueKey[];
-}
+export function scoreUrl(url: string, crawlResult: CrawlResult): ScoreResult {
+  const { html, robotsTxt, sitemapXml, responseTimeMs, statusCode, finalUrl, redirectCount } = crawlResult;
+  const issues: string[] = [];
 
-function scoreTechnical(
-  fetchResult: FetchResult,
-  originalUrl: string,
-  $: cheerio.CheerioAPI,
-  bodyText: string,
-): TechnicalResult {
-  let score = 0;
-  const issues: IssueKey[] = [];
+  const lowerHtml = html.toLowerCase();
 
-  // +5: canonical tag
-  const hasCanonical = $('link[rel="canonical"]').length > 0;
-  if (hasCanonical) {
-    score += 5;
-  }
+  // ---- Parse useful fragments ----
+  const metaRobotsContent = extractMetaContent(html, 'robots') ?? '';
+  const hasNoindex = /\bnoindex\b/i.test(metaRobotsContent);
+  const hasNofollow = /\bnofollow\b/i.test(metaRobotsContent);
 
-  // +5: HTTPS
-  const usesHttps = originalUrl.toLowerCase().startsWith('https://');
-  if (usesHttps) {
-    score += 5;
-  } else {
-    issues.push('no_https');
-  }
+  // X-Robots-Tag — look for it as a meta equiv or embedded comment (treat as 0 if not in html)
+  const xRobotsMatch = html.match(/x-robots-tag[^:]*:\s*([^\r\n<"]+)/i);
+  const xRobotsNoindex = xRobotsMatch ? /\bnoindex\b/i.test(xRobotsMatch[1] ?? '') : false;
 
-  // +5: clean URL (fewer than 3 query params)
-  let queryParamCount = 0;
+  const isAuth = statusCode === 401 || statusCode === 403;
+  const is200 = statusCode === 200;
+
+  // Sitemap detection
+  const sitemapInRobots = robotsTxt ? /sitemap:/i.test(robotsTxt) : false;
+  const sitemapLinkInHtml = /<link[^>]+rel=["']sitemap["']/i.test(html);
+  const hasSitemap = sitemapXml !== null || sitemapInRobots || sitemapLinkInHtml;
+
+  // Semantic HTML
+  const hasSemanticTags = /<(article|main|section|h1|h2)[\s>]/i.test(html);
+
+  // Meta description
+  const metaDesc = extractMetaContent(html, 'description') ?? '';
+  const metaDescLen = metaDesc.trim().length;
+  const hasGoodMetaDesc = metaDescLen >= 50 && metaDescLen <= 160;
+
+  // Title
+  const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
+  const titleText = titleMatch ? (titleMatch[1] ?? '').trim() : '';
+  const titleLen = titleText.length;
+  const hasGoodTitle = titleLen >= 30 && titleLen <= 60;
+
+  // Open Graph
+  const hasOG = extractMetaContent(html, 'og:title') !== null || extractMetaContent(html, 'og:description') !== null;
+
+  // JSON-LD
+  const hasJsonLd = /<script[^>]+type=["']application\/ld\+json["']/i.test(html);
+
+  // Publication date
+  const hasPubDate =
+    /<time[^>]+datetime=/i.test(html) ||
+    extractMetaContent(html, 'article:published_time') !== null;
+
+  // Viewport
+  const hasViewport = extractMetaContent(lowerHtml, 'viewport') !== null;
+
+  // HTML lang
+  const hasLangAttr = /<html[^>]+lang=/i.test(html);
+
+  // Canonical
+  const hasCanonical = /<link[^>]+rel=["']canonical["']/i.test(html);
+
+  // HTTPS
+  const isHttps = finalUrl.startsWith('https://');
+
+  // Clean URL (no query params or fragments)
+  let isCleanUrl = false;
   try {
-    const parsed = new URL(originalUrl);
-    queryParamCount = parsed.searchParams.size;
+    const parsedFinal = new URL(finalUrl);
+    isCleanUrl = parsedFinal.search === '' && parsedFinal.hash === '';
   } catch {
-    queryParamCount = 0;
-  }
-  if (queryParamCount < 3) {
-    score += 5;
+    isCleanUrl = false;
   }
 
-  // +5: response time < 3000ms
-  if (fetchResult.responseTimeMs < 3000) {
-    score += 5;
-  } else {
-    issues.push('slow_page_load');
-  }
+  // Response time
+  const isFast = responseTimeMs < 3000;
 
-  // +5: body text > 200 chars (content accessible without JS)
-  if (bodyText.length > 200) {
-    score += 5;
-  }
+  // Visible body text
+  const visibleText = stripTags(html);
+  const visibleLen = visibleText.length;
+  const hasEnoughText200 = visibleLen > 200;
+  const hasEnoughText300 = visibleLen > 300;
 
-  return { score, issues };
-}
-
-// --------------- Content quality checks (max 10 pts) ---------------
-
-interface QualityResult {
-  score: number;
-  issues: IssueKey[];
-}
-
-function scoreQuality(
-  originalUrl: string,
-  $: cheerio.CheerioAPI,
-  bodyText: string,
-): QualityResult {
-  let score = 0;
-  const issues: IssueKey[] = [];
-
-  // +5: main content > 300 chars
-  if (bodyText.length > 300) {
-    score += 5;
-  }
-
-  // +5: internal links > 2
-  let internalLinkCount = 0;
+  // Internal links
   let domain = '';
   try {
-    domain = new URL(originalUrl).hostname.toLowerCase();
+    domain = new URL(url).hostname;
   } catch {
-    domain = '';
+    domain = url;
   }
+  const internalLinkCount = countInternalLinks(html, domain);
+  const hasInternalLinks = internalLinkCount > 2;
 
-  $('a[href]').each((_i, el) => {
-    const href = $(el).attr('href') ?? '';
-    if (href.startsWith('/') || (domain.length > 0 && href.toLowerCase().includes(domain))) {
-      internalLinkCount++;
-    }
-  });
+  // AI crawler blocks
+  const aiCrawlerBlocked =
+    robotsTxt !== null &&
+    (isAiCrawlerBlocked(robotsTxt, 'GPTBot') ||
+      isAiCrawlerBlocked(robotsTxt, 'ClaudeBot') ||
+      isAiCrawlerBlocked(robotsTxt, 'PerplexityBot'));
 
-  if (internalLinkCount > 2) {
-    score += 5;
-  } else {
-    issues.push('no_internal_links');
-  }
+  // ---- Crawlability (30 pts) ----
+  let crawlability = 0;
+  if (!hasNoindex) crawlability += 5;
+  if (!xRobotsNoindex) crawlability += 5;
+  if (!hasNofollow) crawlability += 5;
+  if (is200) crawlability += 5;
+  if (redirectCount <= 5 && responseTimeMs < 10000) crawlability += 5;
+  if (hasSitemap) crawlability += 5;
 
-  return { score, issues };
-}
+  // ---- Content Structure (35 pts) ----
+  let content = 0;
+  if (hasSemanticTags) content += 4;
+  if (hasGoodMetaDesc) content += 4;
+  if (hasGoodTitle) content += 4;
+  if (hasOG) content += 4;
+  if (hasJsonLd) content += 5;
+  if (hasPubDate) content += 4;
+  if (hasViewport) content += 4;
+  if (hasLangAttr) content += 2;
 
-// --------------- Penalties ---------------
+  // ---- Technical SEO (25 pts) ----
+  let technical = 0;
+  if (hasCanonical) technical += 5;
+  if (isHttps) technical += 5;
+  if (isCleanUrl) technical += 5;
+  if (isFast) technical += 5;
+  if (hasEnoughText200) technical += 5;
 
-interface PenaltyResult {
-  penalty: number;
-  issues: IssueKey[];
-}
+  // ---- Content Quality (10 pts) ----
+  let quality = 0;
+  if (hasEnoughText300) quality += 5;
+  if (hasInternalLinks) quality += 5;
 
-function computePenalties(
-  fetchResult: FetchResult,
-  $: cheerio.CheerioAPI,
-): PenaltyResult {
-  let penalty = 0;
-  const issues: IssueKey[] = [];
+  // ---- Raw total ----
+  let score = crawlability + content + technical + quality;
 
-  const metaRobotsContent = $('meta[name="robots"]').attr('content') ?? '';
-  const hasNoindex = metaRobotsContent.toLowerCase().includes('noindex');
-  const hasLoginForm = $('input[type="password"]').length > 0;
-  const authRequired =
-    fetchResult.statusCode === 401 ||
-    fetchResult.statusCode === 403 ||
-    hasLoginForm;
+  // ---- Penalties ----
+  if (hasNoindex || isAuth) score -= 30;
+  if (!is200 && !isAuth) score -= 25;
+  if (redirectCount > 5 || responseTimeMs >= 10000) score -= 15;
+  if (aiCrawlerBlocked) score -= 20;
 
-  // -30 if noindex OR auth required
-  if (hasNoindex || authRequired) {
-    penalty += 30;
-    if (hasNoindex) {
-      issues.push('blocked_from_crawlers');
-    }
-    if (authRequired) {
-      issues.push('not_publicly_accessible');
-    }
-  }
-  // -25 if non-200 and not covered by noindex/auth
-  else if (fetchResult.statusCode !== 200) {
-    penalty += 25;
-    issues.push('not_publicly_accessible');
-  }
+  // Floor at 0, ceil at 100
+  score = Math.max(0, Math.min(100, score));
 
-  // -15 if too many redirects OR too slow
-  if (fetchResult.redirectCount > 5 || fetchResult.responseTimeMs > 10000) {
-    penalty += 15;
-    issues.push('access_or_speed_issues');
-  }
+  // ---- Issues ----
+  if (hasNoindex) issues.push('blocked_from_crawlers');
+  if (aiCrawlerBlocked) issues.push('ai_crawlers_blocked');
+  if (isAuth) issues.push('not_publicly_accessible');
+  if (!hasSitemap) issues.push('crawlability_issues');
+  if (!hasJsonLd) issues.push('structured_data_missing');
+  if (!hasGoodMetaDesc || !hasGoodTitle) issues.push('metadata_optimization');
+  if (!hasViewport) issues.push('mobile_unfriendly');
+  if (!isHttps) issues.push('no_https');
+  if (responseTimeMs > 3000) issues.push('slow_page_load');
+  if (!hasInternalLinks) issues.push('no_internal_links');
+  if (!hasLangAttr) issues.push('no_language_tag');
+  if (redirectCount > 5 || responseTimeMs >= 10000) issues.push('access_or_speed_issues');
 
-  // -20 if AI crawlers are explicitly blocked in robots.txt
-  // (separate from generic noindex — this is specific to LLM crawlers)
-  if (fetchResult.robotsTxt.blocksAiCrawlers) {
-    penalty += 20;
-    issues.push('ai_crawlers_blocked');
-  } else if (fetchResult.robotsTxt.blocksAllCrawlers) {
-    // blocking all user-agents also blocks AI crawlers
-    if (!issues.includes('ai_crawlers_blocked')) {
-      penalty += 20;
-      issues.push('ai_crawlers_blocked');
-    }
-  }
+  // ---- Dates ----
+  const now = new Date();
+  const expiresAt = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
 
-  return { penalty, issues };
-}
-
-// --------------- Main scoring function ---------------
-
-export function scoreWebsite(
-  fetchResult: FetchResult,
-  originalUrl: string,
-): ScoringResult {
-  logger.info('Scoring website', { url: originalUrl, statusCode: fetchResult.statusCode });
-
-  const $ = cheerio.load(fetchResult.html);
-  const bodyText = getBodyText($);
-
-  // Reload after body text extraction (getBodyText mutates the DOM)
-  const $fresh = cheerio.load(fetchResult.html);
-
-  const crawlResult = scoreCrawlability(fetchResult, $fresh);
-  const contentResult = scoreContent(fetchResult, $fresh);
-  const technicalResult = scoreTechnical(fetchResult, originalUrl, $fresh, bodyText);
-  const qualityResult = scoreQuality(originalUrl, $fresh, bodyText);
-
-  const baseScore =
-    crawlResult.score +
-    contentResult.score +
-    technicalResult.score +
-    qualityResult.score;
-
-  const penaltyResult = computePenalties(fetchResult, $fresh);
-
-  const finalScore = Math.min(
-    100,
-    Math.max(0, baseScore - penaltyResult.penalty),
-  );
-
-  // Deduplicate issues from all sources
-  const allIssues: IssueKey[] = [
-    ...crawlResult.issues,
-    ...contentResult.issues,
-    ...technicalResult.issues,
-    ...qualityResult.issues,
-    ...penaltyResult.issues,
-  ];
-  const issues: IssueKey[] = [...new Set(allIssues)];
-
-  const result: ScoringResult = {
-    score: finalScore,
-    dimensions: {
-      crawlability: Math.min(CRAWLABILITY_MAX, crawlResult.score),
-      content: Math.min(CONTENT_MAX, contentResult.score),
-      technical: Math.min(TECHNICAL_MAX, technicalResult.score),
-      quality: Math.min(QUALITY_MAX, qualityResult.score),
-    },
+  const result: ScoreResult = {
+    checkId: crypto.randomUUID(),
+    score,
+    dimensions: { crawlability, content, technical, quality },
     issues,
-    checkedAt: new Date(),
-    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    summary: extractSummary($fresh, bodyText),
+    summary: extractSummary(html),
+    cached: false,
+    checkedAt: now.toISOString(),
+    expiresAt: expiresAt.toISOString(),
+    url,
+    domain,
   };
 
-  logger.info('Scoring complete', {
-    url: originalUrl,
-    score: finalScore,
-    dimensions: result.dimensions,
-    issueCount: issues.length,
-  });
+  logger.debug('Score computed', { url, score, issues });
 
   return result;
 }

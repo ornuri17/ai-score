@@ -1,116 +1,47 @@
 // ============================================================
-// AIScore Shared Type Contracts
-// All workstreams must import from this file — do not redefine.
+// AIScore Types
+// Shared TypeScript interfaces used across the application.
 // ============================================================
 
-// --------------- Scoring ---------------
-
-export interface ScoreDimensions {
-  crawlability: number; // 0-30
-  content: number;      // 0-35
-  technical: number;    // 0-25
-  quality: number;      // 0-10
-}
-
-export type IssueKey =
-  | 'blocked_from_crawlers'
-  | 'not_publicly_accessible'
-  | 'access_or_speed_issues'
-  | 'crawlability_issues'
-  | 'structured_data_missing'
-  | 'metadata_optimization'
-  | 'mobile_unfriendly'
-  | 'no_https'
-  | 'slow_page_load'
-  | 'no_internal_links'
-  | 'no_language_tag'
-  | 'ai_crawlers_blocked';
-
-export interface ScoringResult {
-  score: number;           // 0-100, final score after penalties
-  dimensions: ScoreDimensions;
-  issues: IssueKey[];
-  checkedAt: Date;
-  expiresAt: Date;
-  summary: string;         // Short paragraph describing what the site is about
-}
-
-// --------------- Crawler ---------------
-
-export interface RobotsTxtData {
-  exists: boolean;
-  blocksAllCrawlers: boolean;   // User-agent: * Disallow: /
-  blocksAiCrawlers: boolean;    // GPTBot, ClaudeBot, PerplexityBot explicitly blocked
-  sitemapUrls: string[];        // Sitemap: directives found
-}
-
-export interface SitemapData {
-  exists: boolean;
-  urlCount: number;             // number of <loc> entries found (0 if not parseable)
-}
-
-export interface FetchResult {
+export interface CrawlResult {
   html: string;
-  statusCode: number;
-  redirectCount: number;
+  robotsTxt: string | null;
+  sitemapXml: string | null;
   responseTimeMs: number;
+  statusCode: number;
   finalUrl: string;
-  robotsTxt: RobotsTxtData;
-  sitemap: SitemapData;
+  redirectCount: number;
 }
 
-// --------------- Cache ---------------
-
-export interface CachedCheck {
+export interface ScoreResult {
   checkId: string;
   score: number;
-  dimensions: ScoreDimensions;
-  issues: IssueKey[];
-  cachedAt: Date;
-  expiresAt: Date;
-  domain: string;
-  summary?: string;
-}
-
-// --------------- API ---------------
-
-export interface AnalyzeRequest {
-  url: string;
-  force_refresh?: boolean;
-}
-
-export interface AnalyzeResponse {
-  check_id: string;
-  score: number;
-  dimensions: ScoreDimensions;
-  issues: IssueKey[];
+  dimensions: {
+    crawlability: number;
+    content: number;
+    technical: number;
+    quality: number;
+  };
+  issues: string[];
+  summary: string;
   cached: boolean;
-  checked_at: string;    // ISO 8601
-  expires_at: string;    // ISO 8601
-  summary?: string;
-}
-
-export interface HistoryPoint {
-  check_id: string;
-  score: number;
-  dimensions: ScoreDimensions;
-  checked_at: string;   // ISO 8601
-}
-
-export interface HistoryResponse {
+  checkedAt: string;
+  expiresAt: string;
+  url: string;
   domain: string;
-  history: HistoryPoint[];
 }
 
-export interface ErrorResponse {
-  error: string;
-  message: string;
+export interface CompareResult {
+  myUrl: ScoreResult;
+  competitorUrl: ScoreResult;
+  winner: 'my' | 'competitor' | 'tie';
+  delta: number;
 }
 
-// --------------- Rate Limiting ---------------
-
-export interface RateLimitResult {
-  allowed: boolean;
-  remaining: number;
-  retryAfterSeconds?: number;
+export interface LeadRequest {
+  checkId: string;
+  name: string;
+  email: string;
+  company?: string;
+  phone?: string;
 }

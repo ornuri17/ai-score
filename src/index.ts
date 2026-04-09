@@ -9,6 +9,7 @@ import { logger } from './logger';
 import { createCacheService } from './services/cache';
 import { createRateLimiterMiddleware, createFormRateLimiterMiddleware } from './middleware/rateLimiter';
 import { createAnalyzeRouter } from './routes/analyze';
+import { createCompareRouter } from './routes/compare';
 import { createLeadsRouter } from './routes/leads';
 import { createHistoryRouter } from './routes/history';
 
@@ -32,6 +33,9 @@ app.use('/api', rateLimiterMiddleware);
 
 // Mount the analyze route
 app.use('/api/analyze', createAnalyzeRouter(cacheService));
+
+// Mount the compare route
+app.use('/api/compare', createCompareRouter(cacheService));
 
 // Mount the history route
 app.use('/api/history', createHistoryRouter());
