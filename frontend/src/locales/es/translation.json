@@ -1,4 +1,35 @@
 {
+  "hero": {
+    "badge": "El Prisma Cognitivo está activo",
+    "title": "¿Tu sitio web está",
+    "titleHighlight": "listo para la IA?",
+    "subtitle": "Optimiza tu contenido para los LLMs. GradeByAI analiza la legibilidad de tu sitio para los crawlers que impulsan ChatGPT, Claude y Perplexity.",
+    "singleMode": "Análisis individual",
+    "compareToggleOff": "Comparar con competidor",
+    "placeholder": "https://tusitio.com",
+    "competitorPlaceholder": "https://competidor.com",
+    "analyzeBtn": "Analizar ahora",
+    "compareBtn": "Comparar ambos",
+    "analyzing": "Analizando...",
+    "analyzingBoth": "Analizando ambos..."
+  },
+  "why": {
+    "title": "Por qué",
+    "titleHighlight": "el SEO con IA",
+    "titleSuffix": "es el nuevo estándar",
+    "reason1Title": "Mejores resúmenes de IA",
+    "reason1Desc": "Cuando ChatGPT resume tu negocio, quieres que sea preciso. Nos aseguramos de que tus propuestas de valor sean imposibles de ignorar.",
+    "reason2Title": "Visibilidad en búsqueda IA",
+    "reason2Desc": "Perplexity y SearchGPT dependen del contexto estructurado. GradeByAI te da la ventaja técnica para aparecer en sus citas.",
+    "reason3Title": "Tráfico a prueba de futuro",
+    "reason3Desc": "El SEO tradicional está muriendo. Optimiza para la capa donde la próxima generación descubre marcas."
+  },
+  "cta": {
+    "title": "¿Listo para entrar al",
+    "titleHighlight": "Prisma Cognitivo?",
+    "startBtn": "Iniciar auditoría gratuita",
+    "compareBtn": "Comparar con competidor"
+  },
   "header": {
     "title": "GradeByAI",
     "language": "Idioma"

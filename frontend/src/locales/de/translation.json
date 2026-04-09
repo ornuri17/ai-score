@@ -1,4 +1,35 @@
 {
+  "hero": {
+    "badge": "Das Kognitive Prisma ist aktiv",
+    "title": "Ist Ihre Website",
+    "titleHighlight": "KI-bereit?",
+    "subtitle": "Optimieren Sie Ihre Inhalte für LLMs. GradeByAI analysiert die Lesbarkeit Ihrer Website für die Crawler, die ChatGPT, Claude und Perplexity antreiben.",
+    "singleMode": "Einzelprüfung",
+    "compareToggleOff": "Mit Konkurrenten vergleichen",
+    "placeholder": "https://ihrewebsite.de",
+    "competitorPlaceholder": "https://konkurrent.de",
+    "analyzeBtn": "Jetzt analysieren",
+    "compareBtn": "Beide vergleichen",
+    "analyzing": "Analysiere...",
+    "analyzingBoth": "Analysiere beide..."
+  },
+  "why": {
+    "title": "Warum",
+    "titleHighlight": "KI-SEO",
+    "titleSuffix": "der neue Standard ist",
+    "reason1Title": "Bessere KI-Zusammenfassungen",
+    "reason1Desc": "Wenn ChatGPT Ihr Unternehmen zusammenfasst, soll das präzise sein. Wir stellen sicher, dass Ihre Kernbotschaften unmöglich zu übersehen sind.",
+    "reason2Title": "Sichtbarkeit in der KI-Suche",
+    "reason2Desc": "Perplexity und SearchGPT verlassen sich auf strukturierten Kontext. GradeByAI gibt Ihnen den technischen Vorteil, in deren Zitaten zu erscheinen.",
+    "reason3Title": "Zukunftssicherer Traffic",
+    "reason3Desc": "Traditionelles SEO stirbt. Optimieren Sie für die Schicht, in der die nächste Generation Marken entdeckt."
+  },
+  "cta": {
+    "title": "Bereit, das",
+    "titleHighlight": "Kognitive Prisma zu betreten?",
+    "startBtn": "Kostenloses Audit starten",
+    "compareBtn": "Mit Konkurrenten vergleichen"
+  },
   "header": {
     "title": "GradeByAI",
     "language": "Sprache"

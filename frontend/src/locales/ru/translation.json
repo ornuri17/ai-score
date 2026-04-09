@@ -1,4 +1,35 @@
 {
+  "hero": {
+    "badge": "Когнитивная призма активна",
+    "title": "Ваш сайт готов",
+    "titleHighlight": "к эре ИИ?",
+    "subtitle": "Оптимизируйте контент для LLM. GradeByAI анализирует читаемость вашего сайта для краулеров ChatGPT, Claude и Perplexity.",
+    "singleMode": "Одиночная проверка",
+    "compareToggleOff": "Сравнить с конкурентом",
+    "placeholder": "https://вашсайт.ru",
+    "competitorPlaceholder": "https://конкурент.ru",
+    "analyzeBtn": "Анализировать",
+    "compareBtn": "Сравнить оба",
+    "analyzing": "Анализирую...",
+    "analyzingBoth": "Анализирую оба..."
+  },
+  "why": {
+    "title": "Почему",
+    "titleHighlight": "ИИ-SEO",
+    "titleSuffix": "— новый стандарт",
+    "reason1Title": "Лучшие сводки от ИИ",
+    "reason1Desc": "Когда ChatGPT описывает ваш бизнес, вы хотите точности. Мы делаем ваши ключевые преимущества очевидными.",
+    "reason2Title": "Видимость в ИИ-поиске",
+    "reason2Desc": "Perplexity и SearchGPT ищут структурированный контекст. GradeByAI даёт вам преимущество для попадания в их цитаты.",
+    "reason3Title": "Трафик будущего",
+    "reason3Desc": "Традиционное SEO умирает. Оптимизируйтесь для слоя, где следующее поколение пользователей открывает бренды."
+  },
+  "cta": {
+    "title": "Готовы войти в",
+    "titleHighlight": "Когнитивную призму?",
+    "startBtn": "Начать бесплатный аудит",
+    "compareBtn": "Сравнить с конкурентом"
+  },
   "header": {
     "title": "GradeByAI",
     "language": "Язык"

@@ -1,4 +1,35 @@
 {
+  "hero": {
+    "badge": "הפריזמה הקוגניטיבית פעילה",
+    "title": "האם האתר שלך",
+    "titleHighlight": "מוכן לעידן הבינה המלאכותית?",
+    "subtitle": "GradeByAI בודק את האתר שלך ומראה כמה טוב ChatGPT, Claude ו-Perplexity מצליחים למצוא ולהבין אותו.",
+    "singleMode": "בדיקה בודדת",
+    "compareToggleOff": "השוואה עם מתחרה",
+    "placeholder": "https://האתר-שלך.co.il",
+    "competitorPlaceholder": "https://המתחרה.co.il",
+    "analyzeBtn": "נתח עכשיו",
+    "compareBtn": "השווה את שניהם",
+    "analyzing": "מנתח...",
+    "analyzingBoth": "מנתח את שניהם..."
+  },
+  "why": {
+    "title": "למה",
+    "titleHighlight": "SEO לבינה מלאכותית",
+    "titleSuffix": "הוא הסטנדרט החדש",
+    "reason1Title": "סיכומי בינה מלאכותית טובים יותר",
+    "reason1Desc": "כשChatGPT מסכם את העסק שלך, אתה רוצה שזה יהיה מדויק. אנחנו מוודאים שהיתרונות שלך בלתי אפשריים להחמצה.",
+    "reason2Title": "נראות בחיפוש AI",
+    "reason2Desc": "Perplexity ו-SearchGPT מחפשים תוכן מאורגן. GradeByAI עוזר לך להיות מי שהם מציגים.",
+    "reason3Title": "תנועה עמידה לעתיד",
+    "reason3Desc": "SEO מסורתי גוסס. מטב את האתר שלך לשכבה שבה הדור הבא מגלה מותגים."
+  },
+  "cta": {
+    "title": "מוכן להיכנס אל",
+    "titleHighlight": "הפריזמה הקוגניטיבית?",
+    "startBtn": "התחל ביקורת חינמית",
+    "compareBtn": "השווה עם מתחרה"
+  },
   "header": {
     "title": "GradeByAI",
     "language": "שפה"

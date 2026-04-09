@@ -1,4 +1,35 @@
 {
+  "hero": {
+    "badge": "The Cognitive Prism is active",
+    "title": "Is Your Website",
+    "titleHighlight": "AI-Ready?",
+    "subtitle": "Optimize your content for Large Language Models. GradeByAI analyzes your site's legibility for the crawlers that power ChatGPT, Claude, and Perplexity.",
+    "singleMode": "Single Check",
+    "compareToggleOff": "Compare vs Competitor",
+    "placeholder": "https://yourwebsite.com",
+    "competitorPlaceholder": "https://competitor.com",
+    "analyzeBtn": "Analyze Now",
+    "compareBtn": "Compare Both",
+    "analyzing": "Analyzing...",
+    "analyzingBoth": "Analyzing Both..."
+  },
+  "why": {
+    "title": "Why",
+    "titleHighlight": "AI SEO",
+    "titleSuffix": "is the new standard",
+    "reason1Title": "Better AI Summaries",
+    "reason1Desc": "When ChatGPT summarizes your business, you want it to be accurate. We ensure your core value props are impossible to miss.",
+    "reason2Title": "Visibility in AI Search",
+    "reason2Desc": "Perplexity and SearchGPT rely on structured context. GradeByAI gives you the technical edge to appear in their citations.",
+    "reason3Title": "Future-Proof Traffic",
+    "reason3Desc": "Traditional SEO is dying. Optimize for the layer where the next generation of users is discovering brands."
+  },
+  "cta": {
+    "title": "Ready to enter the",
+    "titleHighlight": "Cognitive Prism?",
+    "startBtn": "Start Free Audit",
+    "compareBtn": "Compare vs Competitor"
+  },
   "header": {
     "title": "GradeByAI",
     "language": "Language"
