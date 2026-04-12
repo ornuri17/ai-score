@@ -30,9 +30,11 @@ export default function LeadForm({ checkId }: Props) {
       newErrors.email = t('form.errors.emailInvalid');
     }
 
-    const phoneResult = validatePhone(formData.phone);
-    if (!phoneResult.valid) {
-      newErrors.phone = 'Invalid phone number — try +1 followed by your number';
+    if (formData.phone.trim()) {
+      const phoneResult = validatePhone(formData.phone);
+      if (!phoneResult.valid) {
+        newErrors.phone = 'Invalid phone number - try +1 followed by your number';
+      }
     }
 
     if (!privacyAccepted) {
@@ -49,12 +51,12 @@ export default function LeadForm({ checkId }: Props) {
 
     setLoading(true);
     try {
-      const phoneResult = validatePhone(formData.phone);
+      const phoneResult = formData.phone.trim() ? validatePhone(formData.phone) : null;
       await submitLead({
         check_id: checkId,
         name: formData.name,
         email: formData.email,
-        phone: phoneResult.formatted || formData.phone,
+        phone: phoneResult?.formatted || formData.phone || undefined,
       });
       trackLeadSubmitted(checkId);
       setSubmitted(true);
