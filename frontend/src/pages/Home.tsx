@@ -117,7 +117,7 @@ export default function Home() {
                 <div className="flex-grow flex items-center px-4 gap-3 bg-[#22262f] rounded-lg border-b-2 border-transparent focus-within:border-[#81ecff] transition-all duration-300">
                   <span className="material-symbols-outlined text-[#73757d] text-sm">language</span>
                   <input
-                    type="url"
+                    type="text"
                     value={url}
                     onChange={(e) => setUrl(e.target.value)}
                     placeholder={t('hero.placeholder')}
@@ -151,7 +151,7 @@ export default function Home() {
                   <div className="flex items-center px-4 gap-3 bg-[#22262f] rounded-lg border-b-2 border-transparent focus-within:border-[#a68cff] transition-all duration-300">
                     <span className="material-symbols-outlined text-[#73757d] text-sm">compare_arrows</span>
                     <input
-                      type="url"
+                      type="text"
                       value={competitorUrl}
                       onChange={(e) => setCompetitorUrl(e.target.value)}
                       placeholder={t('hero.competitorPlaceholder')}
