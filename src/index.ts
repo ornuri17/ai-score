@@ -8,10 +8,12 @@ import { config } from './config';
 import { logger } from './logger';
 import { createCacheService } from './services/cache';
 import { createRateLimiterMiddleware, createFormRateLimiterMiddleware } from './middleware/rateLimiter';
+import { adminAuthMiddleware } from './middleware/adminAuth';
 import { createAnalyzeRouter } from './routes/analyze';
 import { createCompareRouter } from './routes/compare';
 import { createLeadsRouter } from './routes/leads';
 import { createHistoryRouter } from './routes/history';
+import { createAdminRouter } from './routes/admin';
 
 const app = express();
 
@@ -42,6 +44,9 @@ app.use('/api/history', createHistoryRouter());
 
 // Mount the leads route with its own (stricter) form rate limiter
 app.post('/api/leads', formRateLimiterMiddleware, createLeadsRouter());
+
+// Admin routes — protected by secret key, not subject to public rate limiting
+app.use('/api/admin', adminAuthMiddleware(), createAdminRouter());
 
 // Local dev server — not started in Lambda
 if (process.env.AWS_LAMBDA_FUNCTION_NAME === undefined) {
