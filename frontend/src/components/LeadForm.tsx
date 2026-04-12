@@ -76,7 +76,7 @@ export default function LeadForm({ checkId }: Props) {
     return (
       <div className="bg-[#10131a] rounded-lg p-4">
         <h3 className="font-bold text-lg mb-1 text-[#81ecff]">Got it! We'll be in touch.</h3>
-        <p className="text-sm text-[#a9abb3]">Check your inbox — your full report is on its way.</p>
+        <p className="text-sm text-[#a9abb3]">Thanks for reaching out. We'll contact you soon.</p>
       </div>
     );
   }
