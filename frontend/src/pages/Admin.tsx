@@ -22,7 +22,7 @@ export default function Admin() {
   const [error, setError] = useState('');
 
   const fetchLeads = async (key: string) => {
-    if (!ADMIN_SECRET || key !== ADMIN_SECRET) {
+    if (!ADMIN_SECRET || key.trim() !== ADMIN_SECRET.trim()) {
       setError('Invalid secret.');
       return;
     }
