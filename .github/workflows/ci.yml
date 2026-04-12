@@ -112,6 +112,7 @@ jobs:
         run: npm run build
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_ADMIN_SECRET: ${{ secrets.VITE_ADMIN_SECRET }}
       - name: Upload to S3
         run: |
           aws s3 sync dist/ s3://aiscore-frontend-prod --delete \
