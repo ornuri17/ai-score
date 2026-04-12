@@ -21,23 +21,52 @@ export default function Home() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  const normalizeAndValidate = (raw: string): string | null => {
+    const trimmed = raw.trim();
+    if (!trimmed) return null;
+    const withScheme = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+    try {
+      const parsed = new URL(withScheme);
+      if ((parsed.protocol !== 'http:' && parsed.protocol !== 'https:') || !parsed.hostname.includes('.')) return null;
+      return withScheme;
+    } catch {
+      return null;
+    }
+  };
+
   const handleAnalyze = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setError('');
+
+    const normalizedUrl = normalizeAndValidate(url);
+    if (!normalizedUrl) {
+      setError(t('home.errors.invalid') || 'Invalid URL. Please try again.');
+      return;
+    }
+
+    if (showCompare) {
+      const normalizedCompetitor = normalizeAndValidate(competitorUrl);
+      if (!normalizedCompetitor) {
+        setError(t('home.errors.invalid') || 'Invalid competitor URL. Please try again.');
+        return;
+      }
+    }
+
+    setLoading(true);
 
     try {
       if (showCompare) {
-        trackCompareSubmitted(url, competitorUrl);
-        const result = await compareWebsites(url, competitorUrl);
+        const normalizedCompetitor = normalizeAndValidate(competitorUrl)!;
+        trackCompareSubmitted(normalizedUrl, normalizedCompetitor);
+        const result = await compareWebsites(normalizedUrl, normalizedCompetitor);
         const myCheckId = result.myUrl.checkId;
         const compCheckId = result.competitorUrl.checkId;
         sessionStorage.setItem(`aiscore_compare_${myCheckId}_${compCheckId}`, JSON.stringify(result));
         navigate(`/compare?myCheckId=${myCheckId}&competitorCheckId=${compCheckId}`);
       } else {
-        trackCheckSubmitted(url);
-        const result = await analyzeWebsite(url);
-        const domain = new URL(url).hostname;
+        trackCheckSubmitted(normalizedUrl);
+        const result = await analyzeWebsite(normalizedUrl);
+        const domain = new URL(normalizedUrl).hostname;
         navigate(`/analysis/${domain}?checkId=${result.check_id}`);
       }
     } catch (err: unknown) {
