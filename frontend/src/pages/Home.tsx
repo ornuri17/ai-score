@@ -21,23 +21,52 @@ export default function Home() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  const normalizeAndValidate = (raw: string): string | null => {
+    const trimmed = raw.trim();
+    if (!trimmed) return null;
+    const withScheme = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+    try {
+      const parsed = new URL(withScheme);
+      if ((parsed.protocol !== 'http:' && parsed.protocol !== 'https:') || !parsed.hostname.includes('.')) return null;
+      return withScheme;
+    } catch {
+      return null;
+    }
+  };
+
   const handleAnalyze = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setError('');
+
+    const normalizedUrl = normalizeAndValidate(url);
+    if (!normalizedUrl) {
+      setError(t('home.errors.invalid') || 'Invalid URL. Please try again.');
+      return;
+    }
+
+    if (showCompare) {
+      const normalizedCompetitor = normalizeAndValidate(competitorUrl);
+      if (!normalizedCompetitor) {
+        setError(t('home.errors.invalid') || 'Invalid competitor URL. Please try again.');
+        return;
+      }
+    }
+
+    setLoading(true);
 
     try {
       if (showCompare) {
-        trackCompareSubmitted(url, competitorUrl);
-        const result = await compareWebsites(url, competitorUrl);
+        const normalizedCompetitor = normalizeAndValidate(competitorUrl)!;
+        trackCompareSubmitted(normalizedUrl, normalizedCompetitor);
+        const result = await compareWebsites(normalizedUrl, normalizedCompetitor);
         const myCheckId = result.myUrl.checkId;
         const compCheckId = result.competitorUrl.checkId;
         sessionStorage.setItem(`aiscore_compare_${myCheckId}_${compCheckId}`, JSON.stringify(result));
         navigate(`/compare?myCheckId=${myCheckId}&competitorCheckId=${compCheckId}`);
       } else {
-        trackCheckSubmitted(url);
-        const result = await analyzeWebsite(url);
-        const domain = new URL(url).hostname;
+        trackCheckSubmitted(normalizedUrl);
+        const result = await analyzeWebsite(normalizedUrl);
+        const domain = new URL(normalizedUrl).hostname;
         navigate(`/analysis/${domain}?checkId=${result.check_id}`);
       }
     } catch (err: unknown) {
@@ -117,7 +146,7 @@ export default function Home() {
                 <div className="flex-grow flex items-center px-4 gap-3 bg-[#22262f] rounded-lg border-b-2 border-transparent focus-within:border-[#81ecff] transition-all duration-300">
                   <span className="material-symbols-outlined text-[#73757d] text-sm">language</span>
                   <input
-                    type="url"
+                    type="text"
                     value={url}
                     onChange={(e) => setUrl(e.target.value)}
                     placeholder={t('hero.placeholder')}
@@ -151,7 +180,7 @@ export default function Home() {
                   <div className="flex items-center px-4 gap-3 bg-[#22262f] rounded-lg border-b-2 border-transparent focus-within:border-[#a68cff] transition-all duration-300">
                     <span className="material-symbols-outlined text-[#73757d] text-sm">compare_arrows</span>
                     <input
-                      type="url"
+                      type="text"
                       value={competitorUrl}
                       onChange={(e) => setCompetitorUrl(e.target.value)}
                       placeholder={t('hero.competitorPlaceholder')}
