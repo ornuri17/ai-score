@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import ScoreCard from '../components/ScoreCard';
@@ -14,7 +14,7 @@ import { trackCheckCompleted } from '../services/analytics';
 export default function Results() {
   const { t } = useTranslation();
   const { domain } = useParams<{ domain: string }>();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const checkId = searchParams.get('checkId') || '';
 
@@ -22,22 +22,42 @@ export default function Results() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [history, setHistory] = useState<HistoryPoint[]>([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!domain) return;
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
-    analyzeWebsite(`https://${domain}`)
+  const runAnalysis = (forceRefresh = false) => {
+    if (!domain) return;
+    setLoading(true);
+    setError('');
+    setDropdownOpen(false);
+    analyzeWebsite(`https://${domain}`, forceRefresh)
       .then((data) => {
         setResult(data);
         setLoading(false);
         trackCheckCompleted(domain, data.score);
+        setSearchParams({ checkId: data.checkId });
         getHistory(domain).then((h) => setHistory(h.history)).catch(() => {});
       })
       .catch(() => {
         setError(t('results.error'));
         setLoading(false);
       });
-  }, [domain, t]);
+  };
+
+  useEffect(() => {
+    runAnalysis();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [domain]);
 
   if (loading) {
     return (
@@ -194,7 +214,7 @@ export default function Results() {
             <p className="text-on-surface-variant text-lg max-w-md mb-8">
               {t('results.analysisCompleteDesc', { domain })}
             </p>
-            <div className="flex gap-4">
+            <div className="flex gap-4 items-center">
               <div className="flex items-center gap-2 px-4 py-2 bg-secondary-container/20 rounded-full border border-secondary/20">
                 <span
                   className="material-symbols-outlined text-secondary"
@@ -203,6 +223,41 @@ export default function Results() {
                   bolt
                 </span>
                 <span className="font-label text-xs uppercase tracking-widest text-secondary font-bold">{t('results.analysisCompleteLabel')}</span>
+              </div>
+
+              {/* Re-analyze split button */}
+              <div className="relative" ref={dropdownRef}>
+                <div className="flex rounded-lg overflow-hidden border border-outline-variant/20">
+                  <button
+                    onClick={() => runAnalysis(false)}
+                    className="flex items-center gap-2 px-4 py-2 bg-surface-container hover:bg-surface-container-high transition-colors font-label text-xs font-bold text-on-surface"
+                  >
+                    <span className="material-symbols-outlined text-base" style={{ fontVariationSettings: "'FILL' 0" }}>refresh</span>
+                    Re-analyze
+                  </button>
+                  <button
+                    onClick={() => setDropdownOpen((o) => !o)}
+                    className="px-2 py-2 bg-surface-container hover:bg-surface-container-high border-l border-outline-variant/20 transition-colors text-on-surface-variant"
+                    aria-label="More options"
+                  >
+                    <span className="material-symbols-outlined text-base leading-none">expand_more</span>
+                  </button>
+                </div>
+
+                {dropdownOpen && (
+                  <div className="absolute left-0 mt-1 w-52 bg-surface-container rounded-xl border border-outline-variant/20 shadow-xl z-50 overflow-hidden">
+                    <button
+                      onClick={() => runAnalysis(true)}
+                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-surface-container-high transition-colors text-left"
+                    >
+                      <span className="material-symbols-outlined text-base text-tertiary" style={{ fontVariationSettings: "'FILL' 1" }}>sync</span>
+                      <div>
+                        <div className="font-label text-xs font-bold text-on-surface">Force refresh</div>
+                        <div className="font-body text-[11px] text-on-surface-variant">Bypass cache, re-crawl live</div>
+                      </div>
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
             <div className="mt-4 text-sm text-on-surface-variant font-body">
