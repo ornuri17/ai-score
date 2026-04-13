@@ -53,7 +53,7 @@ export default function LeadForm({ checkId }: Props) {
     try {
       const phoneResult = formData.phone.trim() ? validatePhone(formData.phone) : null;
       await submitLead({
-        check_id: checkId,
+        checkId: checkId,
         name: formData.name,
         email: formData.email,
         phone: phoneResult?.formatted || formData.phone || undefined,

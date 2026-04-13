@@ -3,7 +3,7 @@ import axios from 'axios';
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 export interface AnalyzeResponse {
-  check_id: string;
+  checkId: string;
   score: number;
   dimensions: {
     crawlability: number;
@@ -13,14 +13,13 @@ export interface AnalyzeResponse {
   };
   issues: string[];
   cached: boolean;
-  checked_at: string;
-  cached_until: string;
-  fallback_until: string;
+  checkedAt: string;
+  expiresAt: string;
   summary?: string;
 }
 
 export interface LeadSubmission {
-  check_id: string;
+  checkId: string;
   name: string;
   email: string;
   phone?: string;
@@ -100,14 +99,14 @@ export async function compareWebsites(myUrl: string, competitorUrl: string): Pro
   ]);
 
   const toScoreResult = (r: AnalyzeResponse, url: string): ScoreResult => ({
-    checkId: r.check_id,
+    checkId: r.checkId,
     url,
     domain: new URL(url).hostname,
     score: r.score,
     dimensions: r.dimensions,
     issues: r.issues,
     summary: r.summary || '',
-    checkedAt: r.checked_at,
+    checkedAt: r.checkedAt,
   });
 
   const my = toScoreResult(myRes, myUrl);
