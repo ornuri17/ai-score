@@ -67,7 +67,7 @@ export default function Home() {
         trackCheckSubmitted(normalizedUrl);
         const result = await analyzeWebsite(normalizedUrl);
         const domain = new URL(normalizedUrl).hostname;
-        navigate(`/analysis/${domain}?checkId=${result.check_id}`);
+        navigate(`/analysis/${domain}?checkId=${result.checkId}`);
       }
     } catch (err: unknown) {
       const status = (err as { response?: { status?: number } })?.response?.status;

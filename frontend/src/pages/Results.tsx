@@ -206,7 +206,7 @@ export default function Results() {
               </div>
             </div>
             <div className="mt-4 text-sm text-on-surface-variant font-body">
-              {t('results.lastAnalyzed')}: {new Date(result.checked_at).toLocaleString()}
+              {t('results.lastAnalyzed')}: {new Date(result.checkedAt).toLocaleString()}
             </div>
           </div>
           <div className="lg:col-span-7 flex justify-center">
@@ -257,7 +257,7 @@ export default function Results() {
 
         {/* LeadForm */}
         <div className="mb-16">
-          <LeadForm checkId={result.check_id || checkId} />
+          <LeadForm checkId={result.checkId || checkId} />
         </div>
 
         {/* SocialShare */}
