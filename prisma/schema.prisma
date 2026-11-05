@@ -17,6 +17,7 @@ model Check {
   contentScore     Int      @db.SmallInt
   technicalScore   Int      @db.SmallInt
   qualityScore     Int      @db.SmallInt
+  agentScore       Int?     @db.SmallInt
   issues           Json     @default("[]")
   checkedAt        DateTime @default(now())
   expiresAt        DateTime @default(dbgenerated("now() + interval '7 days'"))

@@ -7,6 +7,8 @@ import LeadForm from '../components/LeadForm';
 import SocialShare from '../components/SocialShare';
 import NavBar from '../components/NavBar';
 import ScoreHistory from '../components/ScoreHistory';
+import FixPlan from '../components/FixPlan';
+import AgentReadiness from '../components/AgentReadiness';
 import { analyzeWebsite, getHistory } from '../services/api';
 import type { AnalyzeResponse, HistoryPoint } from '../services/api';
 import { trackCheckCompleted } from '../services/analytics';
@@ -271,8 +273,18 @@ export default function Results() {
 
         {/* DimensionBreakdown */}
         <div className="mb-16">
-          <DimensionBreakdown dimensions={result.dimensions} />
+          <DimensionBreakdown dimensions={result.dimensions} maxDimensions={result.maxDimensions} />
         </div>
+
+        {/* Action plan: biggest wins first, each with a coding-agent prompt */}
+        <FixPlan fixes={result.fixes ?? []} />
+
+        {/* Agent readiness checks with evidence */}
+        <AgentReadiness
+          checks={result.agentChecks ?? []}
+          score={result.dimensions.agentReadiness ?? 0}
+          max={result.maxDimensions?.agentReadiness ?? 25}
+        />
 
         {/* Score history (only shown if >= 2 past checks) */}
         <ScoreHistory history={history} domain={domain || ''} />

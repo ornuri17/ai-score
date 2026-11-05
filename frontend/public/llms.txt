@@ -1,13 +1,14 @@
 # GradeByAI
-> GradeByAI scores how ready a single web page is for AI search engines and assistants (ChatGPT, Claude, Perplexity): can their crawlers reach the page, read it, and understand what it is about. It returns a 0-100 score, the issues it found, and how to fix them.
+> GradeByAI scores how ready a website is for AI: can AI search crawlers (ChatGPT, Claude, Perplexity) reach a page, read it and understand it, and can AI agents discover the site, read it as Markdown and connect to it. It returns a 0-100 score, the issues it found, and a ranked fix list with a copy-paste prompt for coding agents per fix.
 
 ## What it checks
-GradeByAI fetches the raw HTML of the page (no JavaScript is executed), plus /robots.txt and /sitemap.xml.
+GradeByAI fetches the raw HTML of the page (no JavaScript is executed), /robots.txt, /sitemap.xml and the site's well-known agent discovery files.
 
-- Crawlability (30 points): HTTP status, meta robots and X-Robots-Tag noindex/nofollow, redirects and response time, sitemap
-- Content structure (35 points): semantic HTML (main, article, section, h1, h2), title and meta description length, Open Graph, JSON-LD structured data, publish date, viewport, html lang
-- Technical SEO (25 points): canonical URL, HTTPS, clean URL, response under 3 seconds, enough visible text in the HTML
-- Content quality (10 points): amount of visible text, internal links
+- Crawlability (22 points): HTTP status, meta robots and X-Robots-Tag noindex/nofollow, redirects and response time, sitemap
+- Content structure (26 points): semantic HTML (main, article, section, h1, h2), title and meta description length, Open Graph, JSON-LD structured data, publish date, viewport, html lang
+- Technical SEO (19 points): canonical URL, HTTPS, clean URL, response under 3 seconds, enough visible text in the HTML
+- Content quality (8 points): amount of visible text, internal links
+- Agent readiness (25 points): llms.txt, Content Signals in robots.txt, Markdown for Agents (Accept: text/markdown), Link headers, MCP Server Card, A2A Agent Card, Agent Skills index, API catalog (RFC 9727), OAuth discovery (RFC 8414) and OAuth Protected Resource (RFC 9728). Each failed check shows the request and response behind it.
 - Penalties: noindex, login wall, non-200 status, too many redirects or very slow responses, and robots.txt rules that block GPTBot, ClaudeBot or PerplexityBot from the page
 
 Not checked: JavaScript rendering, readability scoring and topical coverage. Pages that only render content with JavaScript will score lower because their raw HTML is mostly empty.

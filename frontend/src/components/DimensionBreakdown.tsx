@@ -1,11 +1,14 @@
 import { useTranslation } from 'react-i18next';
+import type { Dimensions } from '../services/api';
 
-interface Dimensions {
-  crawlability: number;
-  content: number;
-  technical: number;
-  quality: number;
-}
+// Maxima before the agent readiness rebalance; used only when the API does not send maxDimensions
+const LEGACY_MAX: Record<keyof Dimensions, number> = {
+  crawlability: 30,
+  content: 35,
+  technical: 25,
+  quality: 10,
+  agentReadiness: 0,
+};
 
 interface Bar {
   key: keyof Dimensions;
@@ -49,14 +52,31 @@ const BARS: Bar[] = [
     textColor: 'text-tertiary',
     barColor: 'bg-tertiary',
   },
+  {
+    key: 'agentReadiness',
+    label: 'results.agentReadiness',
+    max: 25,
+    icon: 'smart_toy',
+    textColor: 'text-[#a68cff]',
+    barColor: 'bg-[#a68cff]',
+  },
 ];
 
-export default function DimensionBreakdown({ dimensions }: { dimensions: Dimensions }) {
+export default function DimensionBreakdown({
+  dimensions,
+  maxDimensions,
+}: {
+  dimensions: Dimensions;
+  maxDimensions?: Required<Dimensions>;
+}) {
   const { t } = useTranslation();
+  const bars = BARS.map((bar) => ({ ...bar, max: maxDimensions ? maxDimensions[bar.key] : LEGACY_MAX[bar.key] })).filter(
+    (bar) => bar.max > 0,
+  );
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
-      {BARS.map(({ key, label, max, icon, textColor, barColor }) => (
+    <div className={`grid grid-cols-1 sm:grid-cols-2 ${bars.length > 4 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'} gap-4 mb-16`}>
+      {bars.map(({ key, label, max, icon, textColor, barColor }) => (
         <div
           key={key}
           className="bg-surface-container-low p-5 md:p-8 rounded-xl border border-outline-variant/15 flex flex-col gap-4"
@@ -67,14 +87,14 @@ export default function DimensionBreakdown({ dimensions }: { dimensions: Dimensi
               {t(label)}
             </h3>
             <div className="flex items-end gap-2">
-              <span className="font-headline text-3xl font-bold">{dimensions[key]}</span>
+              <span className="font-headline text-3xl font-bold">{dimensions[key] ?? 0}</span>
               <span className={`${textColor} text-sm font-bold pb-1`}>/ {max} pts</span>
             </div>
           </div>
           <div className="w-full bg-surface-container-high h-1 rounded-full overflow-hidden">
             <div
               className={`${barColor} h-full`}
-              style={{ width: `${(dimensions[key] / max) * 100}%` }}
+              style={{ width: `${((dimensions[key] ?? 0) / max) * 100}%` }}
             />
           </div>
         </div>

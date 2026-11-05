@@ -119,7 +119,8 @@
     "neuralAffinity": "Neural Affinity",
     "issuesDetected": "Issues Detected",
     "aboutSite": "What This Site Is About",
-    "scoreHistory": "Score History"
+    "scoreHistory": "Score History",
+    "agentReadiness": "Agent Readiness"
   },
   "form": {
     "cta": "Get Your AEO Action Plan",
@@ -148,16 +149,16 @@
     "stepsBadge": "THE STEPS",
     "step1Title": "We Crawl Your Site",
     "step1Desc": "Our crawler fetches your live page the way an AI crawler does: it reads the raw HTML (without running JavaScript), your robots.txt and your sitemap.",
-    "step1Pts": "30 pts",
+    "step1Pts": "22 pts",
     "step2Title": "Content Structure Analysis",
     "step2Desc": "We evaluate heading hierarchies, semantic HTML, schema.org markup, and whether your content is machine-readable.",
-    "step2Pts": "35 pts",
+    "step2Pts": "26 pts",
     "step3Title": "Technical SEO Audit",
     "step3Desc": "Meta tags, canonical URLs, page speed signals, and structured data all feed into your technical score.",
-    "step3Pts": "25 pts",
+    "step3Pts": "19 pts",
     "step4Title": "Content Quality Signal",
     "step4Desc": "AI systems favour pages with real, well-linked content. We check how much visible text the page has and how well it links to the rest of your site.",
-    "step4Pts": "10 pts",
+    "step4Pts": "8 pts",
     "scoreBadge": "THE SCORE",
     "scoreTitle": "Your Score, Explained",
     "tier1Range": "80–100",
@@ -187,11 +188,101 @@
     "ctaButton": "Analyze My Site",
     "footerRights": "All rights reserved.",
     "privacy": "Privacy",
-    "terms": "Terms"
+    "terms": "Terms",
+    "step5Title": "Agent Readiness",
+    "step5Desc": "Can AI agents discover and use your site? We check llms.txt, Content Signals, Markdown for Agents, Link headers, MCP and A2A cards, Agent Skills, API catalog and OAuth discovery.",
+    "step5Pts": "25 pts"
   },
   "notFound": {
     "title": "Page not found",
     "body": "This page doesn't exist. Check the address, or score a website from the home page.",
     "home": "Back to home"
+  },
+  "agent": {
+    "sectionLabel": "AGENT READINESS",
+    "heading": "Can AI agents use your site?",
+    "intro": "Beyond being read by AI search, can an AI agent discover your site, read it as Markdown and connect to it? These checks follow the specs used by Cloudflare's isitagentready.com.",
+    "passed": "Passed",
+    "partial": "Partial",
+    "failed": "Missing",
+    "points": "{{points}}/{{max}} pts",
+    "showEvidence": "Show request and response",
+    "hideEvidence": "Hide request and response",
+    "request": "Request",
+    "response": "Response",
+    "error": "Error",
+    "note": "Note",
+    "status": "Status",
+    "copyPrompt": "Copy fix prompt",
+    "copied": "Copied!",
+    "spec": "Spec",
+    "checks": {
+      "llmsTxt": {
+        "title": "llms.txt",
+        "desc": "A Markdown file at /llms.txt that tells AI models what the site is and links its key pages."
+      },
+      "contentSignals": {
+        "title": "Content Signals",
+        "desc": "A Content-Signal line in robots.txt saying whether AI may use your content for search, AI answers or training."
+      },
+      "markdownNegotiation": {
+        "title": "Markdown for Agents",
+        "desc": "Requests with Accept: text/markdown get a clean Markdown version of the page instead of HTML."
+      },
+      "linkHeaders": {
+        "title": "Link headers",
+        "desc": "HTTP Link headers on the homepage that point agents to your API catalog, docs or other machine-readable files."
+      },
+      "mcpServerCard": {
+        "title": "MCP Server Card",
+        "desc": "A card at /.well-known/mcp/server-card.json that lets agents find and connect to your MCP server."
+      },
+      "a2aAgentCard": {
+        "title": "A2A Agent Card",
+        "desc": "A card at /.well-known/agent-card.json that describes your agent to other agents (A2A protocol)."
+      },
+      "agentSkills": {
+        "title": "Agent Skills",
+        "desc": "An index at /.well-known/agent-skills/index.json listing skills that teach agents how to use your site."
+      },
+      "apiCatalog": {
+        "title": "API Catalog",
+        "desc": "A list of your APIs at /.well-known/api-catalog (RFC 9727) with links to their specs and docs."
+      },
+      "oauthDiscovery": {
+        "title": "OAuth discovery",
+        "desc": "OAuth / OpenID metadata that tells agents how to sign users in to your service."
+      },
+      "oauthProtectedResource": {
+        "title": "OAuth Protected Resource",
+        "desc": "Metadata at /.well-known/oauth-protected-resource that tells agents which authorization server protects your API."
+      }
+    }
+  },
+  "fixPlan": {
+    "label": "ACTION PLAN",
+    "heading": "Fix these first to gain {{points}} points",
+    "intro": "Each fix comes with a ready prompt. Paste it into Cursor, Claude Code or any coding agent working on your site.",
+    "copyAll": "Copy all prompts",
+    "copiedAll": "All prompts copied!",
+    "gain": "+{{points}} pts",
+    "showPrompt": "Show prompt",
+    "hidePrompt": "Hide prompt",
+    "more": "All fixes ({{count}})",
+    "promptNote": "Prompts are in English so coding agents follow them precisely.",
+    "titles": {
+      "blocked_from_crawlers": "Remove noindex",
+      "ai_crawlers_blocked": "Allow AI crawlers in robots.txt",
+      "not_publicly_accessible": "Make the page public",
+      "crawlability_issues": "Add a sitemap",
+      "structured_data_missing": "Add JSON-LD structured data",
+      "metadata_optimization": "Fix title and meta description",
+      "mobile_unfriendly": "Add a viewport meta tag",
+      "no_https": "Serve over HTTPS",
+      "slow_page_load": "Speed up the page",
+      "no_internal_links": "Add internal links",
+      "no_language_tag": "Set the page language",
+      "access_or_speed_issues": "Fix redirects or timeouts"
+    }
   }
 }

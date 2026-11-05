@@ -1,3 +1,6 @@
+import type { AgentCheck } from '../services/agentReadiness';
+import type { Fix } from '../services/fixes';
+
 // ============================================================
 // AIScore Types
 // Shared TypeScript interfaces used across the application.
@@ -15,16 +18,25 @@ export interface CrawlResult {
   headers: Record<string, string>;
 }
 
+export interface Dimensions {
+  crawlability: number;
+  content: number;
+  technical: number;
+  quality: number;
+  agentReadiness: number;
+}
+
 export interface ScoreResult {
   checkId: string;
   score: number;
-  dimensions: {
-    crawlability: number;
-    content: number;
-    technical: number;
-    quality: number;
-  };
+  dimensions: Dimensions;
+  /** Maximum points per dimension (sums to 100), so clients do not hard-code them. */
+  maxDimensions: Dimensions;
   issues: string[];
+  /** Agent readiness checks with evidence and fix prompts. */
+  agentChecks: AgentCheck[];
+  /** Everything worth fixing, biggest score gain first, each with a copy-paste prompt. */
+  fixes: Fix[];
   summary: string;
   cached: boolean;
   checkedAt: string;

@@ -8,8 +8,11 @@ function result(domain: string, score: number, checkedAt: string): ScoreResult {
   return {
     checkId: `${domain}-${checkedAt}`,
     score,
-    dimensions: { crawlability: 20, content: 30, technical: 20, quality: 10 },
+    dimensions: { crawlability: 20, content: 20, technical: 15, quality: 8, agentReadiness: 10 },
+    maxDimensions: { crawlability: 22, content: 26, technical: 19, quality: 8, agentReadiness: 25 },
     issues: [],
+    agentChecks: [],
+    fixes: [],
     summary: '',
     cached: false,
     checkedAt,

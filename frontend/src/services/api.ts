@@ -2,15 +2,61 @@ import axios from 'axios';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
+export interface Dimensions {
+  crawlability: number;
+  content: number;
+  technical: number;
+  quality: number;
+  /** Added with the agent readiness dimension; absent in older cached results. */
+  agentReadiness?: number;
+}
+
+export interface Evidence {
+  request: { method: 'GET'; url: string; headers?: Record<string, string> };
+  response?: { status: number; headers: Record<string, string>; bodyPreview: string };
+  error?: string;
+  note?: string;
+}
+
+export type AgentCheckId =
+  | 'llmsTxt'
+  | 'contentSignals'
+  | 'markdownNegotiation'
+  | 'linkHeaders'
+  | 'mcpServerCard'
+  | 'a2aAgentCard'
+  | 'agentSkills'
+  | 'apiCatalog'
+  | 'oauthDiscovery'
+  | 'oauthProtectedResource';
+
+export interface AgentCheck {
+  id: AgentCheckId;
+  title: string;
+  passed: boolean;
+  points: number;
+  maxPoints: number;
+  detail: string;
+  evidence: Evidence[];
+  fixPrompt?: string;
+  specUrl: string;
+}
+
+export interface Fix {
+  id: string;
+  kind: 'classic' | 'agent';
+  title: string;
+  gain: number;
+  prompt: string;
+}
+
 export interface AnalyzeResponse {
   checkId: string;
   score: number;
-  dimensions: {
-    crawlability: number;
-    content: number;
-    technical: number;
-    quality: number;
-  };
+  dimensions: Dimensions;
+  maxDimensions?: Required<Dimensions>;
+  agentChecks?: AgentCheck[];
+  fixes?: Fix[];
   issues: string[];
   cached: boolean;
   checkedAt: string;
@@ -74,12 +120,8 @@ export interface ScoreResult {
   url: string;
   domain: string;
   score: number;
-  dimensions: {
-    crawlability: number;
-    content: number;
-    technical: number;
-    quality: number;
-  };
+  dimensions: Dimensions;
+  maxDimensions?: Required<Dimensions>;
   issues: string[];
   summary: string;
   checkedAt: string;
@@ -104,6 +146,7 @@ export async function compareWebsites(myUrl: string, competitorUrl: string): Pro
     domain: new URL(url).hostname,
     score: r.score,
     dimensions: r.dimensions,
+    maxDimensions: r.maxDimensions,
     issues: r.issues,
     summary: r.summary || '',
     checkedAt: r.checkedAt,

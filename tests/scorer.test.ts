@@ -29,8 +29,10 @@ describe('extractMetaContent', () => {
 
 describe('scoreUrl', () => {
   it('scores a well-formed page highly and returns the full summary', () => {
+    // Without agent readiness the classic dimensions top out at 75 of 100
     const result = scoreUrl('https://example.com', crawl());
-    expect(result.score).toBeGreaterThanOrEqual(90);
+    expect(result.score).toBeGreaterThanOrEqual(70);
+    expect(result.score).toBeLessThanOrEqual(75);
     expect(result.summary).toBe("Example Company's platform helps teams plan, track and ship work faster, with AI built in.");
     expect(result.issues).not.toContain('blocked_from_crawlers');
   });
@@ -39,14 +41,14 @@ describe('scoreUrl', () => {
     const base = scoreUrl('https://example.com', crawl());
     const result = scoreUrl('https://example.com', crawl({ headers: { 'x-robots-tag': 'noindex' } }));
     expect(result.issues).toContain('blocked_from_crawlers');
-    expect(result.dimensions.crawlability).toBe(base.dimensions.crawlability - 5);
-    expect(result.score).toBeLessThanOrEqual(base.score - 35);
+    expect(result.dimensions.crawlability).toBeLessThan(base.dimensions.crawlability);
+    expect(result.score).toBeLessThanOrEqual(base.score - 33);
   });
 
   it('honors X-Robots-Tag: nofollow from the header', () => {
     const base = scoreUrl('https://example.com', crawl());
     const result = scoreUrl('https://example.com', crawl({ headers: { 'x-robots-tag': 'nofollow' } }));
-    expect(result.dimensions.crawlability).toBe(base.dimensions.crawlability - 5);
+    expect(result.dimensions.crawlability).toBe(base.dimensions.crawlability - 4);
   });
 
   it('no longer reads X-Robots-Tag from page text', () => {
