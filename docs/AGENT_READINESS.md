@@ -43,3 +43,17 @@ The results page shows "Fix these first to gain X points" (top 3, copy one or al
 | monday.com | 20 / 25 (no Markdown negotiation, A2A card without supportedInterfaces) | 89 |
 | isitagentready.com | 20 / 25 (no A2A card, no OAuth) | 82 |
 | gradebyai.com | 4 / 25 (only llms.txt) | 76 |
+
+## GradeByAI's own agent readiness (separate commit)
+
+GradeByAI scored itself 4 / 25 here (and level 1 on isitagentready.com). This commit makes it practice what it checks:
+
+- **MCP server**: `POST <API>/mcp`, stateless Streamable HTTP with JSON responses, one tool `scan_site` (`url`, optional `force_refresh`) returning the score, breakdown, fixes and agent checks. Same rate limit as the API.
+- **Generated at build** by `frontend/scripts/generate-agent-files.mjs` from `VITE_API_URL` (so no API URL is hard-coded in the repo): `/.well-known/mcp/server-card.json`, `/.well-known/api-catalog`, `/.well-known/agent-skills/index.json` with a `gradebyai-scan` SKILL.md, `/api.md` (public API doc) and `/index.md` (Markdown home page).
+- **Markdown for Agents**: the CloudFront function serves `/index.md` for `GET /` with `Accept: text/markdown`.
+- **Content Signals** in robots.txt: `search=yes, ai-input=yes, ai-train=yes` (maximum AI visibility; change `ai-train` to `no` if you prefer).
+- llms.txt links the API doc.
+
+Expected after deploy plus `terraform apply`: llms.txt 4, Content Signals 3, Markdown 4, MCP card 3, Agent Skills 2, API catalog 2 = 18 / 25. Not done: Link headers on the homepage (needs a CloudFront response headers policy with a `Link` header, 2 points), A2A card and OAuth (GradeByAI has no agent-to-agent interface or login, so publishing them would be fake).
+
+Notes: the MCP card points at the execute-api URL unless the API gets a custom domain (for example `api.gradebyai.com`, then set `VITE_API_URL` to it). `aws s3 sync` uploads `/.well-known/api-catalog` (no extension) as `binary/octet-stream`; agents still parse it, but for the ideal `application/linkset+json` add `--content-type` for that one key in the deploy step.

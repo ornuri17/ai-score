@@ -24,4 +24,5 @@ Free to use. Premium AEO consultation available.
 ## Links
 - Homepage: https://gradebyai.com
 - How it works: https://gradebyai.com/how-it-works
+- Public API and MCP server: https://gradebyai.com/api.md
 - Contact: privacy@gradebyai.com
