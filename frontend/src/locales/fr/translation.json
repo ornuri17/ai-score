@@ -147,7 +147,7 @@
     "subtitle": "Quatre dimensions. Un score définitif. Une clarté complète sur votre préparation à l'IA.",
     "stepsBadge": "LES ÉTAPES",
     "step1Title": "Nous explorons votre site",
-    "step1Desc": "Notre crawler visite votre site en direct comme le ferait un assistant IA — en suivant robots.txt, en vérifiant les sitemaps et en testant le rendu JavaScript.",
+    "step1Desc": "Notre crawler récupère votre page comme un robot d'IA : le HTML brut (sans exécuter JavaScript), votre robots.txt et votre sitemap.",
     "step1Pts": "30 pts",
     "step2Title": "Analyse de la structure du contenu",
     "step2Desc": "Nous évaluons les hiérarchies de titres, le HTML sémantique, le balisage schema.org et si votre contenu est lisible par les machines.",
@@ -156,7 +156,7 @@
     "step3Desc": "Les balises meta, les URL canoniques, les signaux de vitesse de page et les données structurées alimentent votre score technique.",
     "step3Pts": "25 pts",
     "step4Title": "Signal de qualité du contenu",
-    "step4Desc": "Les systèmes IA privilégient le contenu faisant autorité et bien structuré. Nous mesurons la lisibilité, la profondeur et la couverture thématique.",
+    "step4Desc": "Les systèmes d'IA privilégient les pages au contenu réel et bien relié. Nous mesurons la quantité de texte visible et les liens internes vers le reste de votre site.",
     "step4Pts": "10 pts",
     "scoreBadge": "LE SCORE",
     "scoreTitle": "Votre score, expliqué",
@@ -188,5 +188,10 @@
     "footerRights": "Tous droits réservés.",
     "privacy": "Confidentialité",
     "terms": "Conditions"
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "body": "Cette page n'existe pas. Vérifiez l'adresse ou analysez un site depuis la page d'accueil.",
+    "home": "Retour à l'accueil"
   }
 }

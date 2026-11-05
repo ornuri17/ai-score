@@ -126,7 +126,7 @@
     "title": "Cómo funciona GradeByAI",
     "subtitle": "Cuatro dimensiones. Una puntuación definitiva. Claridad completa sobre tu preparación para la IA.",
     "step1Title": "Rastreamos tu sitio",
-    "step1Desc": "Nuestro crawler visita tu sitio en vivo como lo haría un asistente de IA — siguiendo robots.txt, verificando sitemaps y probando el renderizado JavaScript.",
+    "step1Desc": "Nuestro crawler obtiene tu página como lo hace un rastreador de IA: el HTML sin procesar (sin ejecutar JavaScript), tu robots.txt y tu sitemap.",
     "step1Pts": "30 pts",
     "step2Title": "Análisis de estructura de contenido",
     "step2Desc": "Evaluamos jerarquías de encabezados, HTML semántico, marcado schema.org y si tu contenido es legible por máquinas.",
@@ -135,7 +135,7 @@
     "step3Desc": "Las etiquetas meta, URLs canónicas, señales de velocidad de página y datos estructurados alimentan tu puntuación técnica.",
     "step3Pts": "25 pts",
     "step4Title": "Señal de calidad de contenido",
-    "step4Desc": "Los sistemas de IA favorecen el contenido autoritativo y bien estructurado. Medimos legibilidad, profundidad y cobertura temática.",
+    "step4Desc": "Los sistemas de IA prefieren páginas con contenido real y bien enlazado. Medimos cuánto texto visible tiene la página y sus enlaces internos al resto de tu sitio.",
     "step4Pts": "10 pts",
     "scoreBadge": "LA PUNTUACIÓN",
     "scoreTitle": "Tu puntuación, explicada",
@@ -187,5 +187,10 @@
       "rateLimit": "Límite de velocidad alcanzado. Inténtalo más tarde.",
       "submitFailed": "Error al enviar. Por favor, inténtalo de nuevo."
     }
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "body": "Esta página no existe. Revisa la dirección o analiza un sitio desde la página de inicio.",
+    "home": "Volver al inicio"
   }
 }

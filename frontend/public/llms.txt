@@ -1,11 +1,16 @@
 # GradeByAI
-> GradeByAI scores your website's AI-friendliness (AEO/GEO readiness) and gives you an actionable plan to be cited and discovered by AI systems like ChatGPT, Claude, and Perplexity.
+> GradeByAI scores how ready a single web page is for AI search engines and assistants (ChatGPT, Claude, Perplexity): can their crawlers reach the page, read it, and understand what it is about. It returns a 0-100 score, the issues it found, and how to fix them.
 
-## What it does
-- Analyzes crawlability (robots.txt, sitemap, JS rendering): 30 points
-- Evaluates content structure (headings, semantic HTML, schema.org): 35 points
-- Audits technical SEO (meta tags, canonical URLs, structured data): 25 points
-- Measures content quality (readability, depth, topical coverage): 10 points
+## What it checks
+GradeByAI fetches the raw HTML of the page (no JavaScript is executed), plus /robots.txt and /sitemap.xml.
+
+- Crawlability (30 points): HTTP status, meta robots and X-Robots-Tag noindex/nofollow, redirects and response time, sitemap
+- Content structure (35 points): semantic HTML (main, article, section, h1, h2), title and meta description length, Open Graph, JSON-LD structured data, publish date, viewport, html lang
+- Technical SEO (25 points): canonical URL, HTTPS, clean URL, response under 3 seconds, enough visible text in the HTML
+- Content quality (10 points): amount of visible text, internal links
+- Penalties: noindex, login wall, non-200 status, too many redirects or very slow responses, and robots.txt rules that block GPTBot, ClaudeBot or PerplexityBot from the page
+
+Not checked: JavaScript rendering, readability scoring and topical coverage. Pages that only render content with JavaScript will score lower because their raw HTML is mostly empty.
 
 ## Use cases
 - SEO professionals checking AI discoverability
@@ -17,5 +22,5 @@ Free to use. Premium AEO consultation available.
 
 ## Links
 - Homepage: https://gradebyai.com
-- How it works: https://gradebyai.com/#how-it-works
+- How it works: https://gradebyai.com/how-it-works
 - Contact: privacy@gradebyai.com

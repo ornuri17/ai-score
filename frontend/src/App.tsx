@@ -7,6 +7,7 @@ import Terms from './pages/Terms';
 import HowItWorks from './pages/HowItWorks';
 import CompareResults from './pages/CompareResults';
 import Admin from './pages/Admin';
+import NotFound from './pages/NotFound';
 import { trackPageView } from './services/analytics';
 
 function PageViewTracker() {
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/how-it-works" element={<HowItWorks />} />
         <Route path="/compare" element={<CompareResults />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

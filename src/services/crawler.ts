@@ -13,12 +13,35 @@ const MAX_REDIRECTS = 5;
 const SIDECAR_TIMEOUT_MS = 5000;
 const MAX_SITEMAP_BYTES = 500 * 1024; // 500 KB
 
+interface PageFetchResult {
+  body: string;
+  statusCode: number;
+  finalUrl: string;
+  redirectCount: number;
+  responseTimeMs: number;
+  headers: Record<string, string>;
+}
+
+/**
+ * Flattens Node's IncomingHttpHeaders into a plain lower-cased map.
+ * Repeated headers (for example several Link or X-Robots-Tag lines) are joined with ", ",
+ * which is how RFC 9110 says a recipient may combine them.
+ */
+export function flattenHeaders(raw: Record<string, string | string[] | undefined>): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const [key, value] of Object.entries(raw)) {
+    if (value === undefined) continue;
+    out[key.toLowerCase()] = Array.isArray(value) ? value.join(', ') : value;
+  }
+  return out;
+}
+
 function fetchWithRedirects(
   rawUrl: string,
   timeoutMs: number,
   maxRedirects: number,
   redirectCount = 0
-): Promise<{ body: string; statusCode: number; finalUrl: string; redirectCount: number; responseTimeMs: number }> {
+): Promise<PageFetchResult> {
   return new Promise((resolve, reject) => {
     const startTime = Date.now();
     let parsedUrl: URL;
@@ -41,7 +64,14 @@ function fetchWithRedirects(
       // Follow redirects
       if ((statusCode === 301 || statusCode === 302 || statusCode === 303 || statusCode === 307 || statusCode === 308) && res.headers.location != null && res.headers.location !== '') {
         if (redirectCount >= maxRedirects) {
-          resolve({ body: '', statusCode, finalUrl: rawUrl, redirectCount, responseTimeMs: Date.now() - startTime });
+          resolve({
+            body: '',
+            statusCode,
+            finalUrl: rawUrl,
+            redirectCount,
+            responseTimeMs: Date.now() - startTime,
+            headers: flattenHeaders(res.headers),
+          });
           res.resume();
           return;
         }
@@ -62,6 +92,7 @@ function fetchWithRedirects(
           finalUrl: rawUrl,
           redirectCount,
           responseTimeMs: Date.now() - startTime,
+          headers: flattenHeaders(res.headers),
         });
       });
       res.on('error', reject);
@@ -143,7 +174,15 @@ export async function crawlUrl(url: string, timeoutMs: number): Promise<CrawlRes
     fetchWithRedirects(url, timeoutMs, MAX_REDIRECTS).catch((err: unknown) => {
       const message = err instanceof Error ? err.message : String(err);
       logger.warn('Page fetch failed', { url, error: message });
-      return { body: '', statusCode: 0, finalUrl: url, redirectCount: 0, responseTimeMs: timeoutMs };
+      const failed: PageFetchResult = {
+        body: '',
+        statusCode: 0,
+        finalUrl: url,
+        redirectCount: 0,
+        responseTimeMs: timeoutMs,
+        headers: {},
+      };
+      return failed;
     }),
     fetchSidecar(`${origin}/robots.txt`),
     fetchSidecar(`${origin}/sitemap.xml`, MAX_SITEMAP_BYTES),
@@ -159,5 +198,6 @@ export async function crawlUrl(url: string, timeoutMs: number): Promise<CrawlRes
     statusCode: pageResult.statusCode,
     finalUrl: pageResult.finalUrl,
     redirectCount: pageResult.redirectCount,
+    headers: pageResult.headers,
   };
 }

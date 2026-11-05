@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { getPrisma } from '../db';
 
-const prisma = new PrismaClient();
+const prisma = getPrisma();
 
 export function createAdminRouter(): Router {
   const router = Router();

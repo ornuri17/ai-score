@@ -2,6 +2,16 @@
 # CloudFront — HTTPS CDN for frontend
 # ============================================================
 
+# Rewrites known SPA routes to /index.html at the edge so that unknown paths
+# can return a real 404 (see cloudfront-spa-router.js).
+resource "aws_cloudfront_function" "spa_router" {
+  name    = "${local.name_prefix}-spa-router"
+  runtime = "cloudfront-js-2.0"
+  comment = "Rewrite SPA routes to /index.html, let everything else 404"
+  publish = true
+  code    = file("${path.module}/cloudfront-spa-router.js")
+}
+
 resource "aws_cloudfront_distribution" "frontend" {
   enabled             = true
   default_root_object = "index.html"
@@ -31,6 +41,11 @@ resource "aws_cloudfront_distribution" "frontend" {
       }
     }
 
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.spa_router.arn
+    }
+
     # Assets are immutable — cache 1 year; index.html uses a separate behavior
     min_ttl     = 0
     default_ttl = 86400
@@ -57,19 +72,22 @@ resource "aws_cloudfront_distribution" "frontend" {
     max_ttl     = 0
   }
 
-  # React Router — return index.html for any 403/404 (SPA routing)
+  # Missing objects: S3 with OAC answers 403 for a missing key, 404 with ListBucket.
+  # Both become a real HTTP 404 whose body is index.html, so the app renders its
+  # Not Found page. Known SPA routes never get here: the spa_router function
+  # rewrites them to /index.html first, so they keep answering 200.
   custom_error_response {
     error_code            = 403
-    response_code         = 200
+    response_code         = 404
     response_page_path    = "/index.html"
-    error_caching_min_ttl = 0
+    error_caching_min_ttl = 60
   }
 
   custom_error_response {
     error_code            = 404
-    response_code         = 200
+    response_code         = 404
     response_page_path    = "/index.html"
-    error_caching_min_ttl = 0
+    error_caching_min_ttl = 60
   }
 
   # Security headers via response headers policy
