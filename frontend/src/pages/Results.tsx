@@ -200,8 +200,26 @@ export default function Results() {
     );
   }
 
+  const pageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: `AI Readiness Score for ${domain} - GradeByAI`,
+    description: `GradeByAI scored ${domain} ${result.score}/100 for AI readiness. Crawlability: ${result.dimensions.crawlability}/30, Content: ${result.dimensions.content}/35, Technical: ${result.dimensions.technical}/25, Quality: ${result.dimensions.quality}/10.`,
+    url: `https://www.gradebyai.com/analysis/${domain}`,
+    dateModified: result.checkedAt,
+    isPartOf: { '@type': 'WebSite', name: 'GradeByAI', url: 'https://www.gradebyai.com' },
+    breadcrumb: {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'GradeByAI', item: 'https://www.gradebyai.com' },
+        { '@type': 'ListItem', position: 2, name: `Score: ${domain}`, item: `https://www.gradebyai.com/analysis/${domain}` },
+      ],
+    },
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pageSchema) }} />
       <NavBar />
 
       <main className="pt-20 pb-16 px-4 md:px-8 max-w-7xl mx-auto">
