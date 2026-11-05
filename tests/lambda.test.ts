@@ -3,6 +3,8 @@
 // "TypeError: ee.on is not a function" and returned HTTP 500.
 
 process.env['AWS_LAMBDA_FUNCTION_NAME'] = 'test';
+// Importing the handler builds the real app; keep it off Redis so no connection outlives the test
+delete process.env['REDIS_URL'];
 
 import { handler } from '../src/index';
 

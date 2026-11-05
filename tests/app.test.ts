@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { createApp } from '../src/index';
+import { createApp } from '../src/app';
 import { createMemoryCheckStore } from '../src/services/checkStore';
 import { ScoreResult } from '../src/types';
 import { memoryCache } from './helpers';
