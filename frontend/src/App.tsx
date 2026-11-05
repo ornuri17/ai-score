@@ -13,6 +13,7 @@ const FAQ = lazy(() => import('./pages/FAQ'));
 const Leaderboard = lazy(() => import('./pages/Leaderboard'));
 const Check = lazy(() => import('./pages/Check'));
 const GuideHowToCheck = lazy(() => import('./pages/GuideHowToCheck'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 function PageViewTracker() {
   const location = useLocation();
@@ -39,6 +40,7 @@ export default function App() {
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/check" element={<Check />} />
           <Route path="/guides/how-to-check-ai-readiness" element={<GuideHowToCheck />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

@@ -1,9 +1,9 @@
 import { Request, Response, RequestHandler } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { getPrisma } from '../db';
 import { LeadRequest } from '../types';
 import { logger } from '../logger';
 
-const prisma = new PrismaClient();
+const prisma = getPrisma();
 
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -50,6 +50,13 @@ export function createLeadsRouter(): RequestHandler {
       res.json({ success: true });
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
+      const code = typeof err === 'object' && err !== null && 'code' in err ? String((err as { code: unknown }).code) : '';
+      if (code === 'P2003') {
+        // Foreign key: the checkId does not match a stored check
+        logger.warn('Lead for unknown check', { checkId });
+        res.status(404).json({ error: 'check_not_found' });
+        return;
+      }
       logger.error('Failed to save lead', { error: message });
       res.status(500).json({ error: 'Failed to save lead' });
     }

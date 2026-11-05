@@ -23,7 +23,8 @@
     "ioredis": "^5.4.2",
     "libphonenumber-js": "^1.11.15",
     "lodash": "^4.17.21",
-    "pg": "^8.13.3"
+    "pg": "^8.13.3",
+    "robots-parser": "^3.0.1"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.161",

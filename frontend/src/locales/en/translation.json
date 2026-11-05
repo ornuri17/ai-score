@@ -348,7 +348,7 @@
     "subtitle": "Four dimensions. One definitive score. Complete clarity on your AI readiness.",
     "stepsBadge": "THE STEPS",
     "step1Title": "We Crawl Your Site",
-    "step1Desc": "Our crawler visits your live site just like an AI assistant would — following robots.txt, checking sitemaps, and testing JavaScript rendering.",
+    "step1Desc": "Our crawler fetches your live page the way an AI crawler does: it reads the raw HTML (without running JavaScript), your robots.txt and your sitemap.",
     "step1Pts": "30 pts",
     "step2Title": "Content Structure Analysis",
     "step2Desc": "We evaluate heading hierarchies, semantic HTML, schema.org markup, and whether your content is machine-readable.",
@@ -357,7 +357,7 @@
     "step3Desc": "Meta tags, canonical URLs, page speed signals, and structured data all feed into your technical score.",
     "step3Pts": "25 pts",
     "step4Title": "Content Quality Signal",
-    "step4Desc": "AI systems favour authoritative, well-structured content. We measure readability, depth, and topical coverage.",
+    "step4Desc": "AI systems favour pages with real, well-linked content. We check how much visible text the page has and how well it links to the rest of your site.",
     "step4Pts": "10 pts",
     "scoreBadge": "THE SCORE",
     "scoreTitle": "Your Score, Explained",
@@ -389,5 +389,10 @@
     "footerRights": "All rights reserved.",
     "privacy": "Privacy",
     "terms": "Terms"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "This page doesn't exist. Check the address, or score a website from the home page.",
+    "home": "Back to home"
   }
 }

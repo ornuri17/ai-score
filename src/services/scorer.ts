@@ -7,15 +7,11 @@ import crypto from 'crypto';
 import { URL } from 'url';
 import { CrawlResult, ScoreResult } from '../types';
 import { logger } from '../logger';
+import { isBotBlocked, parseXRobotsTag, SCORED_AI_BOTS } from './robots';
 
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
-
-function extractAttr(html: string, pattern: RegExp): string | null {
-  const match = html.match(pattern);
-  return match ? (match[1] ?? null) : null;
-}
 
 function stripTags(html: string): string {
   // Remove script/style blocks first, then strip remaining tags
@@ -27,33 +23,56 @@ function stripTags(html: string): string {
     .trim();
 }
 
-function extractMetaContent(html: string, name: string): string | null {
-  // Matches both name= and property= variants
-  const pattern = new RegExp(
-    `<meta[^>]+(?:name|property)=["']${name}["'][^>]+content=["']([^"']+)["']`,
-    'i'
-  );
-  const alt = new RegExp(
-    `<meta[^>]+content=["']([^"']+)["'][^>]+(?:name|property)=["']${name}["']`,
-    'i'
-  );
-  return extractAttr(html, pattern) ?? extractAttr(html, alt);
+const NAMED_ENTITIES: Record<string, string> = {
+  amp: '&',
+  quot: '"',
+  apos: "'",
+  lt: '<',
+  gt: '>',
+  nbsp: ' ',
+};
+
+/** Decodes the HTML entities that commonly appear inside attribute values. */
+export function decodeEntities(value: string): string {
+  return value.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (whole, ent: string) => {
+    if (ent[0] === '#') {
+      const code = ent[1]?.toLowerCase() === 'x' ? parseInt(ent.slice(2), 16) : parseInt(ent.slice(1), 10);
+      return Number.isFinite(code) && code > 0 && code <= 0x10ffff ? String.fromCodePoint(code) : whole;
+    }
+    return NAMED_ENTITIES[ent.toLowerCase()] ?? whole;
+  });
 }
 
-function isAiCrawlerBlocked(robotsTxt: string, bot: string): boolean {
-  const lines = robotsTxt.split('\n');
-  let inBlock = false;
-  for (const raw of lines) {
-    const line = raw.trim();
-    if (/^user-agent:/i.test(line)) {
-      const agent = line.replace(/^user-agent:\s*/i, '').trim();
-      inBlock = agent === '*' || agent.toLowerCase() === bot.toLowerCase();
-    } else if (inBlock && /^disallow:\s*\//i.test(line)) {
-      const path = line.replace(/^disallow:\s*/i, '').trim();
-      if (path === '/') return true;
+/** Parses the attributes of one start tag. Values may be "double", 'single' or unquoted. */
+function parseAttributes(tag: string): Record<string, string> {
+  const attrs: Record<string, string> = {};
+  const attrPattern = /([^\s"'<>/=]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+)))?/g;
+  // Skip the tag name itself
+  const body = tag.replace(/^<\s*[a-z0-9-]+/i, '').replace(/\/?>$/, '');
+  for (const m of body.matchAll(attrPattern)) {
+    const key = (m[1] ?? '').toLowerCase();
+    if (key === '') continue;
+    const value = m[2] ?? m[3] ?? m[4] ?? '';
+    if (!(key in attrs)) attrs[key] = decodeEntities(value);
+  }
+  return attrs;
+}
+
+/**
+ * Returns the content of <meta name="..."> or <meta property="..."> (case-insensitive).
+ * Respects the quote style of each attribute, so an apostrophe inside a
+ * double-quoted content value no longer truncates it.
+ */
+export function extractMetaContent(html: string, name: string): string | null {
+  const wanted = name.toLowerCase();
+  for (const m of html.matchAll(/<meta\b[^>]*>/gi)) {
+    const attrs = parseAttributes(m[0]);
+    const key = (attrs['name'] ?? attrs['property'] ?? '').toLowerCase();
+    if (key === wanted && attrs['content'] !== undefined && attrs['content'].trim() !== '') {
+      return attrs['content'];
     }
   }
-  return false;
+  return null;
 }
 
 function extractSummary(html: string): string {
@@ -68,12 +87,12 @@ function extractSummary(html: string): string {
   // 3. First <p> with >= 80 chars
   const pMatches = html.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi);
   for (const m of pMatches) {
-    const text = stripTags(m[1] ?? '').trim();
+    const text = decodeEntities(stripTags(m[1] ?? '')).trim();
     if (text.length >= 80) return text;
   }
 
   // 4. First 250 chars of visible body text
-  const visible = stripTags(html);
+  const visible = decodeEntities(stripTags(html));
   return visible.slice(0, 250).trim();
 }
 
@@ -95,18 +114,26 @@ function countInternalLinks(html: string, domain: string): number {
 
 export function scoreUrl(url: string, crawlResult: CrawlResult): ScoreResult {
   const { html, robotsTxt, sitemapXml, responseTimeMs, statusCode, finalUrl, redirectCount } = crawlResult;
+  const headers = crawlResult.headers ?? {};
   const issues: string[] = [];
 
   const lowerHtml = html.toLowerCase();
 
   // ---- Parse useful fragments ----
-  const metaRobotsContent = extractMetaContent(html, 'robots') ?? '';
-  const hasNoindex = /\bnoindex\b/i.test(metaRobotsContent);
-  const hasNofollow = /\bnofollow\b/i.test(metaRobotsContent);
+  // Meta robots: the generic tag plus the AI-crawler-specific ones (<meta name="GPTBot" ...>)
+  const metaRobotsContent = [
+    extractMetaContent(html, 'robots'),
+    ...SCORED_AI_BOTS.map((bot) => extractMetaContent(html, bot)),
+  ]
+    .filter((v): v is string => v !== null)
+    .join(', ');
+  const hasNoindex = /\b(noindex|none)\b/i.test(metaRobotsContent);
+  const hasNofollow = /\b(nofollow|none)\b/i.test(metaRobotsContent);
 
-  // X-Robots-Tag — look for it as a meta equiv or embedded comment (treat as 0 if not in html)
-  const xRobotsMatch = html.match(/x-robots-tag[^:]*:\s*([^\r\n<"]+)/i);
-  const xRobotsNoindex = xRobotsMatch ? /\bnoindex\b/i.test(xRobotsMatch[1] ?? '') : false;
+  // X-Robots-Tag is an HTTP response header, not page content
+  const xRobots = parseXRobotsTag(headers['x-robots-tag']);
+  const xRobotsNoindex = xRobots.noindex;
+  const xRobotsNofollow = xRobots.nofollow;
 
   const isAuth = statusCode === 401 || statusCode === 403;
   const is200 = statusCode === 200;
@@ -182,17 +209,15 @@ export function scoreUrl(url: string, crawlResult: CrawlResult): ScoreResult {
   const hasInternalLinks = internalLinkCount > 2;
 
   // AI crawler blocks
+  const pageUrlForRobots = finalUrl || url;
   const aiCrawlerBlocked =
-    robotsTxt !== null &&
-    (isAiCrawlerBlocked(robotsTxt, 'GPTBot') ||
-      isAiCrawlerBlocked(robotsTxt, 'ClaudeBot') ||
-      isAiCrawlerBlocked(robotsTxt, 'PerplexityBot'));
+    robotsTxt !== null && SCORED_AI_BOTS.some((bot) => isBotBlocked(robotsTxt, pageUrlForRobots, bot));
 
   // ---- Crawlability (30 pts) ----
   let crawlability = 0;
   if (!hasNoindex) crawlability += 5;
   if (!xRobotsNoindex) crawlability += 5;
-  if (!hasNofollow) crawlability += 5;
+  if (!hasNofollow && !xRobotsNofollow) crawlability += 5;
   if (is200) crawlability += 5;
   if (redirectCount <= 5 && responseTimeMs < 10000) crawlability += 5;
   if (hasSitemap) crawlability += 5;
@@ -225,7 +250,7 @@ export function scoreUrl(url: string, crawlResult: CrawlResult): ScoreResult {
   let score = crawlability + content + technical + quality;
 
   // ---- Penalties ----
-  if (hasNoindex || isAuth) score -= 30;
+  if (hasNoindex || xRobotsNoindex || isAuth) score -= 30;
   if (!is200 && !isAuth) score -= 25;
   if (redirectCount > 5 || responseTimeMs >= 10000) score -= 15;
   if (aiCrawlerBlocked) score -= 20;
@@ -234,7 +259,7 @@ export function scoreUrl(url: string, crawlResult: CrawlResult): ScoreResult {
   score = Math.max(0, Math.min(100, score));
 
   // ---- Issues ----
-  if (hasNoindex) issues.push('blocked_from_crawlers');
+  if (hasNoindex || xRobotsNoindex) issues.push('blocked_from_crawlers');
   if (aiCrawlerBlocked) issues.push('ai_crawlers_blocked');
   if (isAuth) issues.push('not_publicly_accessible');
   if (!hasSitemap) issues.push('crawlability_issues');

@@ -1,55 +1,19 @@
-import express from 'express';
-import cors from 'cors';
 import serverlessExpress from '@vendia/serverless-express';
-import { readFileSync, readdirSync } from 'fs';
+import { existsSync, readFileSync, readdirSync } from 'fs';
+import crypto from 'crypto';
 import { join } from 'path';
 import { Client } from 'pg';
 import { config } from './config';
 import { logger } from './logger';
-import { createCacheService } from './services/cache';
-import { createRateLimiterMiddleware, createFormRateLimiterMiddleware } from './middleware/rateLimiter';
-import { adminAuthMiddleware } from './middleware/adminAuth';
-import { createAnalyzeRouter } from './routes/analyze';
-import { createCompareRouter } from './routes/compare';
-import { createLeadsRouter } from './routes/leads';
-import { createHistoryRouter } from './routes/history';
-import { createAdminRouter } from './routes/admin';
+import { createApp } from './app';
 
-const app = express();
+export { createApp } from './app';
+export type { AppDeps } from './app';
 
-app.use(cors());
-app.use(express.json());
+const app = createApp();
 
-// Instantiate shared services once at startup — no per-request connections
-const cacheService = createCacheService();
-const rateLimiterMiddleware = createRateLimiterMiddleware();
-const formRateLimiterMiddleware = createFormRateLimiterMiddleware();
-
-// Health check (no rate limiting)
-app.get('/health', (_req, res): void => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
-
-// Apply rate limiter before all API routes
-app.use('/api', rateLimiterMiddleware);
-
-// Mount the analyze route
-app.use('/api/analyze', createAnalyzeRouter(cacheService));
-
-// Mount the compare route
-app.use('/api/compare', createCompareRouter(cacheService));
-
-// Mount the history route
-app.use('/api/history', createHistoryRouter());
-
-// Mount the leads route with its own (stricter) form rate limiter
-app.post('/api/leads', formRateLimiterMiddleware, createLeadsRouter());
-
-// Admin routes — protected by secret key, not subject to public rate limiting
-app.use('/api/admin', adminAuthMiddleware(), createAdminRouter());
-
-// Local dev server — not started in Lambda
-if (process.env.AWS_LAMBDA_FUNCTION_NAME === undefined) {
+// Local dev server, not started in Lambda or under Jest
+if (process.env['AWS_LAMBDA_FUNCTION_NAME'] === undefined && process.env['JEST_WORKER_ID'] === undefined) {
   app.listen(config.port, (): void => {
     logger.info(`AIScore API running on port ${config.port}`);
   });
@@ -80,7 +44,12 @@ export const handler = async (event: Record<string, unknown>, context: unknown):
       `);
 
       const migrationsDir = join('/var/task/prisma/migrations');
-      const migrationFolders = readdirSync(migrationsDir)
+      if (!existsSync(migrationsDir)) {
+        throw new Error(`No migrations directory at ${migrationsDir}`);
+      }
+      const migrationFolders = readdirSync(migrationsDir, { withFileTypes: true })
+        .filter(d => d.isDirectory())
+        .map(d => d.name)
         .filter(f => !f.startsWith('.') && f !== 'migration_lock.toml')
         .sort();
 

@@ -323,7 +323,7 @@
     "title": "So funktioniert GradeByAI",
     "subtitle": "Vier Dimensionen. Ein definitiver Score. Vollständige Klarheit über Ihre KI-Bereitschaft.",
     "step1Title": "Wir crawlen Ihre Website",
-    "step1Desc": "Unser Crawler besucht Ihre Live-Website wie ein KI-Assistent — folgt robots.txt, prüft Sitemaps und testet JavaScript-Rendering.",
+    "step1Desc": "Unser Crawler ruft Ihre Seite wie ein KI-Crawler ab: das rohe HTML (ohne JavaScript auszuführen), Ihre robots.txt und Ihre Sitemap.",
     "step1Pts": "30 Pkt.",
     "step2Title": "Inhaltsstruktur-Analyse",
     "step2Desc": "Wir bewerten Überschriftenhierarchien, semantisches HTML, schema.org-Markup und ob Ihre Inhalte maschinenlesbar sind.",
@@ -332,7 +332,7 @@
     "step3Desc": "Meta-Tags, kanonische URLs, Seitengeschwindigkeit und strukturierte Daten fließen in Ihren technischen Score ein.",
     "step3Pts": "25 Pkt.",
     "step4Title": "Inhaltsqualitätssignal",
-    "step4Desc": "KI-Systeme bevorzugen maßgebliche, gut strukturierte Inhalte. Wir messen Lesbarkeit, Tiefe und thematische Abdeckung.",
+    "step4Desc": "KI-Systeme bevorzugen Seiten mit echtem, gut verlinktem Inhalt. Wir prüfen, wie viel sichtbarer Text die Seite hat und wie gut sie auf den Rest Ihrer Website verlinkt.",
     "step4Pts": "10 Pkt.",
     "scoreBadge": "DER SCORE",
     "scoreTitle": "Ihr Score, erklärt",
@@ -384,5 +384,10 @@
       "rateLimit": "Ratenlimit erreicht. Versuchen Sie es später erneut.",
       "submitFailed": "Übermittlung fehlgeschlagen. Bitte erneut versuchen."
     }
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "body": "Diese Seite existiert nicht. Prüfen Sie die Adresse oder analysieren Sie eine Website auf der Startseite.",
+    "home": "Zur Startseite"
   }
 }

@@ -11,6 +11,8 @@ export interface CrawlResult {
   statusCode: number;
   finalUrl: string;
   redirectCount: number;
+  /** Response headers of the final (post-redirect) page response, lower-cased keys. */
+  headers: Record<string, string>;
 }
 
 export interface ScoreResult {

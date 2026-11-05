@@ -1,12 +1,16 @@
 # GradeByAI
 > GradeByAI is a free tool that scores any website 0-100 for AI-readiness (AEO/GEO). It checks whether AI crawlers like GPTBot, ClaudeBot, and PerplexityBot can access your site, and whether your content structure, structured data, and technical SEO are optimized for LLM citation.
 
-## What it does
-- Analyzes crawlability: robots.txt AI bot permissions, sitemap, auth-gating (30 pts)
-- Evaluates content structure: semantic HTML, JSON-LD schema, meta tags, Open Graph (35 pts)
-- Audits technical SEO: canonical tags, HTTPS, response speed, page body content (25 pts)
-- Measures content quality: text depth, internal links (10 pts)
+## What it checks
+GradeByAI fetches the raw HTML of the page (no JavaScript is executed), plus /robots.txt and /sitemap.xml.
+
+- Crawlability (30 pts): HTTP status, robots.txt AI bot permissions, meta robots and X-Robots-Tag noindex/nofollow, redirects and response time, sitemap, auth-gating
+- Content structure (35 pts): semantic HTML (main, article, section, h1, h2), title and meta description length, JSON-LD schema, Open Graph, publish date, viewport, html lang
+- Technical SEO (25 pts): canonical tags, HTTPS, clean URL, response speed, enough visible text in the HTML
+- Content quality (10 pts): text depth, internal links
 - Returns a 0-100 score with specific issues to fix
+
+Not checked: JavaScript rendering, readability scoring and topical coverage. Pages that only render content with JavaScript score lower because their raw HTML is mostly empty.
 
 ## Use cases
 - Check if ChatGPT, Claude, or Perplexity can crawl and cite your website

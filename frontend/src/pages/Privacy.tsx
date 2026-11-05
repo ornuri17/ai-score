@@ -11,7 +11,7 @@ export default function Privacy() {
         <section className="mb-8">
           <h2 className="text-xl font-semibold text-slate-900 mb-3">What we collect</h2>
           <ul className="list-disc pl-5 space-y-2 text-sm leading-relaxed">
-            <li><strong>Domain + score</strong> — when you check a website, we store the domain and score. This is cached for 7 days so repeat checks are instant.</li>
+            <li><strong>Domain + score</strong>: when you check a website, we store the domain and its score. Results are cached for 7 days so repeat checks are instant, and past scores power the score history, leaderboard and badges.</li>
             <li><strong>IP address (hashed)</strong> — stored as a one-way hash for rate-limiting. We cannot reverse it to identify you.</li>
             <li><strong>Name, email, phone</strong> — only if you submit the lead form. Used to send your AEO action plan and follow up with you.</li>
           </ul>
@@ -31,7 +31,7 @@ export default function Privacy() {
         <section className="mb-8">
           <h2 className="text-xl font-semibold text-slate-900 mb-3">Retention</h2>
           <ul className="list-disc pl-5 space-y-2 text-sm leading-relaxed">
-            <li>Domain scores are cached for 7 days, then overwritten on next check.</li>
+            <li>Cached results expire after 7 days; past domain scores are kept for score history and the leaderboard.</li>
             <li>Lead data (name, email, phone) is retained for 12 months.</li>
             <li>You may request deletion at any time.</li>
           </ul>
