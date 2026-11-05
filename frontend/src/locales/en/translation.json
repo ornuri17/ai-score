@@ -37,7 +37,8 @@
   "nav": {
     "home": "Home",
     "howItWorks": "How It Works",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "leaderboard": "Leaderboard"
   },
   "home": {
     "title": "How AI-Friendly is Your Website?",
@@ -141,6 +142,206 @@
       "rateLimit": "Rate limit reached. Try again later.",
       "submitFailed": "Failed to submit. Please try again."
     }
+  },
+  "faqPage": {
+    "title": "AI Readiness FAQ",
+    "metaDescription": "Answers to every question about AI readiness, AEO, GEO, LLM SEO, and how to make your website visible to ChatGPT, Claude, and Perplexity.",
+    "badge": "FREQUENTLY ASKED QUESTIONS",
+    "heading": "Everything You Need to Know About AI Readiness",
+    "subtitle": "Answers to every question about AEO, GEO, LLM visibility, and how GradeByAI works.",
+    "sections": {
+      "discovery": "Finding the Right Tool",
+      "concepts": "AEO & GEO Concepts",
+      "diagnosis": "Diagnosing Your Site",
+      "technical": "Technical How-To",
+      "scores": "Understanding Your Score",
+      "about": "About GradeByAI"
+    },
+    "discovery": [
+      {
+        "q": "What is the best free tool to check if my website is visible to AI?",
+        "a": "GradeByAI is a free tool that scores any website 0-100 for AI-readiness. It checks crawlability, structured data, meta tags, page speed, and whether AI bots like GPTBot and ClaudeBot are explicitly blocked. The score and full breakdown are always free, with no account required."
+      },
+      {
+        "q": "How do I test if ChatGPT can find my website?",
+        "a": "Enter your URL at gradebyai.com and get an instant analysis. The crawlability dimension specifically checks whether GPTBot (ChatGPT's crawler) is allowed in your robots.txt, whether your site is publicly accessible, and whether a sitemap exists. A score under 50 in crawlability means ChatGPT likely cannot reliably index your content."
+      },
+      {
+        "q": "Is there a free AEO audit tool?",
+        "a": "Yes. GradeByAI is a free Answer Engine Optimization (AEO) audit tool. It evaluates your site across the four dimensions that determine AI visibility: crawlability, content structure, technical SEO, and content quality. You receive a scored breakdown with specific issues to fix."
+      },
+      {
+        "q": "How do I check if Perplexity can crawl my site?",
+        "a": "GradeByAI checks your robots.txt for PerplexityBot directives as part of the crawlability analysis. If PerplexityBot is blocked, you will see an 'AI crawlers blocked' issue in your results, along with the exact robots.txt rule to change."
+      },
+      {
+        "q": "How do I audit my website for LLM visibility?",
+        "a": "Paste your URL into GradeByAI. The audit covers the four factors LLMs use to evaluate content: whether the page is crawlable, whether content is structured with proper HTML and schema markup, whether technical signals like canonical tags and HTTPS are correct, and whether the content is substantive enough to be cited."
+      },
+      {
+        "q": "How do I know if my website appears in AI search results?",
+        "a": "The most direct test is to ask an LLM like Perplexity or ChatGPT a question that your site directly answers, and see if it cites you. GradeByAI gives you the underlying technical score that predicts whether you are likely to be cited - sites that score above 80 are significantly more likely to appear in AI-generated answers."
+      }
+    ],
+    "concepts": [
+      {
+        "q": "What is Answer Engine Optimization (AEO)?",
+        "a": "AEO is the practice of structuring your website so that AI assistants like ChatGPT, Claude, and Perplexity can find, understand, and cite your content when answering user questions. Unlike traditional SEO which targets search engine rankings, AEO targets inclusion in AI-generated answers."
+      },
+      {
+        "q": "What is Generative Engine Optimization (GEO)?",
+        "a": "GEO (Generative Engine Optimization) is another term for the same discipline as AEO - optimizing content to appear in AI-generated responses. The term is used interchangeably with AEO. Key factors include structured data, clear headings, accessible content without JavaScript rendering, and allowing AI crawlers."
+      },
+      {
+        "q": "What is LLM SEO?",
+        "a": "LLM SEO refers to optimizing a website so it is visible and citable by Large Language Models like GPT-4, Claude, and Gemini. It differs from traditional SEO because LLMs process content differently than Google - they favor machine-readable content, structured data, and explicitly allowed bot access."
+      },
+      {
+        "q": "What is the difference between SEO and AEO?",
+        "a": "Traditional SEO targets Google's ranking algorithm - keyword density, backlinks, page authority. AEO targets AI answer engines - structured data, clear prose, bot accessibility. A site can rank well on Google but score poorly for AI visibility if it blocks crawlers, uses JavaScript-only rendering, or lacks schema markup."
+      },
+      {
+        "q": "How does ChatGPT decide which websites to cite?",
+        "a": "ChatGPT's browsing mode uses GPTBot to crawl pages and retrieve content in real time. It favors sites that are publicly accessible without login, have clear structured content, use schema markup, load quickly, and do not block GPTBot in robots.txt. Content quality and topical relevance are also weighted heavily."
+      },
+      {
+        "q": "How does Perplexity find and rank content?",
+        "a": "Perplexity uses its own crawler (PerplexityBot) plus Bing's index to retrieve content. It favors pages with clear, factual prose, structured headings, fast load times, and accessible HTML. Pages that render content via JavaScript only - where the HTML body is empty - are frequently missed or cited incorrectly."
+      },
+      {
+        "q": "Does Claude browse the web?",
+        "a": "Claude uses ClaudeBot for web retrieval in some contexts. Like other AI crawlers, it respects robots.txt directives. If your robots.txt blocks ClaudeBot (or all bots via User-agent: *), Claude will not be able to fetch your current content and will rely only on its training data, which may be outdated."
+      },
+      {
+        "q": "What is GPTBot?",
+        "a": "GPTBot is the web crawler operated by OpenAI to gather content for ChatGPT. It identifies itself with the User-agent string 'GPTBot'. If your robots.txt blocks it with 'User-agent: GPTBot / Disallow: /', your site is invisible to ChatGPT's browsing and retrieval features."
+      },
+      {
+        "q": "What is ClaudeBot?",
+        "a": "ClaudeBot is Anthropic's web crawler used to fetch live content for Claude. It identifies itself as 'ClaudeBot' in the User-agent header. Blocking it in robots.txt prevents Claude from reading your current site content during conversations."
+      },
+      {
+        "q": "What is PerplexityBot?",
+        "a": "PerplexityBot is the crawler used by Perplexity AI to index and retrieve content. Allowing it in robots.txt is essential if you want your site to appear in Perplexity search results and citations."
+      },
+      {
+        "q": "Is AI search replacing Google?",
+        "a": "AI search is not replacing Google yet, but it is capturing a growing share of informational queries - especially for how-to, definition, and comparison questions. Sites that optimize only for Google risk losing visibility as users shift to Perplexity, ChatGPT, and similar tools for research."
+      }
+    ],
+    "diagnosis": [
+      {
+        "q": "Why doesn't ChatGPT know about my business?",
+        "a": "There are three common reasons: (1) GPTBot is blocked in your robots.txt, (2) your key content is rendered by JavaScript and invisible to crawlers, or (3) your site lacks structured data that helps AI models understand what your business does. Run a free check at GradeByAI to find which issue applies to you."
+      },
+      {
+        "q": "Why is my website not appearing in AI answers?",
+        "a": "AI assistants cite pages that are crawlable, structured, and authoritative. Common blockers include a missing or misconfigured sitemap, noindex meta tags, content that only renders with JavaScript, no schema markup, and thin content under 300 words. Your GradeByAI results page lists each specific issue."
+      },
+      {
+        "q": "Why is Perplexity not citing my website?",
+        "a": "Perplexity won't cite a page if PerplexityBot is blocked in robots.txt, if the page requires authentication to access, or if the content is not substantive enough to quote. Also check that your page returns a 200 status code - Perplexity skips pages with non-200 responses."
+      },
+      {
+        "q": "What is blocking my site from AI crawlers?",
+        "a": "The most common causes are: a Disallow: / rule in robots.txt that applies to all bots, a specific block for GPTBot or ClaudeBot, a noindex meta tag, requiring login to view content, or a Cloudflare or CDN bot-protection rule that returns a 403 to automated requests."
+      },
+      {
+        "q": "Why did my AI readiness score drop?",
+        "a": "Scores change when the live state of your site changes. Common causes of score drops: a deployment that accidentally added a noindex tag, a robots.txt change that blocked crawlers, a new JavaScript rendering requirement, or an SSL certificate issue. Force a fresh check with the Re-analyze button."
+      },
+      {
+        "q": "What does 'AI crawlers blocked' mean?",
+        "a": "'AI crawlers blocked' means GradeByAI found a Disallow rule in your robots.txt that applies to GPTBot, ClaudeBot, or PerplexityBot. This carries a -20 point penalty and means those AI systems cannot crawl your site. The fix is to remove or narrow the blocking rule."
+      }
+    ],
+    "technical": [
+      {
+        "q": "How do I allow AI crawlers in my robots.txt?",
+        "a": "Add the following lines to your robots.txt file: 'User-agent: GPTBot / Allow: /' and 'User-agent: ClaudeBot / Allow: /' and 'User-agent: PerplexityBot / Allow: /'. If you have a wildcard block (User-agent: * / Disallow: /), you need to explicitly allow each AI bot above that rule."
+      },
+      {
+        "q": "How do I add JSON-LD structured data to my website?",
+        "a": "Add a script tag with type='application/ld+json' in the head of your HTML. For a business, use the Organization or LocalBusiness schema type. For articles, use Article. For FAQs, use FAQPage. JSON-LD structured data tells AI systems exactly what your page is about without them having to infer it from prose."
+      },
+      {
+        "q": "What schema.org types improve AI visibility?",
+        "a": "The most impactful schema types are: FAQPage (for question-answer content), HowTo (for step-by-step guides), Article or BlogPosting (for editorial content), Product (for e-commerce), LocalBusiness (for local businesses), and SoftwareApplication (for tools and apps). Each tells AI models what type of content they are reading."
+      },
+      {
+        "q": "Why does JavaScript hurt AI crawlability?",
+        "a": "Most AI crawlers do not execute JavaScript. They fetch the raw HTML and read whatever content is in the initial response. If your page body is empty until JavaScript runs and populates it, the crawler sees a blank page. Your content should be present in the HTML before any scripts execute - or you should use server-side rendering."
+      },
+      {
+        "q": "What is a canonical tag and why does it matter for AI?",
+        "a": "A canonical tag (<link rel='canonical' href='...'>) tells crawlers which URL is the definitive version of a page. Without it, AI crawlers may index duplicate versions of the same content and dilute its authority. Canonical tags are especially important if your site is accessible via both www and non-www URLs."
+      },
+      {
+        "q": "How do I create an XML sitemap?",
+        "a": "A sitemap.xml lists every URL on your site. Most CMS platforms (WordPress, Webflow, Shopify) generate one automatically. For custom sites, tools like xml-sitemaps.com can generate one. Place it at /sitemap.xml and declare it in your robots.txt with 'Sitemap: https://yourdomain.com/sitemap.xml'."
+      },
+      {
+        "q": "What is the difference between noindex and blocking AI crawlers?",
+        "a": "noindex is a meta tag that tells search engines not to include a page in their index - but AI crawlers may still fetch and read the content. Blocking in robots.txt prevents the crawler from fetching the page at all. For AI visibility, the robots.txt block is more damaging because the content cannot be read at all."
+      }
+    ],
+    "scores": [
+      {
+        "q": "What is a good AI readiness score?",
+        "a": "80-100 is considered AI-optimized - your site is highly visible to AI assistants. 50-79 means key barriers exist that reduce your AI visibility. Below 50 indicates critical issues that likely make your site invisible or unreliable as a source for AI systems."
+      },
+      {
+        "q": "What does a crawlability score of 0 mean?",
+        "a": "A crawlability score of 0 or near-0 almost always means your site is blocking AI crawlers in robots.txt, requires authentication to access, or is returning an error status code. These trigger large penalties. Fix the blocking rule first - it is the highest-leverage change you can make."
+      },
+      {
+        "q": "How quickly can I improve my AI readiness score?",
+        "a": "Technical fixes like allowing AI crawlers in robots.txt, adding a canonical tag, or adding JSON-LD can improve your score immediately - often within minutes. Content improvements like adding a meta description or increasing page content length take effect as soon as you deploy the changes."
+      },
+      {
+        "q": "What is the most important dimension to improve first?",
+        "a": "Crawlability (30 pts) should always be fixed first. If AI bots cannot reach your page, the other dimensions are irrelevant. After crawlability, focus on Content Structure (35 pts) - especially adding JSON-LD schema markup, which alone can add up to 5 points."
+      },
+      {
+        "q": "What does 'content structure' mean in GradeByAI?",
+        "a": "Content structure measures how machine-readable your page is: whether it has a proper HTML heading hierarchy, a meta description of the right length, Open Graph tags, JSON-LD schema, a publication date, a viewport tag, and an html lang attribute. This dimension is worth 35 points - the largest single category."
+      },
+      {
+        "q": "What does 'metadata optimization' mean?",
+        "a": "'Metadata optimization' appears when your meta description is missing, too short (under 50 characters), or too long (over 160 characters), or when your page title is outside the 30-60 character range. These are the signals AI systems use to understand and summarize your page."
+      },
+      {
+        "q": "My score is high but I'm still not appearing in AI answers - why?",
+        "a": "A high technical score means your site is accessible and readable by AI. Whether you appear in answers also depends on content authority and relevance - how well your content answers the specific question being asked, and how much the AI model's training data associates your domain with the topic."
+      }
+    ],
+    "about": [
+      {
+        "q": "How does GradeByAI calculate the score?",
+        "a": "GradeByAI crawls your live site and evaluates 20+ binary checks across four dimensions: crawlability (30 pts), content structure (35 pts), technical SEO (25 pts), and content quality (10 pts). Each check is pass/fail - full points or zero. Large penalties apply for blocking crawlers or requiring authentication."
+      },
+      {
+        "q": "Does GradeByAI store my website data?",
+        "a": "We store your domain and score for caching purposes. Results are cached for 7 days so repeat checks are instant. If you submit the lead form, we store your name, email, and phone. We never sell your data and do not share it with third parties."
+      },
+      {
+        "q": "Is GradeByAI accurate?",
+        "a": "GradeByAI reflects the technical state of your site as AI crawlers see it. It does not predict with certainty whether a given LLM will cite you - that also depends on content relevance and training data. But the technical score is a reliable indicator of whether your site is accessible and readable by AI systems."
+      },
+      {
+        "q": "How is GradeByAI different from other SEO tools?",
+        "a": "Most SEO tools optimize for Google's algorithm - keyword rankings, backlinks, domain authority. GradeByAI focuses specifically on AI crawler accessibility: whether GPTBot, ClaudeBot, and PerplexityBot can reach and read your content, and whether your structured data is in the format AI systems understand."
+      },
+      {
+        "q": "How often should I re-check my score?",
+        "a": "After any significant site change - a deployment, robots.txt update, CMS change, or new content strategy. Scores are cached for 7 days. Use the Re-analyze button to force a fresh check immediately after making fixes to see your updated score."
+      }
+    ],
+    "ctaTitle": "See Your Score Now",
+    "ctaButton": "Analyze My Site - Free",
+    "footerRights": "All rights reserved.",
+    "privacy": "Privacy",
+    "terms": "Terms"
   },
   "howItWorks": {
     "badge": "THE PROCESS",

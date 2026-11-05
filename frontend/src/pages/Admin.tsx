@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-const ADMIN_SECRET = import.meta.env.VITE_ADMIN_SECRET as string | undefined;
 
 interface Lead {
   id: string;
@@ -22,16 +21,16 @@ export default function Admin() {
   const [error, setError] = useState('');
 
   const fetchLeads = async (key: string) => {
-    if (!ADMIN_SECRET || key.trim() !== ADMIN_SECRET.trim()) {
-      setError('Invalid secret.');
-      return;
-    }
     setLoading(true);
     setError('');
     try {
       const res = await fetch(`${API_BASE}/api/admin/leads`, {
         headers: { Authorization: `Bearer ${key}` },
       });
+      if (res.status === 401) {
+        setError('Invalid secret.');
+        return;
+      }
       if (!res.ok) throw new Error(`Server error: ${res.status}`);
       const data = await res.json() as { leads: Lead[] };
       setLeads(data.leads);

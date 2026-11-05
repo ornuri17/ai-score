@@ -115,6 +115,40 @@ export async function getHistory(domain: string): Promise<HistoryResponse> {
   return response.data;
 }
 
+export interface StatsResponse {
+  totalChecks: number;
+  totalDomains?: number;
+}
+
+export interface LeaderboardEntry {
+  rank: number;
+  domain: string;
+  score: number;
+  checks: number;
+}
+
+export interface LeaderboardResponse {
+  leaderboard: LeaderboardEntry[];
+}
+
+export async function getStats(): Promise<StatsResponse> {
+  const response = await axios.get(`${API_BASE}/api/stats`);
+  return response.data;
+}
+
+export async function getLeaderboard(): Promise<LeaderboardResponse> {
+  const response = await axios.get(`${API_BASE}/api/leaderboard`);
+  return response.data;
+}
+
+export function getBadgeUrl(domain: string): string {
+  return `${API_BASE}/api/badge/${encodeURIComponent(domain)}`;
+}
+
+export function getShareUrl(domain: string, score: number): string {
+  return `${API_BASE}/share/${encodeURIComponent(domain)}?score=${score}`;
+}
+
 export interface ScoreResult {
   checkId: string;
   url: string;

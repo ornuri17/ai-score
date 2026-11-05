@@ -27,8 +27,35 @@ export default function HowItWorks() {
     { q: t('howItWorks.faq6Q'), a: t('howItWorks.faq6A') },
   ];
 
+  const howToSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: "How to Score Your Website's AI Readiness with GradeByAI",
+    description: t('howItWorks.subtitle'),
+    totalTime: 'PT30S',
+    tool: [{ '@type': 'HowToTool', name: 'GradeByAI', url: 'https://www.gradebyai.com' }],
+    step: [1, 2, 3, 4].map((n) => ({
+      '@type': 'HowToStep',
+      position: n,
+      name: t(`howItWorks.step${n}Title`),
+      text: t(`howItWorks.step${n}Desc`),
+      url: `https://www.gradebyai.com/how-it-works#step-${n}`,
+    })),
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'GradeByAI', item: 'https://www.gradebyai.com' },
+      { '@type': 'ListItem', position: 2, name: t('nav.howItWorks'), item: 'https://www.gradebyai.com/how-it-works' },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-[#0b0e14]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Header />
 
       {/* Hero */}

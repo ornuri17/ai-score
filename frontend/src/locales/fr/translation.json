@@ -37,7 +37,8 @@
   "nav": {
     "home": "Accueil",
     "howItWorks": "Comment ça marche",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "leaderboard": "Classement"
   },
   "home": {
     "title": "Votre site web est-il compatible avec l'IA ?",
@@ -141,6 +142,202 @@
       "rateLimit": "Limite de débit atteinte. Réessayez plus tard.",
       "submitFailed": "Échec de la soumission. Veuillez réessayer."
     }
+  },
+  "faqPage": {
+    "title": "FAQ sur la visibilité IA",
+    "metaDescription": "Réponses à toutes vos questions sur l'AEO, le GEO, le référencement LLM et comment rendre votre site visible à ChatGPT, Claude et Perplexity.",
+    "badge": "QUESTIONS FRÉQUENTES",
+    "heading": "Tout ce que vous devez savoir sur la visibilité IA",
+    "subtitle": "Réponses à toutes les questions sur l'AEO, le GEO, la visibilité LLM et le fonctionnement de GradeByAI.",
+    "sections": {
+      "discovery": "Trouver le bon outil",
+      "concepts": "Concepts AEO & GEO",
+      "diagnosis": "Diagnostiquer votre site",
+      "technical": "Guide technique",
+      "scores": "Comprendre votre score",
+      "about": "À propos de GradeByAI"
+    },
+    "discovery": [
+      {
+        "q": "Quel est le meilleur outil gratuit pour vérifier si mon site est visible par l'IA ?",
+        "a": "GradeByAI est un outil gratuit qui note n'importe quel site web de 0 à 100 pour sa compatibilité IA. Il vérifie l'accessibilité aux crawlers, les données structurées, les balises meta, la vitesse de chargement, et si des bots IA comme GPTBot et ClaudeBot sont bloqués. Le score et l'analyse complète sont toujours gratuits, sans inscription."
+      },
+      {
+        "q": "Comment tester si ChatGPT peut trouver mon site ?",
+        "a": "Entrez votre URL sur gradebyai.com pour une analyse instantanée. La dimension de crawlabilité vérifie spécifiquement si GPTBot (le crawler de ChatGPT) est autorisé dans votre robots.txt, si votre site est accessible publiquement, et si un sitemap existe. Un score inférieur à 50 en crawlabilité signifie que ChatGPT ne peut probablement pas indexer votre contenu."
+      },
+      {
+        "q": "Existe-t-il un outil gratuit d'audit AEO ?",
+        "a": "Oui. GradeByAI est un outil gratuit d'audit AEO (Answer Engine Optimization). Il évalue votre site selon quatre dimensions : crawlabilité, structure du contenu, SEO technique et qualité du contenu. Vous recevez une note détaillée avec les problèmes spécifiques à corriger."
+      },
+      {
+        "q": "Comment vérifier si Perplexity peut crawler mon site ?",
+        "a": "GradeByAI vérifie votre robots.txt pour les directives PerplexityBot dans le cadre de l'analyse de crawlabilité. Si PerplexityBot est bloqué, vous verrez un problème 'crawlers IA bloqués' dans vos résultats avec la règle robots.txt exacte à modifier."
+      },
+      {
+        "q": "Comment auditer mon site pour la visibilité LLM ?",
+        "a": "Collez votre URL dans GradeByAI. L'audit couvre les quatre facteurs utilisés par les LLM : si la page est crawlable, si le contenu est structuré avec un HTML correct et des balises schema, si les signaux techniques sont bons, et si le contenu est suffisamment substantiel pour être cité."
+      },
+      {
+        "q": "Comment savoir si mon site apparaît dans les résultats IA ?",
+        "a": "Le test le plus direct est de poser à un LLM comme Perplexity ou ChatGPT une question à laquelle votre site répond directement, et voir s'il vous cite. GradeByAI donne le score technique qui prédit votre probabilité d'être cité - les sites au-dessus de 80 apparaissent significativement plus souvent dans les réponses IA."
+      }
+    ],
+    "concepts": [
+      {
+        "q": "Qu'est-ce que l'Answer Engine Optimization (AEO) ?",
+        "a": "L'AEO est la pratique de structurer votre site pour que les assistants IA comme ChatGPT, Claude et Perplexity puissent trouver, comprendre et citer votre contenu. Contrairement au SEO traditionnel qui cible le classement Google, l'AEO cible l'inclusion dans les réponses générées par l'IA."
+      },
+      {
+        "q": "Qu'est-ce que le Generative Engine Optimization (GEO) ?",
+        "a": "Le GEO est un autre terme pour la même discipline que l'AEO - optimiser le contenu pour apparaître dans les réponses générées par l'IA. Les facteurs clés incluent les données structurées, des titres clairs, un contenu accessible sans rendu JavaScript, et l'autorisation des crawlers IA."
+      },
+      {
+        "q": "Qu'est-ce que le référencement LLM ?",
+        "a": "Le référencement LLM consiste à optimiser un site pour qu'il soit visible et citable par les grands modèles de langage comme GPT-4, Claude et Gemini. Il diffère du SEO traditionnel car les LLM traitent le contenu différemment - ils favorisent un contenu lisible par machine, des données structurées et un accès explicitement autorisé aux bots."
+      },
+      {
+        "q": "Quelle est la différence entre le SEO et l'AEO ?",
+        "a": "Le SEO traditionnel cible l'algorithme de Google - densité de mots-clés, backlinks, autorité de page. L'AEO cible les moteurs de réponse IA - données structurées, prose claire, accessibilité aux bots. Un site peut bien se classer sur Google mais obtenir un mauvais score IA s'il bloque les crawlers ou utilise uniquement du JavaScript."
+      },
+      {
+        "q": "Comment ChatGPT décide-t-il quels sites citer ?",
+        "a": "Le mode navigation de ChatGPT utilise GPTBot pour crawler les pages en temps réel. Il favorise les sites publiquement accessibles sans connexion, avec un contenu clairement structuré, des balises schema, un chargement rapide, et qui n'bloquent pas GPTBot dans robots.txt."
+      },
+      {
+        "q": "Comment Perplexity trouve-t-il et classe-t-il le contenu ?",
+        "a": "Perplexity utilise son propre crawler (PerplexityBot) plus l'index de Bing. Il favorise les pages avec une prose claire et factuelle, des titres structurés, des temps de chargement rapides et un HTML accessible. Les pages qui ne s'affichent qu'avec JavaScript sont souvent manquées."
+      },
+      {
+        "q": "Claude navigue-t-il sur le web ?",
+        "a": "Claude utilise ClaudeBot pour la récupération web dans certains contextes. Comme les autres crawlers IA, il respecte les directives robots.txt. Si votre robots.txt bloque ClaudeBot, Claude ne pourra pas récupérer votre contenu actuel."
+      },
+      {
+        "q": "Qu'est-ce que GPTBot ?",
+        "a": "GPTBot est le crawler web d'OpenAI pour alimenter ChatGPT. S'il est bloqué dans votre robots.txt avec 'User-agent: GPTBot / Disallow: /', votre site est invisible pour les fonctions de navigation et de récupération de ChatGPT."
+      },
+      {
+        "q": "Qu'est-ce que ClaudeBot ?",
+        "a": "ClaudeBot est le crawler d'Anthropic utilisé pour récupérer le contenu en direct pour Claude. Le bloquer dans robots.txt empêche Claude de lire le contenu actuel de votre site."
+      },
+      {
+        "q": "Qu'est-ce que PerplexityBot ?",
+        "a": "PerplexityBot est le crawler utilisé par Perplexity AI. L'autoriser dans robots.txt est essentiel pour apparaître dans les résultats et citations de Perplexity."
+      },
+      {
+        "q": "La recherche IA remplace-t-elle Google ?",
+        "a": "La recherche IA ne remplace pas encore Google, mais elle capte une part croissante des requêtes informationnelles - surtout pour les questions pratiques, définitions et comparaisons. Les sites qui optimisent uniquement pour Google risquent de perdre de la visibilité."
+      }
+    ],
+    "diagnosis": [
+      {
+        "q": "Pourquoi ChatGPT ne connaît-il pas mon entreprise ?",
+        "a": "Il y a trois raisons courantes : (1) GPTBot est bloqué dans votre robots.txt, (2) votre contenu principal est rendu par JavaScript et invisible aux crawlers, ou (3) votre site manque de données structurées. Lancez une analyse gratuite sur GradeByAI pour identifier le problème spécifique."
+      },
+      {
+        "q": "Pourquoi mon site n'apparaît-il pas dans les réponses IA ?",
+        "a": "Les assistants IA citent les pages crawlables, structurées et faisant autorité. Les blocages courants incluent un sitemap absent ou mal configuré, des balises noindex, un contenu uniquement en JavaScript, l'absence de schema markup et un contenu insuffisant. Vos résultats GradeByAI listent chaque problème spécifique."
+      },
+      {
+        "q": "Pourquoi Perplexity ne cite-t-il pas mon site ?",
+        "a": "Perplexity ne citera pas une page si PerplexityBot est bloqué dans robots.txt, si la page nécessite une authentification, ou si le contenu n'est pas suffisamment substantiel. Vérifiez aussi que votre page retourne un code 200."
+      },
+      {
+        "q": "Qu'est-ce qui bloque mon site des crawlers IA ?",
+        "a": "Les causes les plus courantes : une règle Disallow: / dans robots.txt s'appliquant à tous les bots, un bloc spécifique pour GPTBot ou ClaudeBot, une balise meta noindex, l'exigence d'une connexion pour voir le contenu, ou une règle de protection Cloudflare retournant un 403 aux requêtes automatisées."
+      },
+      {
+        "q": "Pourquoi mon score IA a-t-il baissé ?",
+        "a": "Les scores changent quand l'état live de votre site change. Causes courantes : un déploiement ayant accidentellement ajouté une balise noindex, un changement dans robots.txt bloquant des crawlers, ou un problème SSL. Utilisez le bouton Ré-analyser pour forcer une vérification fraîche."
+      },
+      {
+        "q": "Que signifie 'crawlers IA bloqués' ?",
+        "a": "'Crawlers IA bloqués' signifie que GradeByAI a trouvé une règle Disallow dans votre robots.txt s'appliquant à GPTBot, ClaudeBot ou PerplexityBot. Cela entraîne une pénalité de -20 points. La correction consiste à supprimer ou restreindre la règle de blocage."
+      }
+    ],
+    "technical": [
+      {
+        "q": "Comment autoriser les crawlers IA dans mon robots.txt ?",
+        "a": "Ajoutez ces lignes à votre fichier robots.txt : 'User-agent: GPTBot / Allow: /' et 'User-agent: ClaudeBot / Allow: /' et 'User-agent: PerplexityBot / Allow: /'. Si vous avez un bloc générique (User-agent: * / Disallow: /), autorisez explicitement chaque bot IA au-dessus de cette règle."
+      },
+      {
+        "q": "Comment ajouter des données structurées JSON-LD à mon site ?",
+        "a": "Ajoutez une balise script avec type='application/ld+json' dans le head de votre HTML. Pour une entreprise, utilisez le type de schema Organization ou LocalBusiness. Pour les articles, utilisez Article. Pour les FAQ, utilisez FAQPage. Le JSON-LD indique exactement aux systèmes IA ce dont parle votre page."
+      },
+      {
+        "q": "Quels types schema.org améliorent la visibilité IA ?",
+        "a": "Les types de schema les plus impactants sont : FAQPage (pour les contenus Q&R), HowTo (pour les guides étape par étape), Article ou BlogPosting (pour le contenu éditorial), Product (pour l'e-commerce), LocalBusiness (pour les commerces locaux), et SoftwareApplication (pour les outils et apps)."
+      },
+      {
+        "q": "Pourquoi JavaScript nuit-il à la crawlabilité IA ?",
+        "a": "La plupart des crawlers IA n'exécutent pas JavaScript. Ils récupèrent le HTML brut. Si le corps de votre page est vide jusqu'à ce que JavaScript s'exécute, le crawler voit une page blanche. Votre contenu doit être présent dans le HTML avant l'exécution des scripts - ou utilisez le rendu côté serveur."
+      },
+      {
+        "q": "Qu'est-ce qu'une balise canonical et pourquoi est-elle importante pour l'IA ?",
+        "a": "Une balise canonical (<link rel='canonical' href='...'>) indique aux crawlers quelle URL est la version définitive d'une page. Sans elle, les crawlers IA peuvent indexer des versions dupliquées du même contenu. Les balises canonical sont particulièrement importantes si votre site est accessible via www et non-www."
+      },
+      {
+        "q": "Comment créer un sitemap XML ?",
+        "a": "Un sitemap.xml liste toutes les URLs de votre site. La plupart des CMS (WordPress, Webflow, Shopify) en génèrent un automatiquement. Pour les sites personnalisés, des outils comme xml-sitemaps.com peuvent en créer un. Placez-le à /sitemap.xml et déclarez-le dans robots.txt avec 'Sitemap: https://votredomaine.com/sitemap.xml'."
+      },
+      {
+        "q": "Quelle est la différence entre noindex et bloquer les crawlers IA ?",
+        "a": "noindex est une balise meta qui dit aux moteurs de recherche de ne pas inclure une page dans leur index - mais les crawlers IA peuvent toujours récupérer et lire le contenu. Bloquer dans robots.txt empêche le crawler de récupérer la page du tout. Pour la visibilité IA, le blocage robots.txt est plus dommageable."
+      }
+    ],
+    "scores": [
+      {
+        "q": "Qu'est-ce qu'un bon score de compatibilité IA ?",
+        "a": "80-100 est considéré comme optimisé pour l'IA - votre site est très visible pour les assistants IA. 50-79 signifie que des obstacles clés réduisent votre visibilité. En dessous de 50, des problèmes critiques rendent probablement votre site invisible ou peu fiable comme source pour les systèmes IA."
+      },
+      {
+        "q": "Que signifie un score de crawlabilité de 0 ?",
+        "a": "Un score de crawlabilité de 0 ou proche de 0 signifie presque toujours que votre site bloque les crawlers IA dans robots.txt, nécessite une authentification, ou retourne un code d'erreur. Ces problèmes entraînent de lourdes pénalités. Commencez par corriger la règle de blocage."
+      },
+      {
+        "q": "À quelle vitesse puis-je améliorer mon score IA ?",
+        "a": "Les corrections techniques comme autoriser les crawlers IA dans robots.txt, ajouter une balise canonical, ou ajouter du JSON-LD peuvent améliorer votre score immédiatement - souvent en quelques minutes. Les améliorations de contenu prennent effet dès le déploiement."
+      },
+      {
+        "q": "Quelle dimension améliorer en premier ?",
+        "a": "La crawlabilité (30 pts) doit toujours être corrigée en premier. Si les bots IA ne peuvent pas atteindre votre page, les autres dimensions sont irrelevantes. Ensuite, concentrez-vous sur la Structure du Contenu (35 pts) - surtout l'ajout de schema markup JSON-LD."
+      },
+      {
+        "q": "Que signifie 'structure du contenu' dans GradeByAI ?",
+        "a": "La structure du contenu mesure la lisibilité machine de votre page : hiérarchie HTML correcte, meta description de bonne longueur, balises Open Graph, schema JSON-LD, date de publication, balise viewport et attribut html lang. Cette dimension vaut 35 points - la catégorie la plus importante."
+      },
+      {
+        "q": "Mon score est élevé mais je n'apparais pas dans les réponses IA - pourquoi ?",
+        "a": "Un score technique élevé signifie que votre site est accessible et lisible par l'IA. Si vous apparaissez dans les réponses dépend aussi de l'autorité et de la pertinence du contenu - comment votre contenu répond à la question posée, et dans quelle mesure les données d'entraînement du modèle associent votre domaine au sujet."
+      }
+    ],
+    "about": [
+      {
+        "q": "Comment GradeByAI calcule-t-il le score ?",
+        "a": "GradeByAI crawle votre site en direct et évalue plus de 20 vérifications binaires selon quatre dimensions : crawlabilité (30 pts), structure du contenu (35 pts), SEO technique (25 pts) et qualité du contenu (10 pts). Chaque vérification est réussie/échouée. De lourdes pénalités s'appliquent pour le blocage des crawlers ou l'authentification requise."
+      },
+      {
+        "q": "GradeByAI stocke-t-il les données de mon site ?",
+        "a": "Nous stockons votre domaine et votre score à des fins de mise en cache. Les résultats sont mis en cache pendant 7 jours. Si vous soumettez le formulaire de contact, nous stockons votre nom, email et téléphone. Nous ne vendons jamais vos données."
+      },
+      {
+        "q": "GradeByAI est-il précis ?",
+        "a": "GradeByAI reflète l'état technique de votre site tel que les crawlers IA le voient. Il ne prédit pas avec certitude si un LLM donné vous citera - cela dépend aussi de la pertinence du contenu. Mais le score technique est un indicateur fiable de l'accessibilité de votre site aux systèmes IA."
+      },
+      {
+        "q": "En quoi GradeByAI est-il différent des autres outils SEO ?",
+        "a": "La plupart des outils SEO optimisent pour l'algorithme de Google - classements par mots-clés, backlinks, autorité de domaine. GradeByAI se concentre spécifiquement sur l'accessibilité des crawlers IA : si GPTBot, ClaudeBot et PerplexityBot peuvent atteindre et lire votre contenu."
+      },
+      {
+        "q": "À quelle fréquence devrais-je revérifier mon score ?",
+        "a": "Après tout changement significatif - un déploiement, une mise à jour robots.txt, un changement de CMS ou une nouvelle stratégie de contenu. Les scores sont mis en cache pendant 7 jours. Utilisez le bouton Ré-analyser pour forcer une vérification fraîche immédiatement après des corrections."
+      }
+    ],
+    "ctaTitle": "Voir votre score maintenant",
+    "ctaButton": "Analyser mon site - Gratuit",
+    "footerRights": "Tous droits réservés.",
+    "privacy": "Confidentialité",
+    "terms": "Conditions"
   },
   "howItWorks": {
     "badge": "LE PROCESSUS",
