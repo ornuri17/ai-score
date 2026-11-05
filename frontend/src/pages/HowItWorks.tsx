@@ -9,6 +9,7 @@ export default function HowItWorks() {
     { number: '02', numberColor: 'text-[#a68cff]', title: t('howItWorks.step2Title'), description: t('howItWorks.step2Desc'), pts: t('howItWorks.step2Pts') },
     { number: '03', numberColor: 'text-[#ff6c95]', title: t('howItWorks.step3Title'), description: t('howItWorks.step3Desc'), pts: t('howItWorks.step3Pts') },
     { number: '04', numberColor: 'text-[#81ecff]', title: t('howItWorks.step4Title'), description: t('howItWorks.step4Desc'), pts: t('howItWorks.step4Pts') },
+    { number: '05', numberColor: 'text-[#a68cff]', title: t('howItWorks.step5Title'), description: t('howItWorks.step5Desc'), pts: t('howItWorks.step5Pts') },
   ];
 
   const tiers = [

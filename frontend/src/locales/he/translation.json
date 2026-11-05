@@ -120,7 +120,8 @@
     "neuralAffinity": "ציון AI",
     "issuesDetected": "בעיות שמצאנו",
     "aboutSite": "על מה האתר הזה",
-    "scoreHistory": "היסטוריית ציונים"
+    "scoreHistory": "היסטוריית ציונים",
+    "agentReadiness": "מוכנות לסוכנים"
   },
   "faqPage": {
     "title": "שאלות נפוצות על נראות ל-AI",
@@ -324,16 +325,16 @@
     "subtitle": "ארבעה דברים שאנחנו בודקים. ציון אחד שאומר לך איפה אתה עומד.",
     "step1Title": "סורקים את האתר שלך",
     "step1Desc": "הבוט שלנו קורא את הדף כמו סורק AI: את ה-HTML הגולמי (בלי להריץ JavaScript), את robots.txt ואת ה-sitemap.",
-    "step1Pts": "30 נק'",
+    "step1Pts": "22 נק'",
     "step2Title": "בודקים את מבנה התוכן",
     "step2Desc": "אנחנו בודקים כותרות, HTML, schema.org — הדברים שעוזרים ל-AI להבין על מה הדף מדבר.",
-    "step2Pts": "35 נק'",
+    "step2Pts": "26 נק'",
     "step3Title": "ביקורת SEO טכני",
     "step3Desc": "תגי meta, כתובות קנוניות, מהירות טעינה ונתונים מובנים — כל מה שמשפיע על הציון הטכני.",
-    "step3Pts": "25 נק'",
+    "step3Pts": "19 נק'",
     "step4Title": "איכות התוכן",
     "step4Desc": "AI מעדיף דפים עם תוכן אמיתי ומקושר. אנחנו בודקים כמה טקסט גלוי יש בדף וכמה הוא מקשר לשאר האתר.",
-    "step4Pts": "10 נק'",
+    "step4Pts": "8 נק'",
     "scoreBadge": "הציון",
     "scoreTitle": "מה הציון אומר",
     "tier1Range": "80–100",
@@ -363,7 +364,10 @@
     "ctaButton": "בדוק את האתר שלי",
     "footerRights": "כל הזכויות שמורות.",
     "privacy": "פרטיות",
-    "terms": "תנאים"
+    "terms": "תנאים",
+    "step5Title": "מוכנות לסוכנים",
+    "step5Desc": "האם סוכני AI יכולים למצוא את האתר ולהשתמש בו? אנחנו בודקים llms.txt, Content Signals, Markdown לסוכנים, כותרות Link, כרטיסי MCP ו-A2A, Agent Skills, קטלוג API וגילוי OAuth.",
+    "step5Pts": "25 נק'"
   },
   "form": {
     "cta": "קבל את תוכנית הפעולה שלך",
@@ -389,5 +393,92 @@
     "title": "הדף לא נמצא",
     "body": "הדף הזה לא קיים. בדקו את הכתובת, או בדקו ציון לאתר מדף הבית.",
     "home": "חזרה לדף הבית"
+  },
+  "agent": {
+    "sectionLabel": "מוכנות לסוכני AI",
+    "heading": "האם סוכני AI יכולים להשתמש באתר שלך?",
+    "intro": "מעבר לקריאה על ידי חיפוש AI: האם סוכן AI יכול למצוא את האתר, לקרוא אותו כ-Markdown ולהתחבר אליו? הבדיקות מבוססות על התקנים שבהם משתמש isitagentready.com של Cloudflare.",
+    "passed": "עבר",
+    "partial": "חלקי",
+    "failed": "חסר",
+    "points": "{{points}}/{{max}} נק׳",
+    "showEvidence": "הצג בקשה ותשובה",
+    "hideEvidence": "הסתר בקשה ותשובה",
+    "request": "בקשה",
+    "response": "תשובה",
+    "error": "שגיאה",
+    "note": "הערה",
+    "status": "סטטוס",
+    "copyPrompt": "העתק פרומפט לתיקון",
+    "copied": "הועתק!",
+    "spec": "תקן",
+    "checks": {
+      "llmsTxt": {
+        "title": "llms.txt",
+        "desc": "קובץ Markdown בכתובת /llms.txt שמסביר למודלי AI מה האתר ומקשר לדפים החשובים."
+      },
+      "contentSignals": {
+        "title": "Content Signals",
+        "desc": "שורת Content-Signal ב-robots.txt שקובעת אם AI רשאי להשתמש בתוכן לחיפוש, לתשובות AI או לאימון."
+      },
+      "markdownNegotiation": {
+        "title": "Markdown לסוכנים",
+        "desc": "בקשה עם Accept: text/markdown מקבלת גרסת Markdown נקייה של הדף במקום HTML."
+      },
+      "linkHeaders": {
+        "title": "כותרות Link",
+        "desc": "כותרות HTTP מסוג Link בדף הבית שמפנות סוכנים לקטלוג ה-API, לתיעוד או לקבצים קריאים למכונה."
+      },
+      "mcpServerCard": {
+        "title": "כרטיס שרת MCP",
+        "desc": "כרטיס בכתובת /.well-known/mcp/server-card.json שמאפשר לסוכנים למצוא את שרת ה-MCP שלך ולהתחבר אליו."
+      },
+      "a2aAgentCard": {
+        "title": "כרטיס סוכן A2A",
+        "desc": "כרטיס בכתובת /.well-known/agent-card.json שמתאר את הסוכן שלך לסוכנים אחרים (פרוטוקול A2A)."
+      },
+      "agentSkills": {
+        "title": "Agent Skills",
+        "desc": "אינדקס בכתובת /.well-known/agent-skills/index.json עם מיומנויות שמלמדות סוכנים איך להשתמש באתר."
+      },
+      "apiCatalog": {
+        "title": "קטלוג API",
+        "desc": "רשימת ה-API שלך בכתובת /.well-known/api-catalog (RFC 9727) עם קישורים למפרטים ולתיעוד."
+      },
+      "oauthDiscovery": {
+        "title": "גילוי OAuth",
+        "desc": "מטא-דאטה של OAuth / OpenID שמסבירה לסוכנים איך להתחבר בשם משתמשים לשירות שלך."
+      },
+      "oauthProtectedResource": {
+        "title": "משאב מוגן OAuth",
+        "desc": "מטא-דאטה בכתובת /.well-known/oauth-protected-resource שמגדירה לסוכנים איזה שרת הרשאות מגן על ה-API."
+      }
+    }
+  },
+  "fixPlan": {
+    "label": "תוכנית פעולה",
+    "heading": "תקן קודם את אלה וקבל עוד {{points}} נקודות",
+    "intro": "לכל תיקון מצורף פרומפט מוכן. הדבק אותו ב-Cursor, ב-Claude Code או בכל סוכן קוד שעובד על האתר.",
+    "copyAll": "העתק את כל הפרומפטים",
+    "copiedAll": "כל הפרומפטים הועתקו!",
+    "gain": "+{{points}} נק׳",
+    "showPrompt": "הצג פרומפט",
+    "hidePrompt": "הסתר פרומפט",
+    "more": "כל התיקונים ({{count}})",
+    "promptNote": "הפרומפטים באנגלית כדי שסוכני קוד יבצעו אותם במדויק.",
+    "titles": {
+      "blocked_from_crawlers": "להסיר noindex",
+      "ai_crawlers_blocked": "לאפשר לבוטי AI ב-robots.txt",
+      "not_publicly_accessible": "להפוך את הדף לציבורי",
+      "crawlability_issues": "להוסיף sitemap",
+      "structured_data_missing": "להוסיף נתונים מובנים (JSON-LD)",
+      "metadata_optimization": "לתקן כותרת ותיאור מטא",
+      "mobile_unfriendly": "להוסיף תגית viewport",
+      "no_https": "לעבור ל-HTTPS",
+      "slow_page_load": "להאיץ את הדף",
+      "no_internal_links": "להוסיף קישורים פנימיים",
+      "no_language_tag": "להגדיר שפת דף",
+      "access_or_speed_issues": "לתקן הפניות או זמני תגובה"
+    }
   }
 }

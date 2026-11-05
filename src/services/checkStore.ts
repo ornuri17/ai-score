@@ -122,6 +122,7 @@ export function createDatabaseCheckStore(): CheckStore {
           contentScore: result.dimensions.content,
           technicalScore: result.dimensions.technical,
           qualityScore: result.dimensions.quality,
+          agentScore: result.dimensions.agentReadiness,
           issues: result.issues,
           checkedAt: new Date(result.checkedAt),
           expiresAt: new Date(result.expiresAt),
@@ -162,6 +163,7 @@ export function createDatabaseCheckStore(): CheckStore {
           contentScore: true,
           technicalScore: true,
           qualityScore: true,
+          agentScore: true,
           checkedAt: true,
         },
       });
@@ -173,6 +175,8 @@ export function createDatabaseCheckStore(): CheckStore {
           content: r.contentScore,
           technical: r.technicalScore,
           quality: r.qualityScore,
+          // Checks stored before the agent readiness dimension existed have no value
+          agentReadiness: r.agentScore ?? 0,
         },
         checked_at: r.checkedAt.toISOString(),
       }));

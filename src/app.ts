@@ -16,6 +16,7 @@ import { createCompareRouter } from './routes/compare';
 import { createLeadsRouter } from './routes/leads';
 import { createHistoryRouter } from './routes/history';
 import { createAdminRouter } from './routes/admin';
+import { createMcpRouter } from './routes/mcp';
 import { createBadgeRouter, createLeaderboardRouter, createShareRouter, createStatsRouter } from './routes/public';
 
 export interface AppDeps {
@@ -61,6 +62,9 @@ export function createApp(deps: AppDeps = {}): Express {
 
   // Mount the leads route with its own (stricter) form rate limiter
   app.post('/api/leads', formRateLimiterMiddleware, createLeadsRouter());
+
+  // MCP server for AI agents (scan_site tool), same rate limit as the API
+  app.use('/mcp', rateLimiterMiddleware, createMcpRouter(cacheService, checkStore));
 
   // Admin routes, protected by secret key, not subject to public rate limiting
   app.use('/api/admin', adminAuthMiddleware(), createAdminRouter());

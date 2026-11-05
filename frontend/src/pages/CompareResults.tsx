@@ -6,19 +6,26 @@ import DimensionBar from '../components/DimensionBar';
 import IssueList from '../components/IssueList';
 import LeadForm from '../components/LeadForm';
 
-const DIMENSION_MAX: Record<keyof ScoreResult['dimensions'], number> = {
+type DimensionKey = keyof ScoreResult['dimensions'];
+
+// Maxima before the agent readiness rebalance; used only when the API does not send maxDimensions
+const LEGACY_DIMENSION_MAX: Record<DimensionKey, number> = {
   crawlability: 30,
-  content: 31,
+  content: 35,
   technical: 25,
   quality: 10,
+  agentReadiness: 0,
 };
 
-const DIMENSION_LABELS: Record<keyof ScoreResult['dimensions'], string> = {
-  crawlability: 'Schema Markup',
+const DIMENSION_LABELS: Record<DimensionKey, string> = {
+  crawlability: 'Crawlability',
   content: 'Content Structure',
   technical: 'Technical SEO',
-  quality: 'Accessibility',
+  quality: 'Content Quality',
+  agentReadiness: 'Agent Readiness',
 };
+
+const DIMENSION_ORDER: DimensionKey[] = ['crawlability', 'content', 'technical', 'quality', 'agentReadiness'];
 
 function formatDate(iso: string): string {
   try {
@@ -81,14 +88,11 @@ function SiteColumn({ result, label, isWinner, isTie }: SiteColumnProps) {
       <div>
         <h3 className="text-xs font-label uppercase tracking-wide text-[#a9abb3] mb-3">Breakdown</h3>
         <div className="space-y-3">
-          {(Object.keys(result.dimensions) as Array<keyof ScoreResult['dimensions']>).map((key) => (
-            <DimensionBar
-              key={String(key)}
-              label={DIMENSION_LABELS[key]}
-              score={result.dimensions[key]}
-              maxScore={DIMENSION_MAX[key]}
-            />
-          ))}
+          {DIMENSION_ORDER.map((key) => ({ key, max: result.maxDimensions?.[key] ?? LEGACY_DIMENSION_MAX[key] }))
+            .filter(({ max }) => max > 0)
+            .map(({ key, max }) => (
+              <DimensionBar key={key} label={DIMENSION_LABELS[key]} score={result.dimensions[key] ?? 0} maxScore={max} />
+            ))}
         </div>
       </div>
 

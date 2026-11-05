@@ -28,6 +28,14 @@ function handler(event) {
   var request = event.request;
   var uri = request.uri;
 
+  // Markdown for Agents: "Accept: text/markdown" on the home page gets /index.md
+  // (generated at build time by frontend/scripts/generate-agent-files.mjs).
+  var accept = request.headers.accept ? request.headers.accept.value : '';
+  if (uri === '/' && accept.indexOf('text/markdown') !== -1) {
+    request.uri = '/index.md';
+    return request;
+  }
+
   // Routes first: /analysis/example.com contains a dot but is still an app route.
   for (var i = 0; i < SPA_ROUTES.length; i++) {
     if (SPA_ROUTES[i].test(uri)) {

@@ -8,6 +8,8 @@ import { URL } from 'url';
 import { CrawlResult, ScoreResult } from '../types';
 import { logger } from '../logger';
 import { isBotBlocked, parseXRobotsTag, SCORED_AI_BOTS } from './robots';
+import { AgentReadinessResult, AGENT_READINESS_MAX } from './agentReadiness';
+import { classicFixes, Fix, rankFixes } from './fixes';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -112,7 +114,23 @@ function countInternalLinks(html: string, domain: string): number {
 // Main scorer
 // ---------------------------------------------------------------------------
 
-export function scoreUrl(url: string, crawlResult: CrawlResult): ScoreResult {
+/** Maximum points per dimension after the agent readiness rebalance (sums to 100). */
+export const DIMENSION_MAX = {
+  crawlability: 22,
+  content: 26,
+  technical: 19,
+  quality: 8,
+  agentReadiness: AGENT_READINESS_MAX,
+} as const;
+
+/** Raw maxima of the original four dimensions (their checks are unchanged). */
+export const RAW_MAX = { crawlability: 30, content: 35, technical: 25, quality: 10 } as const;
+
+export function scale(raw: number, rawMax: number, max: number): number {
+  return Math.round((raw * max) / rawMax);
+}
+
+export function scoreUrl(url: string, crawlResult: CrawlResult, agent: AgentReadinessResult = { score: 0, checks: [] }): ScoreResult {
   const { html, robotsTxt, sitemapXml, responseTimeMs, statusCode, finalUrl, redirectCount } = crawlResult;
   const headers = crawlResult.headers ?? {};
   const issues: string[] = [];
@@ -246,8 +264,18 @@ export function scoreUrl(url: string, crawlResult: CrawlResult): ScoreResult {
   if (hasEnoughText300) quality += 5;
   if (hasInternalLinks) quality += 5;
 
-  // ---- Raw total ----
-  let score = crawlability + content + technical + quality;
+  // ---- Rebalance: the four original dimensions share 75 points, agent readiness 25 ----
+  const dimensions = {
+    crawlability: scale(crawlability, RAW_MAX.crawlability, DIMENSION_MAX.crawlability),
+    content: scale(content, RAW_MAX.content, DIMENSION_MAX.content),
+    technical: scale(technical, RAW_MAX.technical, DIMENSION_MAX.technical),
+    quality: scale(quality, RAW_MAX.quality, DIMENSION_MAX.quality),
+    agentReadiness: Math.max(0, Math.min(DIMENSION_MAX.agentReadiness, agent.score)),
+  };
+
+  // ---- Total ----
+  let score =
+    dimensions.crawlability + dimensions.content + dimensions.technical + dimensions.quality + dimensions.agentReadiness;
 
   // ---- Penalties ----
   if (hasNoindex || xRobotsNoindex || isAuth) score -= 30;
@@ -276,11 +304,29 @@ export function scoreUrl(url: string, crawlResult: CrawlResult): ScoreResult {
   const now = new Date();
   const expiresAt = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
 
+  // ---- Fixes, biggest gain first ----
+  const host = domain || url;
+  const fixes: Fix[] = rankFixes([
+    ...classicFixes(issues, { url: finalUrl || url, host }),
+    ...agent.checks
+      .filter((c) => c.fixPrompt !== undefined && c.points < c.maxPoints)
+      .map((c) => ({
+        id: c.id,
+        kind: 'agent' as const,
+        title: c.title,
+        gain: c.maxPoints - c.points,
+        prompt: c.fixPrompt ?? '',
+      })),
+  ]);
+
   const result: ScoreResult = {
     checkId: crypto.randomUUID(),
     score,
-    dimensions: { crawlability, content, technical, quality },
+    dimensions,
+    maxDimensions: { ...DIMENSION_MAX },
     issues,
+    agentChecks: agent.checks,
+    fixes,
     summary: extractSummary(html),
     cached: false,
     checkedAt: now.toISOString(),

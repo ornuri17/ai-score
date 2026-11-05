@@ -11,12 +11,13 @@ import { CacheService } from './cache';
 import { CheckStore, CheckMeta } from './checkStore';
 import { crawlUrl } from './crawler';
 import { scoreUrl } from './scorer';
+import { runAgentReadinessChecks } from './agentReadiness';
 import { ScoreResult } from '../types';
 import { config } from '../config';
 import { logger } from '../logger';
 
 // Bump when the scoring model changes so cached results from the old model are not served.
-export const SCORING_VERSION = 'v2';
+export const SCORING_VERSION = 'v3';
 
 export function normalizeUrl(raw: string): string {
   const parsed = new URL(raw);
@@ -66,8 +67,11 @@ export async function analyze(normalizedUrl: string, opts: AnalyzeOptions): Prom
   }
 
   logger.info('Crawling URL', { url: normalizedUrl });
-  const crawlResult = await crawlUrl(normalizedUrl, config.crawlerTimeoutMs);
-  const result = scoreUrl(normalizedUrl, crawlResult);
+  // The agent readiness probes (well-known files, Markdown negotiation) run in
+  // parallel with the page crawl; they only wait for it for robots.txt and HTML.
+  const crawlPromise = crawlUrl(normalizedUrl, config.crawlerTimeoutMs);
+  const [crawlResult, agent] = await Promise.all([crawlPromise, runAgentReadinessChecks(normalizedUrl, crawlPromise)]);
+  const result = scoreUrl(normalizedUrl, crawlResult, agent);
 
   // Persist the check before answering: leads reference it by checkId, and
   // stats / leaderboard / history / badges read from it. A storage failure

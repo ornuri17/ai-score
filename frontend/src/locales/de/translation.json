@@ -120,7 +120,8 @@
     "neuralAffinity": "Neuronale Affinität",
     "issuesDetected": "Probleme erkannt",
     "aboutSite": "Worum es auf dieser Seite geht",
-    "scoreHistory": "Score-Verlauf"
+    "scoreHistory": "Score-Verlauf",
+    "agentReadiness": "Agent-Bereitschaft"
   },
   "faqPage": {
     "title": "KI-Bereitschaft FAQ",
@@ -324,16 +325,16 @@
     "subtitle": "Vier Dimensionen. Ein definitiver Score. Vollständige Klarheit über Ihre KI-Bereitschaft.",
     "step1Title": "Wir crawlen Ihre Website",
     "step1Desc": "Unser Crawler ruft Ihre Seite wie ein KI-Crawler ab: das rohe HTML (ohne JavaScript auszuführen), Ihre robots.txt und Ihre Sitemap.",
-    "step1Pts": "30 Pkt.",
+    "step1Pts": "22 Pkt.",
     "step2Title": "Inhaltsstruktur-Analyse",
     "step2Desc": "Wir bewerten Überschriftenhierarchien, semantisches HTML, schema.org-Markup und ob Ihre Inhalte maschinenlesbar sind.",
-    "step2Pts": "35 Pkt.",
+    "step2Pts": "26 Pkt.",
     "step3Title": "Technisches SEO-Audit",
     "step3Desc": "Meta-Tags, kanonische URLs, Seitengeschwindigkeit und strukturierte Daten fließen in Ihren technischen Score ein.",
-    "step3Pts": "25 Pkt.",
+    "step3Pts": "19 Pkt.",
     "step4Title": "Inhaltsqualitätssignal",
     "step4Desc": "KI-Systeme bevorzugen Seiten mit echtem, gut verlinktem Inhalt. Wir prüfen, wie viel sichtbarer Text die Seite hat und wie gut sie auf den Rest Ihrer Website verlinkt.",
-    "step4Pts": "10 Pkt.",
+    "step4Pts": "8 Pkt.",
     "scoreBadge": "DER SCORE",
     "scoreTitle": "Ihr Score, erklärt",
     "tier1Range": "80–100",
@@ -363,7 +364,10 @@
     "ctaButton": "Meine Website analysieren",
     "footerRights": "Alle Rechte vorbehalten.",
     "privacy": "Datenschutz",
-    "terms": "Nutzungsbedingungen"
+    "terms": "Nutzungsbedingungen",
+    "step5Title": "Agent-Bereitschaft",
+    "step5Desc": "Können KI-Agenten Ihre Website finden und nutzen? Wir prüfen llms.txt, Content Signals, Markdown für Agenten, Link-Header, MCP- und A2A-Cards, Agent Skills, API-Katalog und OAuth-Discovery.",
+    "step5Pts": "25 Pkt."
   },
   "form": {
     "cta": "Holen Sie sich Ihren AEO-Aktionsplan",
@@ -389,5 +393,92 @@
     "title": "Seite nicht gefunden",
     "body": "Diese Seite existiert nicht. Prüfen Sie die Adresse oder analysieren Sie eine Website auf der Startseite.",
     "home": "Zur Startseite"
+  },
+  "agent": {
+    "sectionLabel": "BEREITSCHAFT FÜR KI-AGENTEN",
+    "heading": "Können KI-Agenten Ihre Website nutzen?",
+    "intro": "Über das Lesen durch KI-Suche hinaus: Kann ein KI-Agent Ihre Website finden, als Markdown lesen und sich mit ihr verbinden? Die Prüfungen folgen den Spezifikationen, die Cloudflares isitagentready.com verwendet.",
+    "passed": "Bestanden",
+    "partial": "Teilweise",
+    "failed": "Fehlt",
+    "points": "{{points}}/{{max}} Pkt.",
+    "showEvidence": "Anfrage und Antwort anzeigen",
+    "hideEvidence": "Anfrage und Antwort ausblenden",
+    "request": "Anfrage",
+    "response": "Antwort",
+    "error": "Fehler",
+    "note": "Hinweis",
+    "status": "Status",
+    "copyPrompt": "Fix-Prompt kopieren",
+    "copied": "Kopiert!",
+    "spec": "Spezifikation",
+    "checks": {
+      "llmsTxt": {
+        "title": "llms.txt",
+        "desc": "Eine Markdown-Datei unter /llms.txt, die KI-Modellen erklärt, was die Website ist, und ihre wichtigsten Seiten verlinkt."
+      },
+      "contentSignals": {
+        "title": "Content Signals",
+        "desc": "Eine Content-Signal-Zeile in der robots.txt, die festlegt, ob KI Ihre Inhalte für Suche, KI-Antworten oder Training nutzen darf."
+      },
+      "markdownNegotiation": {
+        "title": "Markdown für Agenten",
+        "desc": "Anfragen mit Accept: text/markdown erhalten statt HTML eine saubere Markdown-Version der Seite."
+      },
+      "linkHeaders": {
+        "title": "Link-Header",
+        "desc": "HTTP-Link-Header auf der Startseite, die Agenten auf Ihren API-Katalog, Ihre Dokumentation oder andere maschinenlesbare Dateien hinweisen."
+      },
+      "mcpServerCard": {
+        "title": "MCP-Server-Card",
+        "desc": "Eine Card unter /.well-known/mcp/server-card.json, über die Agenten Ihren MCP-Server finden und sich verbinden."
+      },
+      "a2aAgentCard": {
+        "title": "A2A-Agent-Card",
+        "desc": "Eine Card unter /.well-known/agent-card.json, die Ihren Agenten für andere Agenten beschreibt (A2A-Protokoll)."
+      },
+      "agentSkills": {
+        "title": "Agent Skills",
+        "desc": "Ein Index unter /.well-known/agent-skills/index.json mit Skills, die Agenten zeigen, wie sie Ihre Website nutzen."
+      },
+      "apiCatalog": {
+        "title": "API-Katalog",
+        "desc": "Eine Liste Ihrer APIs unter /.well-known/api-catalog (RFC 9727) mit Links zu Spezifikationen und Dokumentation."
+      },
+      "oauthDiscovery": {
+        "title": "OAuth-Discovery",
+        "desc": "OAuth- / OpenID-Metadaten, die Agenten zeigen, wie sie Nutzer bei Ihrem Dienst anmelden."
+      },
+      "oauthProtectedResource": {
+        "title": "OAuth Protected Resource",
+        "desc": "Metadaten unter /.well-known/oauth-protected-resource, die Agenten sagen, welcher Autorisierungsserver Ihre API schützt."
+      }
+    }
+  },
+  "fixPlan": {
+    "label": "AKTIONSPLAN",
+    "heading": "Beheben Sie zuerst diese Punkte für {{points}} Punkte mehr",
+    "intro": "Zu jedem Fix gibt es einen fertigen Prompt. Fügen Sie ihn in Cursor, Claude Code oder einen anderen Coding-Agenten ein, der an Ihrer Website arbeitet.",
+    "copyAll": "Alle Prompts kopieren",
+    "copiedAll": "Alle Prompts kopiert!",
+    "gain": "+{{points}} Pkt.",
+    "showPrompt": "Prompt anzeigen",
+    "hidePrompt": "Prompt ausblenden",
+    "more": "Alle Fixes ({{count}})",
+    "promptNote": "Die Prompts sind auf Englisch, damit Coding-Agenten sie genau befolgen.",
+    "titles": {
+      "blocked_from_crawlers": "noindex entfernen",
+      "ai_crawlers_blocked": "KI-Crawler in robots.txt erlauben",
+      "not_publicly_accessible": "Seite öffentlich machen",
+      "crawlability_issues": "Sitemap hinzufügen",
+      "structured_data_missing": "JSON-LD-Daten hinzufügen",
+      "metadata_optimization": "Titel und Meta-Beschreibung korrigieren",
+      "mobile_unfriendly": "Viewport-Meta-Tag hinzufügen",
+      "no_https": "Über HTTPS ausliefern",
+      "slow_page_load": "Seite beschleunigen",
+      "no_internal_links": "Interne Links hinzufügen",
+      "no_language_tag": "Seitensprache festlegen",
+      "access_or_speed_issues": "Weiterleitungen oder Timeouts beheben"
+    }
   }
 }
