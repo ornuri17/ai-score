@@ -30,7 +30,8 @@ export default function NavBar() {
   const navLinks = [
     { href: '/', label: t('nav.home') },
     { href: '/how-it-works', label: t('nav.howItWorks') },
-    { href: '/how-it-works#faq', label: t('nav.faq') },
+    { href: '/faq', label: t('nav.faq') },
+    { href: '/leaderboard', label: t('nav.leaderboard') },
   ];
 
   return (

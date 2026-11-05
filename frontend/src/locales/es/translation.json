@@ -37,7 +37,8 @@
   "nav": {
     "home": "Inicio",
     "howItWorks": "Cómo funciona",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "leaderboard": "Clasificación"
   },
   "home": {
     "title": "¿Qué tan amigable con la IA es tu sitio?",
@@ -120,6 +121,202 @@
     "issuesDetected": "Problemas detectados",
     "aboutSite": "De qué trata este sitio",
     "scoreHistory": "Historial de puntuaciones"
+  },
+  "faqPage": {
+    "title": "Preguntas frecuentes sobre visibilidad IA",
+    "metaDescription": "Respuestas a todas las preguntas sobre AEO, GEO, SEO para LLM y cómo hacer que su sitio web sea visible para ChatGPT, Claude y Perplexity.",
+    "badge": "PREGUNTAS FRECUENTES",
+    "heading": "Todo lo que necesitas saber sobre visibilidad IA",
+    "subtitle": "Respuestas a todas las preguntas sobre AEO, GEO, visibilidad LLM y cómo funciona GradeByAI.",
+    "sections": {
+      "discovery": "Encontrar la herramienta correcta",
+      "concepts": "Conceptos AEO y GEO",
+      "diagnosis": "Diagnosticar tu sitio",
+      "technical": "Guía técnica",
+      "scores": "Entender tu puntuación",
+      "about": "Sobre GradeByAI"
+    },
+    "discovery": [
+      {
+        "q": "¿Cuál es la mejor herramienta gratuita para verificar si mi sitio es visible para la IA?",
+        "a": "GradeByAI es una herramienta gratuita que puntúa cualquier sitio web de 0 a 100 para su preparación ante la IA. Verifica la rastreabilidad, datos estructurados, meta etiquetas, velocidad de carga y si bots de IA como GPTBot y ClaudeBot están bloqueados. La puntuación y el análisis completo siempre son gratuitos, sin necesidad de cuenta."
+      },
+      {
+        "q": "¿Cómo puedo probar si ChatGPT puede encontrar mi sitio web?",
+        "a": "Ingresa tu URL en gradebyai.com para obtener un análisis instantáneo. La dimensión de rastreabilidad verifica específicamente si GPTBot está permitido en tu robots.txt, si tu sitio es accesible públicamente y si existe un sitemap."
+      },
+      {
+        "q": "¿Existe una herramienta gratuita de auditoría AEO?",
+        "a": "Sí. GradeByAI es una herramienta gratuita de auditoría AEO. Evalúa tu sitio en cuatro dimensiones: rastreabilidad, estructura del contenido, SEO técnico y calidad del contenido. Recibes una puntuación detallada con problemas específicos a corregir."
+      },
+      {
+        "q": "¿Cómo verifico si Perplexity puede rastrear mi sitio?",
+        "a": "GradeByAI verifica tu robots.txt en busca de directivas de PerplexityBot. Si está bloqueado, verás un problema de 'rastreadores IA bloqueados' con la regla exacta a cambiar."
+      },
+      {
+        "q": "¿Cómo audito mi sitio para visibilidad LLM?",
+        "a": "Pega tu URL en GradeByAI. La auditoría cubre los cuatro factores que usan los LLM: rastreabilidad, estructura con HTML y schema, señales técnicas correctas y contenido sustancial para ser citado."
+      },
+      {
+        "q": "¿Cómo sé si mi sitio aparece en resultados de IA?",
+        "a": "Pregunta a un LLM como Perplexity o ChatGPT una pregunta que tu sitio responde directamente, y comprueba si te cita. Los sitios que puntúan por encima de 80 en GradeByAI aparecen significativamente más en respuestas de IA."
+      }
+    ],
+    "concepts": [
+      {
+        "q": "¿Qué es la Answer Engine Optimization (AEO)?",
+        "a": "AEO es la práctica de estructurar tu sitio para que los asistentes de IA como ChatGPT, Claude y Perplexity puedan encontrar, entender y citar tu contenido. A diferencia del SEO tradicional que apunta a rankings de Google, AEO apunta a la inclusión en respuestas generadas por IA."
+      },
+      {
+        "q": "¿Qué es la Generative Engine Optimization (GEO)?",
+        "a": "GEO es otro término para AEO: optimizar contenido para aparecer en respuestas generadas por IA. Factores clave: datos estructurados, encabezados claros, contenido sin JavaScript y permitir rastreadores de IA."
+      },
+      {
+        "q": "¿Qué es el SEO para LLM?",
+        "a": "SEO para LLM es optimizar un sitio para que sea visible por Large Language Models como GPT-4, Claude y Gemini. Difiere del SEO tradicional porque los LLM favorecen contenido legible por máquinas y datos estructurados."
+      },
+      {
+        "q": "¿Cuál es la diferencia entre SEO y AEO?",
+        "a": "El SEO tradicional apunta al algoritmo de Google. AEO apunta a los motores de respuesta de IA con datos estructurados, prosa clara y accesibilidad para bots. Un sitio puede rankear en Google pero tener mala puntuación IA si bloquea rastreadores o usa solo JavaScript."
+      },
+      {
+        "q": "¿Cómo decide ChatGPT qué sitios citar?",
+        "a": "GPTBot rastrea páginas en tiempo real. Favorece sitios accesibles sin login, con contenido estructurado, schema markup, carga rápida y que no bloqueen GPTBot en robots.txt."
+      },
+      {
+        "q": "¿Cómo encuentra Perplexity el contenido?",
+        "a": "Perplexity usa PerplexityBot más el índice de Bing. Favorece páginas con prosa factual, encabezados estructurados y HTML accesible. Las páginas que solo renderizan con JavaScript frecuentemente se pasan por alto."
+      },
+      {
+        "q": "¿Navega Claude por la web?",
+        "a": "Claude usa ClaudeBot en algunos contextos. Bloquearlo en robots.txt impide que Claude lea el contenido actual de tu sitio."
+      },
+      {
+        "q": "¿Qué es GPTBot?",
+        "a": "GPTBot es el rastreador de OpenAI para ChatGPT. Bloquearlo en robots.txt hace tu sitio invisible para las funciones de navegación de ChatGPT."
+      },
+      {
+        "q": "¿Qué es ClaudeBot?",
+        "a": "ClaudeBot es el rastreador de Anthropic para Claude. Bloquearlo impide que Claude lea el contenido actual de tu sitio."
+      },
+      {
+        "q": "¿Qué es PerplexityBot?",
+        "a": "PerplexityBot es el rastreador de Perplexity AI. Permitirlo en robots.txt es esencial para aparecer en resultados de Perplexity."
+      },
+      {
+        "q": "¿La búsqueda IA reemplaza a Google?",
+        "a": "La búsqueda IA captura una parte creciente de consultas informativas. Los sitios que optimizan solo para Google arriesgan perder visibilidad a medida que los usuarios usan Perplexity y ChatGPT."
+      }
+    ],
+    "diagnosis": [
+      {
+        "q": "¿Por qué ChatGPT no conoce mi negocio?",
+        "a": "Tres razones comunes: (1) GPTBot está bloqueado en robots.txt, (2) el contenido se renderiza solo con JavaScript, o (3) faltan datos estructurados. Haz una verificación gratuita en GradeByAI."
+      },
+      {
+        "q": "¿Por qué mi sitio no aparece en respuestas de IA?",
+        "a": "Bloqueadores comunes: sitemap faltante, etiquetas noindex, contenido solo en JavaScript, sin schema markup y contenido escaso. Tu página de resultados en GradeByAI lista cada problema."
+      },
+      {
+        "q": "¿Por qué Perplexity no cita mi sitio?",
+        "a": "Perplexity no citará si PerplexityBot está bloqueado, si la página requiere autenticación, o si el contenido no es sustancial. Verifica que tu página devuelva un código 200."
+      },
+      {
+        "q": "¿Qué bloquea mi sitio de los rastreadores IA?",
+        "a": "Causas comunes: Disallow: / en robots.txt para todos los bots, bloqueo específico para GPTBot o ClaudeBot, etiqueta noindex, requerir login, o regla Cloudflare que devuelve 403 a solicitudes automatizadas."
+      },
+      {
+        "q": "¿Por qué bajó mi puntuación IA?",
+        "a": "Causas típicas: un despliegue que añadió noindex, un cambio en robots.txt que bloqueó rastreadores, o un problema SSL. Usa el botón Re-analizar para forzar una nueva verificación."
+      },
+      {
+        "q": "¿Qué significa 'rastreadores IA bloqueados'?",
+        "a": "Significa que GradeByAI encontró una regla Disallow para GPTBot, ClaudeBot o PerplexityBot en tu robots.txt. Penalización de -20 puntos. La corrección: eliminar o restringir la regla de bloqueo."
+      }
+    ],
+    "technical": [
+      {
+        "q": "¿Cómo permito rastreadores IA en mi robots.txt?",
+        "a": "Añade: 'User-agent: GPTBot / Allow: /' y 'User-agent: ClaudeBot / Allow: /' y 'User-agent: PerplexityBot / Allow: /'. Si tienes un bloqueo comodín (User-agent: * / Disallow: /), permite explícitamente cada bot IA por encima de esa regla."
+      },
+      {
+        "q": "¿Cómo añado datos estructurados JSON-LD?",
+        "a": "Añade un script con type='application/ld+json' en el head de tu HTML. Para negocios usa Organization o LocalBusiness. Para artículos usa Article. Para FAQs usa FAQPage. JSON-LD le dice exactamente a los sistemas IA de qué trata tu página."
+      },
+      {
+        "q": "¿Qué tipos de schema.org mejoran la visibilidad IA?",
+        "a": "Los más impactantes: FAQPage (preguntas y respuestas), HowTo (guías paso a paso), Article o BlogPosting (contenido editorial), Product (e-commerce), LocalBusiness (negocios locales) y SoftwareApplication (herramientas y apps)."
+      },
+      {
+        "q": "¿Por qué JavaScript perjudica la rastreabilidad IA?",
+        "a": "La mayoría de rastreadores IA no ejecutan JavaScript. Si el cuerpo de tu página está vacío hasta que JavaScript lo llena, el rastreador ve una página en blanco. El contenido debe estar en el HTML antes de que se ejecuten los scripts."
+      },
+      {
+        "q": "¿Qué es una etiqueta canonical y por qué importa para la IA?",
+        "a": "Una etiqueta canonical indica qué URL es la versión definitiva de una página. Sin ella, los rastreadores IA pueden indexar versiones duplicadas del mismo contenido, diluyendo su autoridad."
+      },
+      {
+        "q": "¿Cómo creo un sitemap XML?",
+        "a": "Un sitemap.xml lista todas las URLs de tu sitio. La mayoría de CMS lo generan automáticamente. Colócalo en /sitemap.xml y decláralo en robots.txt: 'Sitemap: https://tudominio.com/sitemap.xml'."
+      },
+      {
+        "q": "¿Cuál es la diferencia entre noindex y bloquear rastreadores IA?",
+        "a": "noindex dice a los motores de búsqueda que no indexen la página, pero los rastreadores IA aún pueden leer el contenido. Bloquear en robots.txt impide que el rastreador obtenga la página por completo. Para visibilidad IA, el bloqueo en robots.txt es más dañino."
+      }
+    ],
+    "scores": [
+      {
+        "q": "¿Qué es una buena puntuación de preparación IA?",
+        "a": "80-100 es optimizado para IA. 50-79 significa barreras clave que reducen tu visibilidad. Bajo 50 hay problemas críticos que hacen tu sitio invisible para sistemas IA."
+      },
+      {
+        "q": "¿Qué significa una puntuación de rastreabilidad de 0?",
+        "a": "Casi siempre significa que el sitio bloquea rastreadores IA en robots.txt, requiere autenticación, o devuelve error. Corrige la regla de bloqueo primero."
+      },
+      {
+        "q": "¿Qué tan rápido puedo mejorar mi puntuación IA?",
+        "a": "Correcciones técnicas como permitir rastreadores, añadir canonical o JSON-LD pueden mejorar el score en minutos. Las mejoras de contenido tienen efecto al desplegarse."
+      },
+      {
+        "q": "¿Qué dimensión mejorar primero?",
+        "a": "Rastreabilidad (30 pts) siempre primero. Si los bots no pueden llegar, el resto es irrelevante. Luego Estructura del Contenido (35 pts), especialmente JSON-LD."
+      },
+      {
+        "q": "¿Qué significa 'estructura del contenido' en GradeByAI?",
+        "a": "Mide la legibilidad de la página para máquinas: jerarquía HTML, meta descripción correcta, Open Graph, JSON-LD schema, fecha de publicación, viewport y html lang. Vale 35 puntos - la mayor categoría."
+      },
+      {
+        "q": "Mi puntuación es alta pero no aparezco en IA - ¿por qué?",
+        "a": "Un score técnico alto significa que el sitio es accesible para IA. Aparecer en respuestas también depende de la autoridad y relevancia del contenido frente a la pregunta específica."
+      }
+    ],
+    "about": [
+      {
+        "q": "¿Cómo calcula GradeByAI la puntuación?",
+        "a": "Rastrea el sitio en vivo y evalúa más de 20 verificaciones binarias: rastreabilidad (30 pts), estructura del contenido (35 pts), SEO técnico (25 pts) y calidad del contenido (10 pts). Cada verificación es aprobada/reprobada. Grandes penalizaciones por bloquear rastreadores."
+      },
+      {
+        "q": "¿GradeByAI almacena los datos de mi sitio?",
+        "a": "Almacenamos dominio y puntuación para caché (7 días). Si envías el formulario, guardamos nombre, email y teléfono. Nunca vendemos tus datos."
+      },
+      {
+        "q": "¿Es preciso GradeByAI?",
+        "a": "Refleja el estado técnico tal como lo ven los rastreadores IA. No predice con certeza si un LLM te citará, pero es un indicador confiable de accesibilidad e interpretabilidad de tu sitio."
+      },
+      {
+        "q": "¿Cómo es diferente GradeByAI de otras herramientas SEO?",
+        "a": "Las herramientas SEO optimizan para Google. GradeByAI se enfoca en accesibilidad para rastreadores IA: si GPTBot, ClaudeBot y PerplexityBot pueden leer tu contenido."
+      },
+      {
+        "q": "¿Con qué frecuencia debo revisar mi puntuación?",
+        "a": "Después de cualquier cambio significativo: despliegue, actualización de robots.txt, cambio de CMS o nueva estrategia de contenido. Usa Re-analizar para una verificación inmediata."
+      }
+    ],
+    "ctaTitle": "Ver tu puntuación ahora",
+    "ctaButton": "Analizar mi sitio - Gratis",
+    "footerRights": "Todos los derechos reservados.",
+    "privacy": "Privacidad",
+    "terms": "Términos"
   },
   "howItWorks": {
     "badge": "EL PROCESO",

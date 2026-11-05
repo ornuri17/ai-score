@@ -190,6 +190,88 @@ button, a {
   background: linear-gradient(135deg, #81ecff, #00d4ec);
 }
 
+/* ─── Long-form guide typography (/guides/*) ─── */
+
+.prose-guide {
+  color: #a9abb3;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+.prose-guide p {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.prose-guide h2 {
+  font-family: var(--font-display);
+  color: #ecedf6;
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.prose-guide h3 {
+  font-family: var(--font-display);
+  color: #ecedf6;
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+.prose-guide ul {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  padding-left: 1.5rem;
+  list-style: outside;
+}
+.prose-guide ul li {
+  margin-top: 0.4rem;
+}
+.prose-guide a {
+  color: #a68cff;
+  text-decoration: underline;
+}
+.prose-guide a:hover {
+  color: #81ecff;
+}
+.prose-guide code {
+  color: #81ecff;
+  background: #1c2028;
+  border-radius: 4px;
+  padding: 0.1em 0.4em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.875em;
+}
+.prose-guide pre {
+  color: #81ecff;
+  background: #1c2028;
+  border: 1px solid #2d3038;
+  border-radius: 10px;
+  margin: 1.25rem 0;
+  padding: 1rem 1.25rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  overflow-x: auto;
+}
+.prose-guide pre code {
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  padding: 0;
+}
+.prose-guide strong {
+  color: #ecedf6;
+  font-weight: 600;
+}
+.prose-guide kbd {
+  color: #ecedf6;
+  background: #1c2028;
+  border: 1px solid #45484f;
+  border-radius: 4px;
+  padding: 0.1em 0.4em;
+  font-size: 0.8em;
+}
+
 /* ─── Input Focus Glow (bottom edge only) ─── */
 
 .input-glow:focus {
