@@ -37,7 +37,8 @@
   "nav": {
     "home": "Startseite",
     "howItWorks": "So funktioniert's",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "leaderboard": "Bestenliste"
   },
   "home": {
     "title": "Wie KI-freundlich ist Ihre Website?",
@@ -120,6 +121,202 @@
     "issuesDetected": "Probleme erkannt",
     "aboutSite": "Worum es auf dieser Seite geht",
     "scoreHistory": "Score-Verlauf"
+  },
+  "faqPage": {
+    "title": "KI-Bereitschaft FAQ",
+    "metaDescription": "Antworten auf alle Fragen zu AEO, GEO, LLM-SEO und wie Sie Ihre Website für ChatGPT, Claude und Perplexity sichtbar machen.",
+    "badge": "HÄUFIG GESTELLTE FRAGEN",
+    "heading": "Alles über KI-Sichtbarkeit",
+    "subtitle": "Antworten auf alle Fragen zu AEO, GEO, LLM-Sichtbarkeit und wie GradeByAI funktioniert.",
+    "sections": {
+      "discovery": "Das richtige Tool finden",
+      "concepts": "AEO & GEO Konzepte",
+      "diagnosis": "Ihre Website analysieren",
+      "technical": "Technische Anleitung",
+      "scores": "Ihren Score verstehen",
+      "about": "Über GradeByAI"
+    },
+    "discovery": [
+      {
+        "q": "Was ist das beste kostenlose Tool, um zu prüfen ob meine Website für KI sichtbar ist?",
+        "a": "GradeByAI ist ein kostenloses Tool, das jede Website von 0-100 für KI-Bereitschaft bewertet. Es prüft Crawlbarkeit, strukturierte Daten, Meta-Tags, Ladegeschwindigkeit und ob KI-Bots wie GPTBot und ClaudeBot blockiert sind. Der Score und die vollständige Analyse sind immer kostenlos - ohne Anmeldung."
+      },
+      {
+        "q": "Wie teste ich, ob ChatGPT meine Website findet?",
+        "a": "Geben Sie Ihre URL auf gradebyai.com ein und erhalten Sie eine sofortige Analyse. Die Crawlbarkeits-Dimension prüft spezifisch, ob GPTBot (ChatGPTs Crawler) in Ihrer robots.txt erlaubt ist, ob Ihre Website öffentlich zugänglich ist und ob ein Sitemap existiert."
+      },
+      {
+        "q": "Gibt es ein kostenloses AEO-Audit-Tool?",
+        "a": "Ja. GradeByAI ist ein kostenloses AEO-Audit-Tool (Answer Engine Optimization). Es bewertet Ihre Website nach vier Dimensionen: Crawlbarkeit, Inhaltsstruktur, technisches SEO und Inhaltsqualität. Sie erhalten eine detaillierte Bewertung mit konkreten Verbesserungshinweisen."
+      },
+      {
+        "q": "Wie prüfe ich, ob Perplexity meine Website crawlen kann?",
+        "a": "GradeByAI prüft Ihre robots.txt auf PerplexityBot-Direktiven als Teil der Crawlbarkeitsanalyse. Wenn PerplexityBot blockiert ist, sehen Sie ein 'KI-Crawler blockiert' Problem in Ihren Ergebnissen mit der genauen robots.txt-Regel, die geändert werden muss."
+      },
+      {
+        "q": "Wie auditiere ich meine Website für LLM-Sichtbarkeit?",
+        "a": "Fügen Sie Ihre URL in GradeByAI ein. Das Audit deckt die vier Faktoren ab, die LLMs verwenden: ob die Seite crawlbar ist, ob der Inhalt mit korrektem HTML und Schema-Markup strukturiert ist, ob technische Signale korrekt sind, und ob der Inhalt substantiell genug für Zitate ist."
+      },
+      {
+        "q": "Wie erkenne ich, ob meine Website in KI-Suchergebnissen erscheint?",
+        "a": "Der direkteste Test ist, einem LLM wie Perplexity oder ChatGPT eine Frage zu stellen, die Ihre Website beantwortet, und zu prüfen, ob Sie zitiert werden. GradeByAI gibt den technischen Score, der vorhersagt, ob Sie wahrscheinlich zitiert werden - Websites über 80 erscheinen deutlich häufiger."
+      }
+    ],
+    "concepts": [
+      {
+        "q": "Was ist Answer Engine Optimization (AEO)?",
+        "a": "AEO ist die Praxis, Ihre Website so zu strukturieren, dass KI-Assistenten wie ChatGPT, Claude und Perplexity Ihren Inhalt finden, verstehen und zitieren können. Im Gegensatz zu traditionellem SEO, das auf Google-Rankings abzielt, zielt AEO auf die Aufnahme in KI-generierte Antworten ab."
+      },
+      {
+        "q": "Was ist Generative Engine Optimization (GEO)?",
+        "a": "GEO ist ein anderer Begriff für dieselbe Disziplin wie AEO - Inhalte optimieren, um in KI-generierten Antworten zu erscheinen. Schlüsselfaktoren sind strukturierte Daten, klare Überschriften, zugänglicher Inhalt ohne JavaScript-Rendering und die Erlaubnis für KI-Crawler."
+      },
+      {
+        "q": "Was ist LLM-SEO?",
+        "a": "LLM-SEO bezieht sich auf die Optimierung einer Website, damit sie von Large Language Models wie GPT-4, Claude und Gemini sichtbar und zitierbar ist. Es unterscheidet sich von traditionellem SEO, weil LLMs Inhalte anders verarbeiten - sie bevorzugen maschinenlesbare Inhalte und strukturierte Daten."
+      },
+      {
+        "q": "Was ist der Unterschied zwischen SEO und AEO?",
+        "a": "Traditionelles SEO zielt auf Googles Algorithmus ab - Keyword-Dichte, Backlinks, Domain-Autorität. AEO zielt auf KI-Antwort-Engines ab - strukturierte Daten, klare Prosa, Bot-Zugänglichkeit. Eine Website kann bei Google gut ranken, aber schlecht für KI-Sichtbarkeit abschneiden, wenn sie Crawler blockiert."
+      },
+      {
+        "q": "Wie entscheidet ChatGPT, welche Websites es zitiert?",
+        "a": "ChatGPTs Browsing-Modus verwendet GPTBot, um Seiten in Echtzeit zu crawlen. Es bevorzugt Websites, die ohne Login öffentlich zugänglich sind, klar strukturierten Inhalt haben, Schema-Markup verwenden, schnell laden und GPTBot in robots.txt nicht blockieren."
+      },
+      {
+        "q": "Wie findet und bewertet Perplexity Inhalte?",
+        "a": "Perplexity verwendet seinen eigenen Crawler (PerplexityBot) plus Bings Index. Es bevorzugt Seiten mit klarer, sachlicher Prosa, strukturierten Überschriften, schnellen Ladezeiten und zugänglichem HTML. Seiten, die nur mit JavaScript gerendert werden, werden häufig übersehen."
+      },
+      {
+        "q": "Durchsucht Claude das Web?",
+        "a": "Claude verwendet ClaudeBot für Web-Abruf in einigen Kontexten. Wenn Ihre robots.txt ClaudeBot blockiert, kann Claude Ihren aktuellen Seiteninhalt nicht abrufen."
+      },
+      {
+        "q": "Was ist GPTBot?",
+        "a": "GPTBot ist OpenAIs Web-Crawler für ChatGPT. Wenn er in Ihrer robots.txt mit 'User-agent: GPTBot / Disallow: /' blockiert wird, ist Ihre Website für ChatGPTs Browsing-Funktionen unsichtbar."
+      },
+      {
+        "q": "Was ist ClaudeBot?",
+        "a": "ClaudeBot ist Anthropics Crawler für Claude. Ihn in robots.txt zu blockieren verhindert, dass Claude Ihren aktuellen Website-Inhalt liest."
+      },
+      {
+        "q": "Was ist PerplexityBot?",
+        "a": "PerplexityBot ist der Crawler von Perplexity AI. Ihn in robots.txt zu erlauben ist wesentlich, wenn Ihre Website in Perplexity-Suchergebnissen erscheinen soll."
+      },
+      {
+        "q": "Ersetzt KI-Suche Google?",
+        "a": "KI-Suche ersetzt Google noch nicht, gewinnt aber einen wachsenden Anteil an informativen Anfragen. Websites, die nur für Google optimieren, riskieren Sichtbarkeitsverlust, da Nutzer zu Perplexity und ChatGPT wechseln."
+      }
+    ],
+    "diagnosis": [
+      {
+        "q": "Warum kennt ChatGPT mein Unternehmen nicht?",
+        "a": "Es gibt drei häufige Gründe: (1) GPTBot ist in Ihrer robots.txt blockiert, (2) Ihr wichtigster Inhalt wird nur durch JavaScript gerendert und ist für Crawler unsichtbar, oder (3) Ihrer Website fehlen strukturierte Daten. Starten Sie eine kostenlose Prüfung auf GradeByAI."
+      },
+      {
+        "q": "Warum erscheint meine Website nicht in KI-Antworten?",
+        "a": "KI-Assistenten zitieren crawlbare, strukturierte und autoritative Seiten. Häufige Blocker: fehlender oder falsch konfigurierter Sitemap, Noindex-Meta-Tags, nur JavaScript-Inhalt, kein Schema-Markup und dünner Inhalt. Ihre GradeByAI-Ergebnisse listen jedes spezifische Problem auf."
+      },
+      {
+        "q": "Warum zitiert Perplexity meine Website nicht?",
+        "a": "Perplexity zitiert eine Seite nicht, wenn PerplexityBot in robots.txt blockiert ist, wenn die Seite Authentifizierung erfordert, oder wenn der Inhalt nicht substantiell genug ist. Prüfen Sie auch, dass Ihre Seite einen 200-Statuscode zurückgibt."
+      },
+      {
+        "q": "Was blockiert meine Website von KI-Crawlern?",
+        "a": "Die häufigsten Ursachen: eine Disallow: /-Regel in robots.txt für alle Bots, ein spezifischer Block für GPTBot oder ClaudeBot, ein Noindex-Meta-Tag, Login-Anforderung für Inhalte, oder eine Cloudflare-Schutzregel, die 403-Fehler für automatisierte Anfragen zurückgibt."
+      },
+      {
+        "q": "Warum ist mein KI-Score gesunken?",
+        "a": "Scores ändern sich, wenn sich der Live-Zustand Ihrer Website ändert. Häufige Ursachen: ein Deployment, das versehentlich ein Noindex-Tag hinzufügte, eine robots.txt-Änderung, die Crawler blockierte, oder ein SSL-Zertifikatsproblem."
+      },
+      {
+        "q": "Was bedeutet 'KI-Crawler blockiert'?",
+        "a": "'KI-Crawler blockiert' bedeutet, dass GradeByAI eine Disallow-Regel in Ihrer robots.txt für GPTBot, ClaudeBot oder PerplexityBot gefunden hat. Das führt zu einer Strafe von -20 Punkten. Die Lösung ist, die Blocking-Regel zu entfernen oder einzuschränken."
+      }
+    ],
+    "technical": [
+      {
+        "q": "Wie erlaube ich KI-Crawler in meiner robots.txt?",
+        "a": "Fügen Sie folgende Zeilen zu Ihrer robots.txt hinzu: 'User-agent: GPTBot / Allow: /' und 'User-agent: ClaudeBot / Allow: /' und 'User-agent: PerplexityBot / Allow: /'. Wenn Sie einen Wildcard-Block haben (User-agent: * / Disallow: /), müssen Sie jeden KI-Bot oberhalb dieser Regel explizit erlauben."
+      },
+      {
+        "q": "Wie füge ich JSON-LD strukturierte Daten zu meiner Website hinzu?",
+        "a": "Fügen Sie ein Script-Tag mit type='application/ld+json' im Head Ihres HTML ein. Für Unternehmen nutzen Sie Organization oder LocalBusiness. Für Artikel nutzen Sie Article. Für FAQs nutzen Sie FAQPage. JSON-LD teilt KI-Systemen exakt mit, worum es auf Ihrer Seite geht."
+      },
+      {
+        "q": "Welche schema.org-Typen verbessern die KI-Sichtbarkeit?",
+        "a": "Die wirkungsvollsten Schema-Typen sind: FAQPage (für Frage-Antwort-Inhalte), HowTo (für Schritt-für-Schritt-Anleitungen), Article oder BlogPosting (für redaktionelle Inhalte), Product (für E-Commerce), LocalBusiness (für lokale Unternehmen) und SoftwareApplication (für Tools und Apps)."
+      },
+      {
+        "q": "Warum schadet JavaScript der KI-Crawlbarkeit?",
+        "a": "Die meisten KI-Crawler führen kein JavaScript aus. Sie rufen das rohe HTML ab. Wenn Ihr Seiteninhalt erst nach JavaScript-Ausführung sichtbar wird, sieht der Crawler eine leere Seite. Ihr Inhalt sollte im HTML vorhanden sein, bevor Skripte ausgeführt werden - oder nutzen Sie Server-Side-Rendering."
+      },
+      {
+        "q": "Was ist ein Canonical-Tag und warum ist er für KI wichtig?",
+        "a": "Ein Canonical-Tag (<link rel='canonical' href='...'>) teilt Crawlern mit, welche URL die maßgebliche Version einer Seite ist. Ohne ihn können KI-Crawler duplizierte Versionen desselben Inhalts indexieren. Besonders wichtig, wenn Ihre Website über www und nicht-www zugänglich ist."
+      },
+      {
+        "q": "Wie erstelle ich einen XML-Sitemap?",
+        "a": "Ein sitemap.xml listet alle URLs Ihrer Website. Die meisten CMS-Plattformen generieren automatisch einen. Für benutzerdefinierte Websites können Tools wie xml-sitemaps.com einen erstellen. Platzieren Sie ihn unter /sitemap.xml und deklarieren Sie ihn in robots.txt mit 'Sitemap: https://ihredomain.de/sitemap.xml'."
+      },
+      {
+        "q": "Was ist der Unterschied zwischen Noindex und KI-Crawler blockieren?",
+        "a": "Noindex ist ein Meta-Tag, das Suchmaschinen mitteilt, eine Seite nicht zu indexieren - KI-Crawler können den Inhalt aber noch abrufen. In robots.txt zu blockieren verhindert, dass der Crawler die Seite überhaupt abruft. Für KI-Sichtbarkeit ist der robots.txt-Block schädlicher."
+      }
+    ],
+    "scores": [
+      {
+        "q": "Was ist ein guter KI-Bereitschafts-Score?",
+        "a": "80-100 gilt als KI-optimiert - Ihre Website ist für KI-Assistenten gut sichtbar. 50-79 bedeutet, wichtige Hindernisse reduzieren Ihre KI-Sichtbarkeit. Unter 50 gibt es kritische Probleme, die Ihre Website für KI-Systeme wahrscheinlich unsichtbar machen."
+      },
+      {
+        "q": "Was bedeutet ein Crawlbarkeits-Score von 0?",
+        "a": "Ein Crawlbarkeits-Score von 0 oder nahe 0 bedeutet fast immer, dass Ihre Website KI-Crawler in robots.txt blockiert, Authentifizierung erfordert, oder einen Fehler-Statuscode zurückgibt. Beheben Sie zuerst die Blocking-Regel - das ist die Änderung mit dem größten Hebel."
+      },
+      {
+        "q": "Wie schnell kann ich meinen KI-Score verbessern?",
+        "a": "Technische Korrekturen wie KI-Crawler in robots.txt erlauben, einen Canonical-Tag oder JSON-LD hinzufügen, können den Score sofort verbessern - oft in Minuten. Content-Verbesserungen wirken, sobald Sie die Änderungen deployen."
+      },
+      {
+        "q": "Welche Dimension sollte ich zuerst verbessern?",
+        "a": "Crawlbarkeit (30 Punkte) sollte immer zuerst behoben werden. Wenn KI-Bots Ihre Seite nicht erreichen können, sind die anderen Dimensionen irrelevant. Danach fokussieren Sie sich auf Inhaltsstruktur (35 Punkte) - besonders das Hinzufügen von JSON-LD Schema-Markup."
+      },
+      {
+        "q": "Was bedeutet 'Inhaltsstruktur' bei GradeByAI?",
+        "a": "Inhaltsstruktur misst die Maschinenlesbarkeit Ihrer Seite: korrekte HTML-Überschriftenhierarchie, Meta-Beschreibung in der richtigen Länge, Open-Graph-Tags, JSON-LD Schema, Veröffentlichungsdatum, Viewport-Tag und html-lang-Attribut. Diese Dimension ist 35 Punkte wert - die größte einzelne Kategorie."
+      },
+      {
+        "q": "Mein Score ist hoch, aber ich erscheine nicht in KI-Antworten - warum?",
+        "a": "Ein hoher technischer Score bedeutet, dass Ihre Website für KI zugänglich und lesbar ist. Ob Sie in Antworten erscheinen, hängt auch von Inhaltsautorität und Relevanz ab - wie gut Ihr Inhalt die gestellte Frage beantwortet."
+      }
+    ],
+    "about": [
+      {
+        "q": "Wie berechnet GradeByAI den Score?",
+        "a": "GradeByAI crawlt Ihre Live-Website und bewertet über 20 binäre Prüfungen in vier Dimensionen: Crawlbarkeit (30 Punkte), Inhaltsstruktur (35 Punkte), technisches SEO (25 Punkte) und Inhaltsqualität (10 Punkte). Jede Prüfung ist Bestanden/Nicht bestanden. Schwere Strafen gelten für das Blockieren von Crawlern."
+      },
+      {
+        "q": "Speichert GradeByAI meine Website-Daten?",
+        "a": "Wir speichern Ihre Domain und Ihren Score für Caching-Zwecke. Ergebnisse werden 7 Tage gecacht. Wenn Sie das Lead-Formular ausfüllen, speichern wir Namen, E-Mail und Telefon. Wir verkaufen Ihre Daten niemals."
+      },
+      {
+        "q": "Ist GradeByAI genau?",
+        "a": "GradeByAI spiegelt den technischen Zustand Ihrer Website wider, wie KI-Crawler sie sehen. Es sagt nicht mit Sicherheit voraus, ob ein bestimmtes LLM Sie zitieren wird - das hängt auch von Inhaltsrelevanz ab. Aber der technische Score ist ein zuverlässiger Indikator für KI-Zugänglichkeit."
+      },
+      {
+        "q": "Wie unterscheidet sich GradeByAI von anderen SEO-Tools?",
+        "a": "Die meisten SEO-Tools optimieren für Googles Algorithmus - Keyword-Rankings, Backlinks, Domain-Autorität. GradeByAI fokussiert sich speziell auf KI-Crawler-Zugänglichkeit: ob GPTBot, ClaudeBot und PerplexityBot Ihren Inhalt erreichen und lesen können."
+      },
+      {
+        "q": "Wie oft sollte ich meinen Score neu prüfen?",
+        "a": "Nach jeder bedeutenden Website-Änderung - einem Deployment, robots.txt-Update, CMS-Änderung oder neuer Content-Strategie. Scores werden 7 Tage gecacht. Nutzen Sie den Neu-analysieren-Button für eine sofortige Neuprüfung nach Korrekturen."
+      }
+    ],
+    "ctaTitle": "Sehen Sie Ihren Score jetzt",
+    "ctaButton": "Meine Website analysieren - Kostenlos",
+    "footerRights": "Alle Rechte vorbehalten.",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen"
   },
   "howItWorks": {
     "badge": "DER PROZESS",

@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { analyzeWebsite, compareWebsites } from '../services/api';
+import { analyzeWebsite, compareWebsites, getStats } from '../services/api';
 import { trackCheckSubmitted, trackCompareSubmitted } from '../services/analytics';
 import NavBar from '../components/NavBar';
 
@@ -19,6 +19,14 @@ export default function Home() {
   const [showCompare, setShowCompare] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [totalChecks, setTotalChecks] = useState<number | null>(null);
+
+  useEffect(() => {
+    getStats()
+      .then((stats) => setTotalChecks(stats.totalChecks))
+      .catch(() => {});
+  }, []);
+
   const navigate = useNavigate();
 
   const normalizeAndValidate = (raw: string): string | null => {
@@ -105,9 +113,27 @@ export default function Home() {
               </span>
             </h1>
 
-            <p className="text-lg md:text-xl text-[#a9abb3] font-body max-w-2xl mx-auto mb-12 leading-relaxed">
+            <p className="text-lg md:text-xl text-[#a9abb3] font-body max-w-2xl mx-auto mb-8 leading-relaxed">
               {t('hero.subtitle')}
             </p>
+
+            {/* Live usage counter */}
+            {totalChecks !== null && (
+              <div className="flex items-center justify-center gap-2 mb-10">
+                <span className="inline-block w-2 h-2 rounded-full bg-[#00c06a] animate-pulse" />
+                <span className="font-label text-sm text-[#a9abb3]">
+                  <span className="text-[#ecedf6] font-bold tabular-nums">{totalChecks.toLocaleString()}</span> sites
+                  analyzed
+                </span>
+                <span className="text-[#45484f]">·</span>
+                <a
+                  href="/leaderboard"
+                  className="font-label text-sm text-[#a68cff] hover:text-[#81ecff] transition-colors no-underline"
+                >
+                  View leaderboard →
+                </a>
+              </div>
+            )}
 
             {/* Mode tabs */}
             <div className="max-w-3xl mx-auto flex bg-[#1c2028] rounded-t-xl overflow-hidden border-b border-[#45484f]/20">
