@@ -46,6 +46,9 @@ resource "aws_cloudfront_distribution" "frontend" {
       function_arn = aws_cloudfront_function.spa_router.arn
     }
 
+    # Link header for AI agent discovery (RFC 8288), checked by agent readiness scanners.
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.agent_links.id
+
     # Assets are immutable — cache 1 year; index.html uses a separate behavior
     min_ttl     = 0
     default_ttl = 86400
@@ -133,6 +136,22 @@ resource "aws_cloudfront_response_headers_policy" "security" {
       mode_block = true
       protection = true
       override   = true
+    }
+  }
+}
+
+# Link header (RFC 8288) pointing agents at the API catalog (RFC 9727) and the Markdown
+# version of the home page. Both files are generated at build time by
+# frontend/scripts/generate-agent-files.mjs. Attached to the default cache behavior.
+resource "aws_cloudfront_response_headers_policy" "agent_links" {
+  name    = "${local.name_prefix}-agent-links"
+  comment = "Link header for AI agent discovery"
+
+  custom_headers_config {
+    items {
+      header   = "Link"
+      value    = "</.well-known/api-catalog>; rel=\"api-catalog\", </index.md>; rel=\"alternate\"; type=\"text/markdown\""
+      override = false
     }
   }
 }

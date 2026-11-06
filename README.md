@@ -216,9 +216,9 @@ History is only available for domains that have been scanned more than once. Dat
 
 ## Scoring Algorithm
 
-Each check is binary — full points or zero.
+Each check is binary: full points or zero. The raw points below are scaled so the four original dimensions share 75 points (crawlability 22, content structure 26, technical SEO 19, content quality 8) and agent readiness adds 25 (see docs/AGENT_READINESS.md).
 
-### Crawlability (30 pts)
+### Crawlability (raw 30, scaled to 22)
 | Check | Points |
 |---|---|
 | No `noindex` meta (check 1) | +5 |
@@ -228,13 +228,13 @@ Each check is binary — full points or zero.
 | Response time < 10s and ≤ 5 redirects | +5 |
 | Sitemap accessible (`/sitemap.xml` exists, or declared in `robots.txt`, or `<link rel="sitemap">`) | +5 |
 
-### Content Structure (35 pts)
+### Content Structure (raw 35, scaled to 26)
 Semantic HTML (+4), meta description 50-160 chars (+4), title 30-60 chars (+4), Open Graph tags (+4), JSON-LD schema (+5), publication date (+4), viewport meta (+4), `<html lang>` (+2)
 
-### Technical SEO (25 pts)
+### Technical SEO (raw 25, scaled to 19)
 Canonical tag (+5), HTTPS (+5), clean URL (+5), response < 3s (+5), body text > 200 chars without JS (+5)
 
-### Content Quality (10 pts)
+### Content Quality (raw 10, scaled to 8)
 Body text > 300 chars (+5), > 2 internal links (+5)
 
 ### Penalties

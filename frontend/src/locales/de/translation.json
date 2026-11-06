@@ -148,7 +148,7 @@
       },
       {
         "q": "Gibt es ein kostenloses AEO-Audit-Tool?",
-        "a": "Ja. GradeByAI ist ein kostenloses AEO-Audit-Tool (Answer Engine Optimization). Es bewertet Ihre Website nach vier Dimensionen: Crawlbarkeit, Inhaltsstruktur, technisches SEO und Inhaltsqualität. Sie erhalten eine detaillierte Bewertung mit konkreten Verbesserungshinweisen."
+        "a": "Ja. GradeByAI ist ein kostenloses AEO-Audit-Tool (Answer Engine Optimization). Es bewertet Ihre Website nach fünf Dimensionen: Crawlbarkeit, Inhaltsstruktur, technisches SEO, Inhaltsqualität und Agent-Bereitschaft. Sie erhalten eine detaillierte Bewertung mit konkreten Verbesserungshinweisen."
       },
       {
         "q": "Wie prüfe ich, ob Perplexity meine Website crawlen kann?",
@@ -156,7 +156,7 @@
       },
       {
         "q": "Wie auditiere ich meine Website für LLM-Sichtbarkeit?",
-        "a": "Fügen Sie Ihre URL in GradeByAI ein. Das Audit deckt die vier Faktoren ab, die LLMs verwenden: ob die Seite crawlbar ist, ob der Inhalt mit korrektem HTML und Schema-Markup strukturiert ist, ob technische Signale korrekt sind, und ob der Inhalt substantiell genug für Zitate ist."
+        "a": "Fügen Sie Ihre URL in GradeByAI ein. Das Audit deckt die vier Faktoren ab, die LLMs verwenden: ob die Seite crawlbar ist, ob der Inhalt mit korrektem HTML und Schema-Markup strukturiert ist, ob technische Signale korrekt sind, und ob der Inhalt substantiell genug für Zitate ist. Zusätzlich prüft es, ob KI-Agenten Ihre Website finden und sich mit ihr verbinden können."
       },
       {
         "q": "Wie erkenne ich, ob meine Website in KI-Suchergebnissen erscheint?",
@@ -280,11 +280,11 @@
       },
       {
         "q": "Welche Dimension sollte ich zuerst verbessern?",
-        "a": "Crawlbarkeit (30 Punkte) sollte immer zuerst behoben werden. Wenn KI-Bots Ihre Seite nicht erreichen können, sind die anderen Dimensionen irrelevant. Danach fokussieren Sie sich auf Inhaltsstruktur (35 Punkte) - besonders das Hinzufügen von JSON-LD Schema-Markup."
+        "a": "Crawlbarkeit (22 Punkte) sollte immer zuerst behoben werden. Wenn KI-Bots Ihre Seite nicht erreichen können, sind die anderen Dimensionen irrelevant. Danach fokussieren Sie sich auf Inhaltsstruktur (26 Punkte), besonders das Hinzufügen von JSON-LD Schema-Markup. Agent-Bereitschaft (25 Punkte) ist oft der schnellste Gewinn: Das meiste davon sind ein paar kleine Dateien wie llms.txt."
       },
       {
         "q": "Was bedeutet 'Inhaltsstruktur' bei GradeByAI?",
-        "a": "Inhaltsstruktur misst die Maschinenlesbarkeit Ihrer Seite: korrekte HTML-Überschriftenhierarchie, Meta-Beschreibung in der richtigen Länge, Open-Graph-Tags, JSON-LD Schema, Veröffentlichungsdatum, Viewport-Tag und html-lang-Attribut. Diese Dimension ist 35 Punkte wert - die größte einzelne Kategorie."
+        "a": "Inhaltsstruktur misst die Maschinenlesbarkeit Ihrer Seite: korrekte HTML-Überschriftenhierarchie, Meta-Beschreibung in der richtigen Länge, Open-Graph-Tags, JSON-LD Schema, Veröffentlichungsdatum, Viewport-Tag und html-lang-Attribut. Diese Dimension ist 26 Punkte wert, die größte einzelne Kategorie."
       },
       {
         "q": "Mein Score ist hoch, aber ich erscheine nicht in KI-Antworten - warum?",
@@ -294,7 +294,7 @@
     "about": [
       {
         "q": "Wie berechnet GradeByAI den Score?",
-        "a": "GradeByAI crawlt Ihre Live-Website und bewertet über 20 binäre Prüfungen in vier Dimensionen: Crawlbarkeit (30 Punkte), Inhaltsstruktur (35 Punkte), technisches SEO (25 Punkte) und Inhaltsqualität (10 Punkte). Jede Prüfung ist Bestanden/Nicht bestanden. Schwere Strafen gelten für das Blockieren von Crawlern."
+        "a": "GradeByAI crawlt Ihre Live-Website und bewertet über 20 Prüfungen in fünf Dimensionen: Crawlbarkeit (22 Punkte), Inhaltsstruktur (26 Punkte), technisches SEO (19 Punkte), Inhaltsqualität (8 Punkte) und Agent-Bereitschaft (25 Punkte). Die meisten Prüfungen sind Bestanden/Nicht bestanden. Schwere Strafen gelten für das Blockieren von Crawlern."
       },
       {
         "q": "Speichert GradeByAI meine Website-Daten?",
@@ -322,7 +322,7 @@
   "howItWorks": {
     "badge": "DER PROZESS",
     "title": "So funktioniert GradeByAI",
-    "subtitle": "Vier Dimensionen. Ein definitiver Score. Vollständige Klarheit über Ihre KI-Bereitschaft.",
+    "subtitle": "Fünf Dimensionen. Ein definitiver Score. Vollständige Klarheit über Ihre KI-Bereitschaft.",
     "step1Title": "Wir crawlen Ihre Website",
     "step1Desc": "Unser Crawler ruft Ihre Seite wie ein KI-Crawler ab: das rohe HTML (ohne JavaScript auszuführen), Ihre robots.txt und Ihre Sitemap.",
     "step1Pts": "22 Pkt.",
@@ -351,7 +351,7 @@
     "faq1Q": "Was ist KI-Bereitschaft?",
     "faq1A": "KI-Bereitschaft (AEO) misst, wie gut KI-Systeme wie ChatGPT und Claude Ihre Inhalte finden, lesen und verstehen können.",
     "faq2Q": "Wie wird der Score berechnet?",
-    "faq2A": "Wir analysieren 4 Dimensionen: Crawlbarkeit (30 Pkt.), Inhaltsstruktur (35 Pkt.), technisches SEO (25 Pkt.) und Inhaltsqualität (10 Pkt.).",
+    "faq2A": "Wir analysieren 5 Dimensionen: Crawlbarkeit (22 Pkt.), Inhaltsstruktur (26 Pkt.), technisches SEO (19 Pkt.), Inhaltsqualität (8 Pkt.) und Agent-Bereitschaft (25 Pkt.).",
     "faq3Q": "Warum ist mein Score niedrig?",
     "faq3A": "Häufige Probleme sind fehlende strukturierte Daten, nur JavaScript-Rendering, kein Sitemap, schlechte Überschriftenhierarchie und dünne Inhalte.",
     "faq4Q": "Werden meine Daten gespeichert?",
