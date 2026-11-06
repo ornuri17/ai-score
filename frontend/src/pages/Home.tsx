@@ -7,7 +7,7 @@ import NavBar from '../components/NavBar';
 
 const FAQ = [
   { q: 'What is GEO (Generative Engine Optimization)?', a: 'GEO is the successor to SEO. It focuses on optimizing content to be cited as a source in generative AI responses (like Perplexity, Google Gemini, or ChatGPT Browse). It prioritizes credibility, factual density, and semantic relevance over keyword frequency.' },
-  { q: 'How is the score calculated?', a: 'We analyze 4 dimensions: crawlability (30pts), content structure (35pts), technical SEO (25pts), and content quality (10pts). Each is scored by crawling your live site.' },
+  { q: 'How is the score calculated?', a: 'We analyze 5 dimensions: crawlability (22 pts), content structure (26 pts), technical SEO (19 pts), content quality (8 pts) and agent readiness (25 pts). Each is scored by crawling your live site.' },
   { q: 'Why is my score low?', a: 'Common issues include missing structured data, JavaScript-only rendering, no sitemap, poor heading hierarchy, and thin content. Your results page shows exactly what to fix.' },
   { q: 'Is my data stored?', a: 'We store your domain and score for caching (results are cached for 7 days). If you submit the lead form, we store your name, email, and phone. We never sell your data.' },
 ];

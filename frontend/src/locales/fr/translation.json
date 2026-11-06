@@ -168,7 +168,7 @@
       },
       {
         "q": "Existe-t-il un outil gratuit d'audit AEO ?",
-        "a": "Oui. GradeByAI est un outil gratuit d'audit AEO (Answer Engine Optimization). Il évalue votre site selon quatre dimensions : crawlabilité, structure du contenu, SEO technique et qualité du contenu. Vous recevez une note détaillée avec les problèmes spécifiques à corriger."
+        "a": "Oui. GradeByAI est un outil gratuit d'audit AEO (Answer Engine Optimization). Il évalue votre site selon cinq dimensions : crawlabilité, structure du contenu, SEO technique, qualité du contenu et préparation aux agents. Vous recevez une note détaillée avec les problèmes spécifiques à corriger."
       },
       {
         "q": "Comment vérifier si Perplexity peut crawler mon site ?",
@@ -176,7 +176,7 @@
       },
       {
         "q": "Comment auditer mon site pour la visibilité LLM ?",
-        "a": "Collez votre URL dans GradeByAI. L'audit couvre les quatre facteurs utilisés par les LLM : si la page est crawlable, si le contenu est structuré avec un HTML correct et des balises schema, si les signaux techniques sont bons, et si le contenu est suffisamment substantiel pour être cité."
+        "a": "Collez votre URL dans GradeByAI. L'audit couvre les quatre facteurs utilisés par les LLM : si la page est crawlable, si le contenu est structuré avec un HTML correct et des balises schema, si les signaux techniques sont bons, et si le contenu est suffisamment substantiel pour être cité. Il vérifie aussi si les agents IA peuvent découvrir votre site et s'y connecter."
       },
       {
         "q": "Comment savoir si mon site apparaît dans les résultats IA ?",
@@ -300,11 +300,11 @@
       },
       {
         "q": "Quelle dimension améliorer en premier ?",
-        "a": "La crawlabilité (30 pts) doit toujours être corrigée en premier. Si les bots IA ne peuvent pas atteindre votre page, les autres dimensions sont irrelevantes. Ensuite, concentrez-vous sur la Structure du Contenu (35 pts) - surtout l'ajout de schema markup JSON-LD."
+        "a": "La crawlabilité (22 pts) doit toujours être corrigée en premier. Si les bots IA ne peuvent pas atteindre votre page, les autres dimensions sont irrelevantes. Ensuite, concentrez-vous sur la Structure du Contenu (26 pts), surtout l'ajout de schema markup JSON-LD. La préparation aux agents (25 pts) est souvent le gain le plus rapide : l'essentiel tient en quelques petits fichiers comme llms.txt."
       },
       {
         "q": "Que signifie 'structure du contenu' dans GradeByAI ?",
-        "a": "La structure du contenu mesure la lisibilité machine de votre page : hiérarchie HTML correcte, meta description de bonne longueur, balises Open Graph, schema JSON-LD, date de publication, balise viewport et attribut html lang. Cette dimension vaut 35 points - la catégorie la plus importante."
+        "a": "La structure du contenu mesure la lisibilité machine de votre page : hiérarchie HTML correcte, meta description de bonne longueur, balises Open Graph, schema JSON-LD, date de publication, balise viewport et attribut html lang. Cette dimension vaut 26 points, la catégorie la plus importante."
       },
       {
         "q": "Mon score est élevé mais je n'apparais pas dans les réponses IA - pourquoi ?",
@@ -314,7 +314,7 @@
     "about": [
       {
         "q": "Comment GradeByAI calcule-t-il le score ?",
-        "a": "GradeByAI crawle votre site en direct et évalue plus de 20 vérifications binaires selon quatre dimensions : crawlabilité (30 pts), structure du contenu (35 pts), SEO technique (25 pts) et qualité du contenu (10 pts). Chaque vérification est réussie/échouée. De lourdes pénalités s'appliquent pour le blocage des crawlers ou l'authentification requise."
+        "a": "GradeByAI crawle votre site en direct et évalue plus de 20 vérifications selon cinq dimensions : crawlabilité (22 pts), structure du contenu (26 pts), SEO technique (19 pts), qualité du contenu (8 pts) et préparation aux agents (25 pts). La plupart des vérifications sont réussies/échouées. De lourdes pénalités s'appliquent pour le blocage des crawlers ou l'authentification requise."
       },
       {
         "q": "GradeByAI stocke-t-il les données de mon site ?",
@@ -342,7 +342,7 @@
   "howItWorks": {
     "badge": "LE PROCESSUS",
     "title": "Comment fonctionne GradeByAI",
-    "subtitle": "Quatre dimensions. Un score définitif. Une clarté complète sur votre préparation à l'IA.",
+    "subtitle": "Cinq dimensions. Un score définitif. Une clarté complète sur votre préparation à l'IA.",
     "stepsBadge": "LES ÉTAPES",
     "step1Title": "Nous explorons votre site",
     "step1Desc": "Notre crawler récupère votre page comme un robot d'IA : le HTML brut (sans exécuter JavaScript), votre robots.txt et votre sitemap.",
@@ -372,7 +372,7 @@
     "faq1Q": "Qu'est-ce que la compatibilité IA ?",
     "faq1A": "La compatibilité IA (AEO) mesure dans quelle mesure les systèmes IA comme ChatGPT et Claude peuvent trouver, lire et comprendre votre contenu. Les sites bien notés ont plus de chances d'apparaître dans les réponses générées par l'IA.",
     "faq2Q": "Comment le score est-il calculé ?",
-    "faq2A": "Nous analysons 4 dimensions : explorerabilité (30pts), structure du contenu (35pts), SEO technique (25pts) et qualité du contenu (10pts). Chacune est notée en explorant votre site en direct.",
+    "faq2A": "Nous analysons 5 dimensions : explorerabilité (22 pts), structure du contenu (26 pts), SEO technique (19 pts), qualité du contenu (8 pts) et préparation aux agents (25 pts). Chacune est notée en explorant votre site en direct.",
     "faq3Q": "Pourquoi mon score est-il bas ?",
     "faq3A": "Les problèmes courants incluent les données structurées manquantes, le rendu uniquement JavaScript, l'absence de sitemap, une hiérarchie de titres médiocre et un contenu insuffisant. Votre page de résultats indique exactement quoi corriger.",
     "faq4Q": "Mes données sont-elles stockées ?",

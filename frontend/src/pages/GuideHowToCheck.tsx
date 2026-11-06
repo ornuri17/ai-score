@@ -220,22 +220,22 @@ export default function GuideHowToCheck() {
             Checking all of the above manually — across every page, on a live site — is slow and error-prone.{" "}
             <a href="/check">GradeByAI</a>
             {
-              " automates the entire process: enter your URL and get a 0-100 score across all four dimensions in under 10 seconds."
+              " automates the entire process: enter your URL and get a 0-100 score across all five dimensions in under 10 seconds."
             }
           </p>
           <p>
-            The score breaks down into crawlability (30 pts), content structure (35 pts), technical SEO (25
-            pts), and content quality (10 pts). Each issue is listed specifically — not a vague
-            recommendation, but the exact thing that needs to change.
+            The score breaks down into crawlability (22 pts), content structure (26 pts), technical SEO (19
+            pts), content quality (8 pts) and agent readiness (25 pts). Each issue is listed specifically: not a
+            vague recommendation, but the exact thing that needs to change.
           </p>
           <h2>Step 5: Fix issues in priority order</h2>
           <p>
-            If your crawlability score is below 20, fix that first. A blocked site cannot benefit from any
-            other improvements — it does not matter how good your content is if AI crawlers cannot reach it.
+            If your crawlability score is below 15 (of 22), fix that first. A blocked site cannot benefit from any
+            other improvements: it does not matter how good your content is if AI crawlers cannot reach it.
           </p>
           <p>
-            After crawlability: focus on content structure. Adding JSON-LD schema alone can move your score by
-            5-10 points. Fixing a missing or too-short meta description adds another 4 points immediately.
+            After crawlability: focus on content structure. Adding JSON-LD schema alone adds about 4
+            points. Fixing a missing or too-short meta description adds about 3 more immediately.
           </p>
           <p>
             Technical SEO issues (missing canonical, slow load time) are worth fixing but have smaller impact

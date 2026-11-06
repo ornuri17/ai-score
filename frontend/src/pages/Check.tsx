@@ -60,7 +60,7 @@ const breadcrumbSchema = {
 const DIMENSIONS = [
   {
     label: 'Crawlability',
-    pts: '30 pts',
+    pts: '22 pts',
     color: 'text-[#81ecff]',
     border: 'border-[#81ecff]/20',
     icon: 'travel_explore',
@@ -68,7 +68,7 @@ const DIMENSIONS = [
   },
   {
     label: 'Content Structure',
-    pts: '35 pts',
+    pts: '26 pts',
     color: 'text-[#a68cff]',
     border: 'border-[#a68cff]/20',
     icon: 'schema',
@@ -76,7 +76,7 @@ const DIMENSIONS = [
   },
   {
     label: 'Technical SEO',
-    pts: '25 pts',
+    pts: '19 pts',
     color: 'text-[#ff6c95]',
     border: 'border-[#ff6c95]/20',
     icon: 'settings',
@@ -84,11 +84,20 @@ const DIMENSIONS = [
   },
   {
     label: 'Content Quality',
-    pts: '10 pts',
+    pts: '8 pts',
     color: 'text-[#81ecff]',
     border: 'border-[#81ecff]/20',
     icon: 'article',
     desc: 'Is there enough text content for an AI to summarise? Are there internal links that help crawlers discover more of the site?',
+  },
+  {
+    label: 'Agent Readiness',
+    pts: '25 pts',
+    color: 'text-[#a68cff]',
+    border: 'border-[#a68cff]/20',
+    icon: 'smart_toy',
+    desc: 'Can AI agents discover and use your site? llms.txt, Content Signals in robots.txt, Markdown for Agents, Link headers, MCP and A2A cards, Agent Skills, API catalog and OAuth discovery.',
+    wide: true,
   },
 ];
 
@@ -111,7 +120,7 @@ const COMMON_ISSUES = [
   {
     icon: 'data_object',
     title: 'No JSON-LD structured data',
-    detail: '-5 pts. Without schema markup, AI systems have to guess what your page is about.',
+    detail: 'About -4 pts. Without schema markup, AI systems have to guess what your page is about.',
   },
   {
     icon: 'map',
@@ -209,19 +218,19 @@ export default function Check() {
         </div>
       </section>
 
-      {/* The four dimensions */}
+      {/* The five dimensions */}
       <section className="bg-[#10131a] py-20 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <p className="text-[#a68cff] font-label text-xs tracking-widest uppercase mb-3">The Score</p>
-            <h2 className="font-display text-3xl font-bold text-[#ecedf6]">4 signals AI crawlers check</h2>
+            <h2 className="font-display text-3xl font-bold text-[#ecedf6]">5 signals AI crawlers and agents check</h2>
             <p className="text-[#a9abb3] mt-3">
-              Your overall score is a sum of four dimensions, each weighted by how much it impacts AI visibility.
+              Your overall score is a sum of five dimensions, each weighted by how much it impacts AI visibility.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {DIMENSIONS.map((d) => (
-              <div key={d.label} className={`bg-[#1c2028] rounded-2xl p-6 border ${d.border}`}>
+              <div key={d.label} className={`bg-[#1c2028] rounded-2xl p-6 border ${d.border}${'wide' in d && d.wide ? ' md:col-span-2' : ''}`}>
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3">
                     <span className={`material-symbols-outlined text-2xl ${d.color}`} style={filledIcon}>

@@ -148,7 +148,7 @@
       },
       {
         "q": "¿Existe una herramienta gratuita de auditoría AEO?",
-        "a": "Sí. GradeByAI es una herramienta gratuita de auditoría AEO. Evalúa tu sitio en cuatro dimensiones: rastreabilidad, estructura del contenido, SEO técnico y calidad del contenido. Recibes una puntuación detallada con problemas específicos a corregir."
+        "a": "Sí. GradeByAI es una herramienta gratuita de auditoría AEO. Evalúa tu sitio en cinco dimensiones: rastreabilidad, estructura del contenido, SEO técnico, calidad del contenido y preparación para agentes. Recibes una puntuación detallada con problemas específicos a corregir."
       },
       {
         "q": "¿Cómo verifico si Perplexity puede rastrear mi sitio?",
@@ -156,7 +156,7 @@
       },
       {
         "q": "¿Cómo audito mi sitio para visibilidad LLM?",
-        "a": "Pega tu URL en GradeByAI. La auditoría cubre los cuatro factores que usan los LLM: rastreabilidad, estructura con HTML y schema, señales técnicas correctas y contenido sustancial para ser citado."
+        "a": "Pega tu URL en GradeByAI. La auditoría cubre los cuatro factores que usan los LLM: rastreabilidad, estructura con HTML y schema, señales técnicas correctas y contenido sustancial para ser citado. También comprueba si los agentes de IA pueden descubrir tu sitio y conectarse a él."
       },
       {
         "q": "¿Cómo sé si mi sitio aparece en resultados de IA?",
@@ -280,11 +280,11 @@
       },
       {
         "q": "¿Qué dimensión mejorar primero?",
-        "a": "Rastreabilidad (30 pts) siempre primero. Si los bots no pueden llegar, el resto es irrelevante. Luego Estructura del Contenido (35 pts), especialmente JSON-LD."
+        "a": "Rastreabilidad (22 pts) siempre primero. Si los bots no pueden llegar, el resto es irrelevante. Luego Estructura del Contenido (26 pts), especialmente JSON-LD. La preparación para agentes (25 pts) suele ser la mejora más rápida: casi todo son unos pocos archivos pequeños como llms.txt."
       },
       {
         "q": "¿Qué significa 'estructura del contenido' en GradeByAI?",
-        "a": "Mide la legibilidad de la página para máquinas: jerarquía HTML, meta descripción correcta, Open Graph, JSON-LD schema, fecha de publicación, viewport y html lang. Vale 35 puntos - la mayor categoría."
+        "a": "Mide la legibilidad de la página para máquinas: jerarquía HTML, meta descripción correcta, Open Graph, JSON-LD schema, fecha de publicación, viewport y html lang. Vale 26 puntos, la mayor categoría."
       },
       {
         "q": "Mi puntuación es alta pero no aparezco en IA - ¿por qué?",
@@ -294,7 +294,7 @@
     "about": [
       {
         "q": "¿Cómo calcula GradeByAI la puntuación?",
-        "a": "Rastrea el sitio en vivo y evalúa más de 20 verificaciones binarias: rastreabilidad (30 pts), estructura del contenido (35 pts), SEO técnico (25 pts) y calidad del contenido (10 pts). Cada verificación es aprobada/reprobada. Grandes penalizaciones por bloquear rastreadores."
+        "a": "Rastrea el sitio en vivo y evalúa más de 20 verificaciones: rastreabilidad (22 pts), estructura del contenido (26 pts), SEO técnico (19 pts), calidad del contenido (8 pts) y preparación para agentes (25 pts). La mayoría son aprobada/reprobada. Grandes penalizaciones por bloquear rastreadores."
       },
       {
         "q": "¿GradeByAI almacena los datos de mi sitio?",
@@ -322,7 +322,7 @@
   "howItWorks": {
     "badge": "EL PROCESO",
     "title": "Cómo funciona GradeByAI",
-    "subtitle": "Cuatro dimensiones. Una puntuación definitiva. Claridad completa sobre tu preparación para la IA.",
+    "subtitle": "Cinco dimensiones. Una puntuación definitiva. Claridad completa sobre tu preparación para la IA.",
     "step1Title": "Rastreamos tu sitio",
     "step1Desc": "Nuestro crawler obtiene tu página como lo hace un rastreador de IA: el HTML sin procesar (sin ejecutar JavaScript), tu robots.txt y tu sitemap.",
     "step1Pts": "22 pts",
@@ -351,7 +351,7 @@
     "faq1Q": "¿Qué es la preparación para IA?",
     "faq1A": "La preparación para IA (AEO) mide qué tan bien los sistemas de IA como ChatGPT y Claude pueden encontrar, leer y comprender tu contenido.",
     "faq2Q": "¿Cómo se calcula la puntuación?",
-    "faq2A": "Analizamos 4 dimensiones: rastreabilidad (30pts), estructura de contenido (35pts), SEO técnico (25pts) y calidad de contenido (10pts).",
+    "faq2A": "Analizamos 5 dimensiones: rastreabilidad (22 pts), estructura de contenido (26 pts), SEO técnico (19 pts), calidad de contenido (8 pts) y preparación para agentes (25 pts).",
     "faq3Q": "¿Por qué mi puntuación es baja?",
     "faq3A": "Los problemas comunes incluyen datos estructurados faltantes, renderizado solo JavaScript, sin sitemap, jerarquía de encabezados deficiente y contenido delgado.",
     "faq4Q": "¿Se almacenan mis datos?",

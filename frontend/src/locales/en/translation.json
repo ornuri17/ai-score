@@ -168,7 +168,7 @@
       },
       {
         "q": "Is there a free AEO audit tool?",
-        "a": "Yes. GradeByAI is a free Answer Engine Optimization (AEO) audit tool. It evaluates your site across the four dimensions that determine AI visibility: crawlability, content structure, technical SEO, and content quality. You receive a scored breakdown with specific issues to fix."
+        "a": "Yes. GradeByAI is a free Answer Engine Optimization (AEO) audit tool. It evaluates your site across five dimensions: crawlability, content structure, technical SEO, content quality and agent readiness. You receive a scored breakdown with specific issues to fix."
       },
       {
         "q": "How do I check if Perplexity can crawl my site?",
@@ -176,7 +176,7 @@
       },
       {
         "q": "How do I audit my website for LLM visibility?",
-        "a": "Paste your URL into GradeByAI. The audit covers the four factors LLMs use to evaluate content: whether the page is crawlable, whether content is structured with proper HTML and schema markup, whether technical signals like canonical tags and HTTPS are correct, and whether the content is substantive enough to be cited."
+        "a": "Paste your URL into GradeByAI. The audit covers the four factors LLMs use to evaluate content: whether the page is crawlable, whether content is structured with proper HTML and schema markup, whether technical signals like canonical tags and HTTPS are correct, and whether the content is substantive enough to be cited. It also checks whether AI agents can discover and connect to your site."
       },
       {
         "q": "How do I know if my website appears in AI search results?",
@@ -300,11 +300,11 @@
       },
       {
         "q": "What is the most important dimension to improve first?",
-        "a": "Crawlability (30 pts) should always be fixed first. If AI bots cannot reach your page, the other dimensions are irrelevant. After crawlability, focus on Content Structure (35 pts) - especially adding JSON-LD schema markup, which alone can add up to 5 points."
+        "a": "Crawlability (22 pts) should always be fixed first. If AI bots cannot reach your page, the other dimensions are irrelevant. After crawlability, focus on Content Structure (26 pts), especially adding JSON-LD schema markup, which alone adds about 4 points. Agent readiness (25 pts) is often the quickest win: most of it comes from a few small files such as llms.txt."
       },
       {
         "q": "What does 'content structure' mean in GradeByAI?",
-        "a": "Content structure measures how machine-readable your page is: whether it has a proper HTML heading hierarchy, a meta description of the right length, Open Graph tags, JSON-LD schema, a publication date, a viewport tag, and an html lang attribute. This dimension is worth 35 points - the largest single category."
+        "a": "Content structure measures how machine-readable your page is: whether it has a proper HTML heading hierarchy, a meta description of the right length, Open Graph tags, JSON-LD schema, a publication date, a viewport tag, and an html lang attribute. This dimension is worth 26 points, the largest single category."
       },
       {
         "q": "What does 'metadata optimization' mean?",
@@ -318,7 +318,7 @@
     "about": [
       {
         "q": "How does GradeByAI calculate the score?",
-        "a": "GradeByAI crawls your live site and evaluates 20+ binary checks across four dimensions: crawlability (30 pts), content structure (35 pts), technical SEO (25 pts), and content quality (10 pts). Each check is pass/fail - full points or zero. Large penalties apply for blocking crawlers or requiring authentication."
+        "a": "GradeByAI crawls your live site and evaluates 20+ checks across five dimensions: crawlability (22 pts), content structure (26 pts), technical SEO (19 pts), content quality (8 pts) and agent readiness (25 pts). Most checks are pass/fail: full points or zero. Large penalties apply for blocking crawlers or requiring authentication."
       },
       {
         "q": "Does GradeByAI store my website data?",
@@ -346,7 +346,7 @@
   "howItWorks": {
     "badge": "THE PROCESS",
     "title": "How GradeByAI Works",
-    "subtitle": "Four dimensions. One definitive score. Complete clarity on your AI readiness.",
+    "subtitle": "Five dimensions. One definitive score. Complete clarity on your AI readiness.",
     "stepsBadge": "THE STEPS",
     "step1Title": "We Crawl Your Site",
     "step1Desc": "Our crawler fetches your live page the way an AI crawler does: it reads the raw HTML (without running JavaScript), your robots.txt and your sitemap.",
@@ -376,7 +376,7 @@
     "faq1Q": "What is AI-readiness?",
     "faq1A": "AI-readiness (AEO) measures how well AI systems like ChatGPT and Claude can find, read, and understand your content. Sites that score well are more likely to appear in AI-generated answers.",
     "faq2Q": "How is the score calculated?",
-    "faq2A": "We analyze 4 dimensions: crawlability (30pts), content structure (35pts), technical SEO (25pts), and content quality (10pts). Each is scored by crawling your live site.",
+    "faq2A": "We analyze 5 dimensions: crawlability (22 pts), content structure (26 pts), technical SEO (19 pts), content quality (8 pts) and agent readiness (25 pts). Each is scored by crawling your live site.",
     "faq3Q": "Why is my score low?",
     "faq3A": "Common issues include missing structured data, JavaScript-only rendering, no sitemap, poor heading hierarchy, and thin content. Your results page shows exactly what to fix.",
     "faq4Q": "Is my data stored?",
